@@ -4,6 +4,7 @@ import json
 import pymysql
 import traceback
 import csv
+import openpyxl
 import logging as log
 from pymysql import cursors
 from datetime import datetime
@@ -30,7 +31,7 @@ header
 
 
 def makeCSV():
-    #raise RuntimeError("my mom")
+    # raise RuntimeError("my mom")
     with open(file=f'/var/www/html/ssch/csv/{dateFileName}.daily.csv', mode='w', encoding='utf-8') as csvf:
         res = sql_executor(sql_command, 'select * from daily', 10, "01", None)
         keys = ["id", "number", "name", "sex", "disease", "treat", "time"]
@@ -41,8 +42,8 @@ def makeCSV():
 
 
 def logging(message):
-    #global logger
-    #logger.info(f'\n{message}')
+    # global logger
+    # logger.info(f'\n{message}')
     pass
 
 
@@ -152,7 +153,7 @@ async def service(websocket, path):
             if date != datetime.now().strftime("%Y.%m.%d"):
                 main()
                 restart()
-            
+
             print(message)
             message = json.loads(message)
             pursue, stat, content_header, content_body = message["type"], message[
@@ -311,7 +312,7 @@ async def service(websocket, path):
 
 
 def main():
-    global teacher, others, times, possible, bed, mysql, date, dateFileName#, logger
+    global teacher, others, times, possible, bed, mysql, date, dateFileName  # , logger
     date = datetime.now().strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
     open(f"/var/www/html/ssch/logs/{dateFileName}.log", 'w')
@@ -324,7 +325,8 @@ def main():
     bed = 4  # 현재 사용 가능한 침대 개수(0~2)
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
-    #logger = makeLogger()
+    # logger = makeLogger()
+
 
 main()
 wait_keys = ["number", "name", "sex", "time", "symptom"]
