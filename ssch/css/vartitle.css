@@ -1,0 +1,251 @@
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+.nanum {
+  font-family: "Nanum Gothic", sans-serif;
+}
+.main {
+  width: 80%;
+  margin: auto;
+}
+.stretch {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+}
+.start {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 5px;
+  justify-content: left;
+}
+.imgResize {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 12vw;
+  /* max-width: 300px; */
+}
+.fullScreen {
+  width: 100%;
+  height: 100%;
+}
+.center {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.gridRow {
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 5px;
+}
+.gridColumn {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 5px;
+}
+.expl {
+  row-gap: 10px;
+}
+.bigtitle {
+  font-size: 2.3vw;
+}
+.mediumtitle {
+  font-size: 1.8vw;
+}
+.title {
+  font-size: 1.5vw;
+}
+.subtitle {
+  font-size: 1.35vw;
+}
+.body {
+  font-size: 1.2vw;
+}
+.roundBorder {
+  border: 2px solid black;
+  border-radius: 30px;
+}
+.edgeRoundBorder {
+  border: 2px solid black;
+  border-radius: 15px;
+}
+.noRadiusBorder {
+  border: 2px solid black;
+}
+.verticalHr {
+  border-right: 2px solid #c8c8c8;
+}
+.fit-contentX {
+  width: fit-content;
+}
+.fit-contentY {
+  height: fit-content;
+}
+.btnBox {
+  display: grid;
+  grid-auto-flow: column;
+  place-items: center center;
+}
+.confirmBtn {
+  width: 75%;
+  column-gap: 0px;
+  padding: 0;
+}
+.downloadBtn {
+  width: 100%;
+  column-gap: 0px;
+  padding: 0;
+}
+.gridCenter {
+  display: grid;
+  place-items: center center;
+}
+#path {
+  color: #eef4fc;
+}
+#main {
+  width: 100%;
+  display: grid;
+  place-items: center center;
+}
+#cover {
+  width: 95%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  margin-top: 10vh;
+  column-gap: 20px;
+}
+#waiterListCover {
+  height: 75vh;
+  display: grid;
+  grid-template-rows: 1fr 8fr 1fr;
+  padding: 10px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#waiterList {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.btns {
+  column-gap: 0px;
+}
+.confirmO {
+  place-self: center right;
+}
+.waiterListTitle {
+  width: fit-content;
+}
+.oneRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 1.1fr 2.5fr 1.5fr 0.5fr;
+}
+.infoCover {
+  display: grid;
+  grid-template-columns: 1fr 5fr 2fr;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#tableCover {
+  height: 75vh;
+  overflow-y: auto;
+}
+.tableData {
+  text-align: center;
+  width: 100%;
+}
+.tableTitle {
+  display: grid;
+  grid-template-columns: 3.5fr 1fr;
+}
+.dailyTableTitle {
+  margin-left: 5vw;
+}
+.modalClick {
+  cursor: pointer;
+}
+.modalClick:hover {
+  text-decoration-line: underline;
+}
+#alerting {
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #d8a6ab;
+  border-radius: 0.25rem;
+  display: grid;
+  grid-template-rows: 1.5fr 1fr;
+  place-items: center center;
+  row-gap: 15px;
+  z-index: 999;
+}
+#alerting > svg {
+  transform: scale(2.5);
+}
+#spinner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+#diagPos {
+  cursor: pointer;
+}
+#bedNum {
+  cursor: pointer;
+}
+#diagList {
+  height: 70vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.form-check-label {
+  width: 100%;
+}
+.inpBorder {
+  border: 1px solid black;
+  border-radius: 2px;
+}
+.inpBorder:focus-within {
+  outline: 2px solid black;
+}
+.pointer {
+  cursor: pointer;
+}
+.dropdown-menu.show {
+  width: fit-content;
+  height: fit-content;
+  max-width: 40vw;
+  max-height: 40vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 5px;
+}
+.dropdown-column {
+  display: grid;
+  grid-template-columns: 25% auto;
+  column-gap: 5px;
+}
+.noBorderInput {
+  border: none;
+}
+.noBorderInput:focus {
+  outline: none;
+}
+.tableInputCover {
+  display: grid;
+  grid-template-columns: auto 20px 0px;
+  place-items: center center;
+}
+.tableDataCover > div {
+  height: 100%;
+}
+.tableDataCover > input {
+  height: 100%;
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/vartitle.css">
+    <title>Console</title>
+</head>
+<body>
+    <nav class="navbar bg-primary" data-bs-theme="dark">
+        <div class="main stretch">
+            <div class="imgCover navImgCover">
+                <img src="./image.resize/csiaNLogo.reduct.png" class="imgResize center">
+            </div>
+            <div class="nanum">
+                <div class="fw-bolder center bigtitle" id="path">
+                    Console
+                </div>
+            </div>
+            <div class="imgCover navImgCover">
+                <img src="./image.resize/SSCHLogo.reduct.png" class="imgResize center">
+            </div>
+        </div>
+    </nav>
+    <div id="main" class="nanum">
+        <div id="cover">
+            <div id="waiterListCover" class="edgeRoundBorder">
+                <div>
+                    <div class="mediumtitle center waiterListTitle fw-bold">대기자 명단</div>
+                </div>
+                <div id="waiterList"></div>
+                <div id="controlPanel" class="gridColumn">
+                    <img src="./image.resize/diagImpos.reduct.png" id="diagPos" class="imgResize center">
+                    <img src="./image.resize/bedRemain04.reduct.png" id="bedNum" class="imgResize center">
+                </div>
+            </div>
+            <div id="tableCover" class="noRadiusBorder">
+                <div class="tableTitle">
+                    <div class="mediumtitle center fw-bold fit-contentX fit-contentY dailyTableTitle">오늘 진단 리스트</div>
+                    <div class="btnBox">
+                        <button class="btnContent btn btn-success downloadBtn fw-bolder">Download</button>
+                        <button class="btnContent btn btn-primary confirmBtn fw-bolder applyTable">Apply</button>
+                    </div>
+                </div>
+                <div class="oneRow tableHeaders">
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="#" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="학년/반" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="이름" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="성별" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="병명" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="처치" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="시간" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="tableData header subtitle fw-bolder" value="삭제" readonly></div>
+                </div>
+                <div class="oneRow tableElements">
+                    <div class="tableDataCover"><input type="text" class="idData tableData header body" readonly></div>
+                    <div class="tableDataCover"><input type="text" class="numberData tableData header body"></div>
+                    <div class="tableDataCover"><input type="text" class="nameData tableData header body"></div>
+                    <div class="tableDataCover"><input type="text" class="sexData tableData header body"></div>
+                    <div class="tableDataCover">
+                        <div class="tableInputCover inpBorder">
+                            <input type="text" class="diseaseData tableData header body noBorderInput">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill dropdown-toggle" viewBox="0 0 16 16" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                            <ul class="dropdown-menu"></ul>
+                        </div>
+                    </div>
+                    <div class="tableDataCover">
+                        <div class="tableInputCover inpBorder">
+                            <input type="text" class="treatData tableData header body noBorderInput">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill dropdown-toggle" viewBox="0 0 16 16" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                            <ul class="dropdown-menu"></ul>
+                        </div>
+                    </div>
+                    <div class="tableDataCover"><input type="text" class="timeData tableData header body"></div>
+                    <div class="tabelDataCover inpBorder">
+                        <div class="fit-contentX fit-contentY center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill delBtn pointer" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="alerting" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+        <div id="mention">Undefined Error Occur!</div>
+    </div>
+    <div id="spinner" hidden>
+        <div id="spin" class="spinner-border" role="status"></div>
+    </div>
+    <div class="edgeRoundBorder subtitle infoCover" id="infoCoverExample" hidden>
+        <div class="verticalHr">
+            <div class="numInfo center fit-contentX fw-bolder"></div>
+        </div>
+        <div class="verticalHr">
+            <div class="nameInfo center fit-contentX modalClick dropdown-toggle" data-bs-toggle="dropdown"></div>
+            <div class="dropdown-menu">
+                <div class="dropdownQuote fit-contentX fit-contentY" style="margin: auto;"></div>
+            </div>
+        </div>
+        <div class="gridColumn btns">
+            <div class="btnBox">
+                <button class="btnContent btn btn-success confirmBtn confirmO" data-bs-toggle="modal" data-bs-target="#confirmOBtn">O</button>
+            </div>
+            <div class="btnBox">
+                <button class="btnContent btn btn-danger confirmBtn confirmX">X</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmOBtn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="confirmModalTitle"></h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body gridRow" id="confirmModalBody">
+                <div class="subtitle">
+                    증상: <input type="text" id="confirmModalSymptom">
+                </div>
+                <div>
+                    <div class="list dropdown-column">
+                        <div id="diseaseDropdownCover">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                병명 선택
+                            </button>
+                            <ul class="dropdown-menu" id="diseaseList"></ul>
+                        </div>
+                        <input type="text" style="width: 100%;">
+                    </div>
+                    <div class="list dropdown-column" style="margin-top: 30px;">
+                        <div id="treatmentDropdownCover">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                처치 선택
+                            </button>
+                            <ul class="dropdown-menu fit-contentX" id="diagList"></ul>
+                        </div>
+                        <input type="text" style="width: 100%;">
+                    </div>
+                </div>
+                <input id="hiddenInfo" hidden readonly></input>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="confirmModalBtn" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <li class="dropdown-item" id="listGroupItemExample" hidden>
+        <input class="form-check-input disease" type="checkbox" value="">
+        <label class="form-check-label"></label>
+    </li>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script type="module" src="./javascript/formCover.js"></script>
+    <script type="module" src="./javascript/vartitle.js"></script>
+</body>
+</html>
