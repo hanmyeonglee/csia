@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      @font-face {
+        font-family: "GmarketSansMedium";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+          format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+      html {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center center;
+      }
+      #login {
+        width: 60vh;
+        height: 70vh;
+        max-width: 1000px;
+        max-height: 1500px;
+        border: 2px solid #c8c8c8;
+        display: grid;
+        place-items: start center;
+        border-radius: 10px;
+      }
+      img {
+        width: 45%;
+        padding: 6px;
+        place-self: end center;
+      }
+      input {
+        display: block;
+        width: 45vh;
+        max-width: 750px;
+        height: 5vh;
+        max-height: 250px;
+        font-size: 2vh;
+        border-radius: 5px;
+        border-color: #c8c8c8;
+        padding-left: 5px;
+      }
+      label {
+        place-self: center center;
+        font-size: 20px;
+        font-family: "GmarketSansMedium";
+      }
+      #btnDiv {
+        place-self: start center;
+      }
+      button {
+        border: none;
+        border-radius: 5px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        background-color: #1e82ff;
+        color: white;
+        font-size: 14px;
+      }
+      button:hover {
+        background-color: #0064ff;
+      }
+      .loader {
+        border: 16px solid #c8c8c8;
+        border-top: 16px solid #648cff;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 1.5s ease-in-out infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+    </style>
+    <title>Login</title>
+  </head>
+  <body>
+    <div id="login">
+      <img
+        src="./image.resize/SSCHLogo.reduct.reverseColor.png"
+        alt="청심 로고"
+      />
+      <label>로그인</label>
+      <input type="text" id="id" placeholder="아이디" />
+      <input type="text" id="password" placeholder="패스워드" />
+      <div id="btnDiv">
+        <button id="loginBtn">로그인</button>
+      </div>
+    </div>
+    <script>
+      const id = document.getElementById("id");
+      const pw = document.getElementById("password");
+      const btn = document.getElementById("loginBtn");
+
+      btn.addEventListener("click", (e) => {
+        btn.setAttribute("disabled", true);
+        fetch("./php/teacher.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json; charset=UTF-8" },
+          body: JSON.stringify([id.value, pw.value])
+        }).then((res) => {
+          let stat = res.status;
+          console.log(res);
+          if (stat >= 200 && stat < 300) {
+            res.text().then((title) => {
+              location.replace(`./${title}.html`);
+            });
+          } else if (stat == 400) {
+            alert("아이디가 틀렸습니다.");
+            btn.removeAttribute("disabled");
+          } else if (stat == 406) {
+            alert("비밀번호가 틀렸습니다.");
+            btn.removeAttribute("disabled");
+          } else {
+            alert("서버 오류입니다.");
+            //location.href = "./teacher.html";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
