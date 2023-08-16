@@ -101,6 +101,18 @@ def restart():
     sql_executor(sql_command, "truncate waiters", 0, "04", "restart")
 
 
+def getTime():
+    ret = {}
+    for h in range(8, 18):
+        hour = str(h).rjust(2, '0')
+        ret[hour] = []
+        res = sql_executor(
+            sql_command, f'select min from time_{hour} where pos=0', 'setting', '01', None)
+        for r in res:
+            ret[hour].append(r['min'])
+    return ret
+
+
 def copy(data):
     return json.loads(json.dumps(data))
 
@@ -148,11 +160,19 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
 async def service(websocket, path):
     try:
         async for message in websocket:
-            global teacher, others, possible, bed, times, date
+            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter
 
             if date != datetime.now().strftime("%Y.%m.%d"):
                 main()
                 restart()
+
+            if time_flag:
+                time = getTime()
+                time_flag = False
+            if waiter_flag:
+                waiter = sql_executor(
+                    sql_command, 'select * from waiters', 'setting', "01", None)
+                waiter_flag = False
 
             print(message)
             message = json.loads(message)
@@ -171,15 +191,13 @@ async def service(websocket, path):
 
             elif pursue == 1:
                 if content_header == "t":
-                    res_w = sql_executor(
-                        sql_command, 'select * from waiters', pursue, "01", None)
                     res_d = sql_executor(
                         sql_command, 'select * from daily', pursue, "02", None)
-                    ret = {"waiters": res_w, "daily": res_d,
+                    ret = {"waiters": waiter, "daily": res_d,
                            "diagPos": possible, "bedNum": bed}
                     await websocket.send(form(header=6, body_return=1, body_body=ret))
                 elif content_header == "s":
-                    ret = {"times": copy(times), "bedNum": bed,
+                    ret = {"times": time, "bedNum": bed,
                            "diagPos": possible}
                     await websocket.send(form(header=6, body_return=1, body_body=ret))
                 else:
@@ -190,15 +208,15 @@ async def service(websocket, path):
                 if content_header == "s":
                     data = copy(content_body)
                     h, m = data['time'].split(":")
-                    if m in times[h]:
+                    if m in time[h]:
                         await websocket.send(form(header=6, body_return=2, body_body=-1))
                         return
                     sql = inputSql(
                         "waiters", wait_keys, data)
                     sql_executor(sql_command, sql, pursue, "01", data)
+                    waiter_flag = True
                     # content_body structure : {'number':~, 'name':~, 'sex':~, 'symptom':~, 'time':~}
-                    hour, minute = data['time'].split(":")
-                    times[hour].append(minute)
+                    time_flag = True
                     await sending_2_all(header=2, body_body=data['time'])
                     try:
                         await teacher.send(form(header=2, body_body=data))
@@ -213,13 +231,13 @@ async def service(websocket, path):
             elif pursue == 3:
                 if content_header == "t":
                     data = copy(content_body)
-                    h, m = data.split(":")
-                    times[h].remove(m)
+                    time_flag = True
                     # waiters = list(filter(lambda x: x['time'] != content_body, waiters))
                     sql = delSql("waiters", data)
                     sql_executor(sql_command, sql, pursue, "01", data)
                     sql_executor(initializeId, "waiters", pursue, "02", data)
-                    await sending_2_all(header=3, body_body=[h, m])
+                    waiter_flag = True
+                    await sending_2_all(header=3, body_body=data)
                 else:
                     raise RuntimeError(
                         "pursue: 3, content_header error: not t")
@@ -250,8 +268,7 @@ async def service(websocket, path):
             elif pursue == 7:
                 if content_header == "t":
                     data = copy(content_body)
-                    h, m = data['time'].split(":")
-                    times[h].remove(m)
+                    time_flag = True
 
                     sql = inputSql(
                         "daily", day_keys, data)
@@ -259,10 +276,11 @@ async def service(websocket, path):
 
                     sql = delSql("waiters", data['time'])
                     sql_executor(sql_command, sql, pursue, "02", data)
+                    waiter_flag = True
 
                     res = sql_executor(
                         sql_command, f'select * from daily', pursue, "03", data)
-                    await sending_2_all(header=3, body_body=[h, m])
+                    await sending_2_all(header=3, body_body=data['time'])
                 else:
                     raise RuntimeError(
                         "pursue: 5, content_header error: not t")
@@ -312,19 +330,23 @@ async def service(websocket, path):
 
 
 def main():
-    global teacher, others, times, possible, bed, mysql, date, dateFileName  # , logger
+    global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter  # , logger
     date = datetime.now().strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
     open(f"/var/www/html/ssch/logs/{dateFileName}.log", 'w')
     teacher = None  # 선생님 웹소켓
     others = set()  # 다른 학생들의 웹소켓 정보
+    time_flag = False
+    waiter_flag = False
     # waiters = {} # 지금 기다리고 있는 학생들 리스트, [ 학년반, 이름, 성별, 증상, 시간 ] 5가지로 이루어져 있다.
     # 예약된 시간, "hour" : [ "appointedMinute1", "appointedMinute2" ]의 형식임
-    times = {str(i): [] for i in range(7, 18)}
     possible = False  # 현재 진료 가능한 상황인지 여부, 0은 불가능 1은 가능
     bed = 4  # 현재 사용 가능한 침대 개수(0~2)
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
+    time = getTime()
+    waiter = sql_executor(
+        sql_command, 'select * from waiters', 'setting', "01", None)
     # logger = makeLogger()
 
 
