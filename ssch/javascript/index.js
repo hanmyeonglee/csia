@@ -121,6 +121,7 @@ const makeOptions = () => {
     element.innerHTML = hourDefaultOption;
     for (let i = 8; i <= 17; i++) {
       //element.appendChild(optionForm(i, "시", (i >= hour) ? false : true));
+      if (i == 12) continue;
       element.appendChild(optionForm(i, "시", false));
     }
 

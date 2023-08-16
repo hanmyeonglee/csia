@@ -208,15 +208,17 @@ async def service(websocket, path):
                 if content_header == "s":
                     data = copy(content_body)
                     h, m = data['time'].split(":")
-                    if m in time[h]:
+                    if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
                         await websocket.send(form(header=6, body_return=2, body_body=-1))
                         return
+                    sql_executor(
+                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
+                    time_flag = True
                     sql = inputSql(
                         "waiters", wait_keys, data)
-                    sql_executor(sql_command, sql, pursue, "01", data)
+                    sql_executor(sql_command, sql, pursue, "02", data)
                     waiter_flag = True
                     # content_body structure : {'number':~, 'name':~, 'sex':~, 'symptom':~, 'time':~}
-                    time_flag = True
                     await sending_2_all(header=2, body_body=data['time'])
                     try:
                         await teacher.send(form(header=2, body_body=data))
@@ -231,11 +233,14 @@ async def service(websocket, path):
             elif pursue == 3:
                 if content_header == "t":
                     data = copy(content_body)
+                    h, m = data['time'].split(":")
+                    sql_executor(
+                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
                     time_flag = True
                     # waiters = list(filter(lambda x: x['time'] != content_body, waiters))
                     sql = delSql("waiters", data)
-                    sql_executor(sql_command, sql, pursue, "01", data)
-                    sql_executor(initializeId, "waiters", pursue, "02", data)
+                    sql_executor(sql_command, sql, pursue, "02", data)
+                    sql_executor(initializeId, "waiters", pursue, "03", data)
                     waiter_flag = True
                     await sending_2_all(header=3, body_body=data)
                 else:
@@ -268,18 +273,21 @@ async def service(websocket, path):
             elif pursue == 7:
                 if content_header == "t":
                     data = copy(content_body)
+                    h, m = data['time'].split(":")
+                    sql_executor(
+                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
                     time_flag = True
 
                     sql = inputSql(
                         "daily", day_keys, data)
-                    sql_executor(sql_command, sql, pursue, "01", data)
+                    sql_executor(sql_command, sql, pursue, "02", data)
 
                     sql = delSql("waiters", data['time'])
-                    sql_executor(sql_command, sql, pursue, "02", data)
+                    sql_executor(sql_command, sql, pursue, "03", data)
                     waiter_flag = True
 
                     res = sql_executor(
-                        sql_command, f'select * from daily', pursue, "03", data)
+                        sql_command, f'select * from daily', pursue, "04", data)
                     await sending_2_all(header=3, body_body=data['time'])
                 else:
                     raise RuntimeError(
