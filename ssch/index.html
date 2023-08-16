@@ -1,356 +1,585 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/index.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/index.css" />
     <title>SSCH</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar bg-primary" data-bs-theme="dark">
-        <div class="main stretch">
-            <div class="navImgCover">
-                <img src="./image.resize/csiaNLogo.reduct.png" class="imgResize center navImg01">
-            </div>
-            <div class="imgCover navImgCover">
-                <img src="./image.resize/SSCHLogo.reduct.png" class="imgResize center navImg02">
-            </div>
+      <div class="main stretch">
+        <div class="navImgCover">
+          <img
+            src="./image.resize/csiaNLogo.reduct.png"
+            class="imgResize center navImg01"
+          />
         </div>
+        <div class="imgCover navImgCover">
+          <img
+            src="./image.resize/SSCHLogo.reduct.png"
+            class="imgResize center navImg02"
+          />
+        </div>
+      </div>
     </nav>
-    <div class="main coverMain" style="margin-top: 40px;">
-        <div id="interfaceCover" class="desktop interface">
-            <div id="explanation" class="gridRow">
-                <div id="howToUse" class="nanum gridRow">
-                    <div id="nurseInfo" class="stretch imgCover">
-                        <div id="diagPos">
-                            <img src="./image.resize/diagImpos.reduct.png" class="imgResize infoImg center diagPos">
-                        </div>
-                        <div id="bedNum">
-                            <img src="./image.resize/bedRemain04.reduct.png" class="imgResize infoImg center bedNum">
-                        </div>
-                    </div>
-                    <div id="rule">
-                        <img src="./image.resize/howToUse.reduct.png" class="imgResize">
-                    </div>
-                    <div id="explOfAdm" class="expl gridRow">
-                        <div class="title fw-bold">예약 시스템</div>
-                        <div class="body">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam laudantium alias cupiditate itaque doloribus, magnam nesciunt ad. Quas rem exercitationem, officia, blanditiis sint mollitia numquam doloremque tenetur aliquid impedit tempora!
-                        </div>
-                    </div>
-                    <div id="eplOfLaw" class="expl gridRow">
-                        <div class="title fw-bold">사용 규칙</div>
-                        <div class="body">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, facilis? Dolorum, ducimus perspiciatis vero repellat sunt natus. Aperiam iusto cupiditate neque molestias, doloribus modi! Assumenda ducimus dicta vel dignissimos non.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="applyCover">
-                <div id="whCover" class="roundBorder">
-                    <div id="apply" class="nanum gridRow apply">
-                        <div class="title fw-bolder">보건실 예약하기</div>
-                        <div id="number" class="gridRow">
-                            <label for="numberInput" class="subtitle fw-bold">학번</label>
-                            <select class="form-select form-select-sm edgeRoundBorder number body" aria-label="Small select example" id="numberInput">
-                                <option value="default" class="default" selected>학년/반 선택</option>
-                                <option value="M1-1">중 1-1</option>
-                                <option value="M1-2">중 1-2</option>
-                                <option value="M1-3">중 1-3</option>
-                                <option value="M1-4">중 1-4</option>
-                                <option value="M2-1">중 2-1</option>
-                                <option value="M2-2">중 2-2</option>
-                                <option value="M2-3">중 2-3</option>
-                                <option value="M2-4">중 2-4</option>
-                                <option value="M3-1">중 3-1</option>
-                                <option value="M3-2">중 3-2</option>
-                                <option value="M3-3">중 3-3</option>
-                                <option value="M3-4">중 3-4</option>
-                                <option value="H1-1">고 1-1</option>
-                                <option value="H1-2">고 1-2</option>
-                                <option value="H1-3">고 1-3</option>
-                                <option value="H1-4">고 1-4</option>
-                                <option value="H2-1">고 2-1</option>
-                                <option value="H2-2">고 2-2</option>
-                                <option value="H2-3">고 2-3</option>
-                                <option value="H2-4">고 2-4</option>
-                                <option value="H3-1">고 3-1</option>
-                                <option value="H3-2">고 3-2</option>
-                                <option value="H3-3">고 3-3</option>
-                                <option value="H3-4">고 3-4</option>
-                            </select>
-                        </div>
-                        <div id="name" class="gridRow">
-                            <label for="nameInput" class="subtitle fw-bold">이름</label>
-                            <input type="text" id="nameInput" class="roundBorder name body">
-                        </div>
-                        <div id="sex" class="gridRow">
-                            <label for="sexCover" class="subtitle fw-bold">성별</label>
-                            <div id="sexCover" class="start">
-                                <div class="start"><input type="radio" class="sex" value="m" name="gender" checked><label for="man" class="body">남성</label></div>
-                                <div class="start"><input type="radio" class="sex" name="gender" value="w"><label for="woman" class="body">여성</label></div>
-                            </div>
-                        </div>
-                        <div id="symptom" class="gridRow">
-                            <label for="symptomInput" class="subtitle fw-bold">증상</label>
-                            <div id="symptomSelectCover" class="gridColumn">
-                                <input type="text" id="symptomInput" class="roundBorder nanum symptom body" data-bs-toggle="modal" data-bs-target="#symptomType" readonly>
-                                <div id="arrowDownCover" data-bs-toggle="modal" data-bs-target="#symptomType">
-                                    <img src="./image.resize/chevron-down-circle-1-512.png" class="imgResize">
-                                </div>
-                            </div>
-                            <div id="otherSymptomCover" class="edgeRoundBorder" hidden>
-                                <textarea id="otherSymptom" class="nanum otherSymptom"></textarea>
-                            </div>
-                        </div>
-                        <div id="time" class="gridRow">
-                            <label for="timeInput" class="subtitle fw-bold">예약 시간</label>
-                            <div id="timeCover" class="gridColumn">
-                                <div id="presentDay">
-                                    <div class="center body fw-bold dayTime" id="dayCover">23.08.05 (SAT)</div>
-                                </div>
-                                <div id="hourMinute" class="gridColumn">
-                                    <select class="form-select form-select-sm edgeRoundBorder hour body" aria-label="Small select example">
-                                        <option value="default" selected>시(Hour)</option>
-                                    </select>
-                                    <select class="form-select form-select-sm edgeRoundBorder minute body" aria-label="Small select example">
-                                        <option value="default" selected>분(Minute)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="applyButton" class="applyButton">
-                            <img src="./image.resize/enterButton.reduct.png" class="imgResize applyBtn">
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="main coverMain">
+      <nav class="navbar bg-body">
+        <div id="navExternal">
+          <div class="nanum fw-bold">청심국제중고 보건실</div>
+          <hr id="mainNavHr" />
         </div>
-        <div id="interfaceCover" class="mobile interface">
+      </nav>
+      <div id="interfaceCover" class="desktop interface">
+        <div id="explanation">
+          <div id="howToUse" class="nanum gridRow">
             <div id="nurseInfo" class="stretch imgCover">
-                <div id="diagPos">
-                    <img src="./image.resize/diagImpos.reduct.png" class="imgResize infoImg center diagPos">
-                </div>
-                <div id="bedNum">
-                    <img src="./image.resize/bedRemain04.reduct.png" class="imgResize infoImg center bedNum">
-                </div>
+              <div id="diagPos">
+                <img
+                  src="./image.resize/diagImpos.reduct.png"
+                  class="imgResize infoImg center diagPos"
+                />
+              </div>
+              <div id="bedNum">
+                <img
+                  src="./image.resize/bedRemain04.reduct.png"
+                  class="imgResize infoImg center bedNum"
+                />
+              </div>
             </div>
-            <div id="applyCover">
-                <div id="whCover" class="roundBorder">
-                    <div id="apply" class="nanum gridRow apply">
-                        <div class="title fw-bolder">보건실 예약하기</div>
-                        <div id="number" class="gridRow">
-                            <label for="numberInput" class="subtitle fw-bold">학년/반</label>
-                            <select class="form-select form-select-sm edgeRoundBorder number body" aria-label="Small select example" id="numberInput">
-                                <option value="default" class="default" selected>학년/반 선택</option>
-                                <option value="M1-1">중 1-1</option>
-                                <option value="M1-2">중 1-2</option>
-                                <option value="M1-3">중 1-3</option>
-                                <option value="M1-4">중 1-4</option>
-                                <option value="M2-1">중 2-1</option>
-                                <option value="M2-2">중 2-2</option>
-                                <option value="M2-3">중 2-3</option>
-                                <option value="M2-4">중 2-4</option>
-                                <option value="M3-1">중 3-1</option>
-                                <option value="M3-2">중 3-2</option>
-                                <option value="M3-3">중 3-3</option>
-                                <option value="M3-4">중 3-4</option>
-                                <option value="H1-1">고 1-1</option>
-                                <option value="H1-2">고 1-2</option>
-                                <option value="H1-3">고 1-3</option>
-                                <option value="H1-4">고 1-4</option>
-                                <option value="H2-1">고 2-1</option>
-                                <option value="H2-2">고 2-2</option>
-                                <option value="H2-3">고 2-3</option>
-                                <option value="H2-4">고 2-4</option>
-                                <option value="H3-1">고 3-1</option>
-                                <option value="H3-2">고 3-2</option>
-                                <option value="H3-3">고 3-3</option>
-                                <option value="H3-4">고 3-4</option>
-                            </select>
-                        </div>
-                        <div id="name" class="gridRow">
-                            <label for="nameInput" class="subtitle fw-bold">이름</label>
-                            <input type="text" id="nameInput" class="roundBorder name body">
-                        </div>
-                        <div id="sex" class="gridRow">
-                            <label for="sexCover" class="subtitle fw-bold">성별</label>
-                            <div id="sexCover" class="start">
-                                <div class="start"><input type="radio" value="m" class="sex" checked><label for="man" class="body">남성</label></div>
-                                <div class="start"><input type="radio" value="w" class="sex"><label for="woman" class="body">여성</label></div>
-                            </div>
-                        </div>
-                        <div id="symptom" class="gridRow">
-                            <label for="symptomInput" class="subtitle fw-bold">증상</label>
-                            <div id="symptomSelectCover" class="gridColumn">
-                                <input type="text" id="symptomInput" class="roundBorder nanum symptom body" data-bs-toggle="modal" data-bs-target="#symptomType" readonly>
-                                <div id="arrowDownCover" data-bs-toggle="modal" data-bs-target="#symptomType">
-                                    <img src="./image.resize/chevron-down-circle-1-512.png" class="imgResize">
-                                </div>
-                            </div>
-                            <div id="otherSymptomCover" class="edgeRoundBorder" hidden>
-                                <textarea id="otherSymptom" class="nanum otherSymptom"></textarea>
-                            </div>
-                        </div>
-                        <div id="time" class="gridRow">
-                            <label for="timeInput" class="subtitle fw-bold">예약 시간</label>
-                            <div id="timeCover" class="gridColumn">
-                                <div id="presentDay">
-                                    <div class="center body fw-bold dayTime" id="dayCover">23.08.05 (SAT)</div>
-                                </div>
-                                <div id="hourMinute" class="gridColumn">
-                                    <select class="form-select form-select-sm edgeRoundBorder hour body" aria-label="Small select example">
-                                        <option value="default" selected>시(Hour)</option>
-                                    </select>
-                                    <select class="form-select form-select-sm edgeRoundBorder minute body" aria-label="Small select example">
-                                        <option value="default" selected>분(Minute)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="applyButton" class="applyButton">
-                            <img src="./image.resize/enterButton.reduct.png" class="imgResize applyBtn">
-                        </div>
-                    </div>
-                </div>
+            <div id="rule">
+              <img src="./image.resize/howToUse.reduct.png" class="imgResize" />
             </div>
-            <div id="explanation" class="gridRow">
-                <div id="howToUse" class="nanum gridRow">
-                    <div id="rule">
-                        <img src="./image.resize/howToUse.reduct.png" class="imgResize">
-                    </div>
-                    <div id="explOfAdm" class="expl gridRow">
-                        <div class="title fw-bold">예약 시스템</div>
-                        <div class="body">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam laudantium alias cupiditate itaque doloribus, magnam nesciunt ad. Quas rem exercitationem, officia, blanditiis sint mollitia numquam doloremque tenetur aliquid impedit tempora!
-                        </div>
-                    </div>
-                    <div id="eplOfLaw" class="expl gridRow">
-                        <div class="title fw-bold">사용 규칙</div>
-                        <div class="body">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, facilis? Dolorum, ducimus perspiciatis vero repellat sunt natus. Aperiam iusto cupiditate neque molestias, doloribus modi! Assumenda ducimus dicta vel dignissimos non.
-                        </div>
-                    </div>
-                </div>
+            <div id="explOfAdm" class="expl gridRow">
+              <div class="title fw-bold">예약 시스템</div>
+              <div class="body">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam
+                laudantium alias cupiditate itaque doloribus, magnam nesciunt
+                ad. Quas rem exercitationem, officia, blanditiis sint mollitia
+                numquam doloremque tenetur aliquid impedit tempora!
+              </div>
             </div>
+            <div id="eplOfLaw" class="expl gridRow">
+              <div class="title fw-bold">사용 규칙</div>
+              <div class="body">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Sapiente, facilis? Dolorum, ducimus perspiciatis vero repellat
+                sunt natus. Aperiam iusto cupiditate neque molestias, doloribus
+                modi! Assumenda ducimus dicta vel dignissimos non.
+              </div>
+            </div>
+          </div>
         </div>
+        <div id="applyCover">
+          <div id="whCover" class="roundBorder">
+            <div id="apply" class="nanum gridRow apply">
+              <div class="title fw-bolder">보건실 예약하기</div>
+              <div id="number" class="gridRow">
+                <label for="numberInput" class="subtitle fw-bold">학번</label>
+                <select
+                  class="form-select form-select-sm edgeRoundBorder number body"
+                  aria-label="Small select example"
+                  id="numberInput"
+                >
+                  <option value="default" class="default" selected>
+                    학년/반 선택
+                  </option>
+                  <option value="M1-1">중 1-1</option>
+                  <option value="M1-2">중 1-2</option>
+                  <option value="M1-3">중 1-3</option>
+                  <option value="M1-4">중 1-4</option>
+                  <option value="M2-1">중 2-1</option>
+                  <option value="M2-2">중 2-2</option>
+                  <option value="M2-3">중 2-3</option>
+                  <option value="M2-4">중 2-4</option>
+                  <option value="M3-1">중 3-1</option>
+                  <option value="M3-2">중 3-2</option>
+                  <option value="M3-3">중 3-3</option>
+                  <option value="M3-4">중 3-4</option>
+                  <option value="H1-1">고 1-1</option>
+                  <option value="H1-2">고 1-2</option>
+                  <option value="H1-3">고 1-3</option>
+                  <option value="H1-4">고 1-4</option>
+                  <option value="H2-1">고 2-1</option>
+                  <option value="H2-2">고 2-2</option>
+                  <option value="H2-3">고 2-3</option>
+                  <option value="H2-4">고 2-4</option>
+                  <option value="H3-1">고 3-1</option>
+                  <option value="H3-2">고 3-2</option>
+                  <option value="H3-3">고 3-3</option>
+                  <option value="H3-4">고 3-4</option>
+                </select>
+              </div>
+              <div id="name" class="gridRow">
+                <label for="nameInput" class="subtitle fw-bold">이름</label>
+                <input
+                  type="text"
+                  id="nameInput"
+                  class="roundBorder name body"
+                />
+              </div>
+              <div id="sex" class="gridRow">
+                <label for="sexCover" class="subtitle fw-bold">성별</label>
+                <div id="sexCover" class="start">
+                  <div class="start">
+                    <input
+                      type="radio"
+                      class="sex"
+                      value="m"
+                      name="gender"
+                      checked
+                    /><label for="man" class="body">남성</label>
+                  </div>
+                  <div class="start">
+                    <input
+                      type="radio"
+                      class="sex"
+                      name="gender"
+                      value="w"
+                    /><label for="woman" class="body">여성</label>
+                  </div>
+                </div>
+              </div>
+              <div id="symptom" class="gridRow">
+                <label for="symptomInput" class="subtitle fw-bold">증상</label>
+                <div id="symptomSelectCover" class="gridColumn">
+                  <input
+                    type="text"
+                    id="symptomInput"
+                    class="roundBorder nanum symptom body"
+                    data-bs-toggle="modal"
+                    data-bs-target="#symptomType"
+                    readonly
+                  />
+                  <div
+                    id="arrowDownCover"
+                    data-bs-toggle="modal"
+                    data-bs-target="#symptomType"
+                  >
+                    <img
+                      src="./image.resize/chevron-down-circle-1-512.png"
+                      class="imgResize"
+                    />
+                  </div>
+                </div>
+                <div id="otherSymptomCover" class="edgeRoundBorder" hidden>
+                  <textarea
+                    id="otherSymptom"
+                    class="nanum otherSymptom"
+                  ></textarea>
+                </div>
+              </div>
+              <div id="time" class="gridRow">
+                <label for="timeInput" class="subtitle fw-bold"
+                  >예약 시간</label
+                >
+                <div id="timeCover" class="gridColumn">
+                  <div id="presentDay">
+                    <div class="center body fw-bold dayTime" id="dayCover">
+                      23.08.05 (SAT)
+                    </div>
+                  </div>
+                  <div id="hourMinute" class="gridColumn">
+                    <select
+                      class="form-select form-select-sm edgeRoundBorder hour body"
+                      aria-label="Small select example"
+                    >
+                      <option value="default" selected>시(Hour)</option>
+                    </select>
+                    <select
+                      class="form-select form-select-sm edgeRoundBorder minute body"
+                      aria-label="Small select example"
+                    >
+                      <option value="default" selected>분(Minute)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div id="applyButton" class="applyButton">
+                <img
+                  src="./image.resize/enterButton.reduct.png"
+                  class="imgResize applyBtn"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="interfaceCover" class="mobile interface">
+        <div id="nurseInfo" class="stretch imgCover">
+          <div id="diagPos">
+            <img
+              src="./image.resize/diagImpos.reduct.png"
+              class="imgResize infoImg center diagPos"
+            />
+          </div>
+          <div id="bedNum">
+            <img
+              src="./image.resize/bedRemain04.reduct.png"
+              class="imgResize infoImg center bedNum"
+            />
+          </div>
+        </div>
+        <div id="applyCover">
+          <div id="whCover" class="roundBorder">
+            <div id="apply" class="nanum gridRow apply">
+              <div class="title fw-bolder">보건실 예약하기</div>
+              <div id="number" class="gridRow">
+                <label for="numberInput" class="subtitle fw-bold"
+                  >학년/반</label
+                >
+                <select
+                  class="form-select form-select-sm edgeRoundBorder number body"
+                  aria-label="Small select example"
+                  id="numberInput"
+                >
+                  <option value="default" class="default" selected>
+                    학년/반 선택
+                  </option>
+                  <option value="M1-1">중 1-1</option>
+                  <option value="M1-2">중 1-2</option>
+                  <option value="M1-3">중 1-3</option>
+                  <option value="M1-4">중 1-4</option>
+                  <option value="M2-1">중 2-1</option>
+                  <option value="M2-2">중 2-2</option>
+                  <option value="M2-3">중 2-3</option>
+                  <option value="M2-4">중 2-4</option>
+                  <option value="M3-1">중 3-1</option>
+                  <option value="M3-2">중 3-2</option>
+                  <option value="M3-3">중 3-3</option>
+                  <option value="M3-4">중 3-4</option>
+                  <option value="H1-1">고 1-1</option>
+                  <option value="H1-2">고 1-2</option>
+                  <option value="H1-3">고 1-3</option>
+                  <option value="H1-4">고 1-4</option>
+                  <option value="H2-1">고 2-1</option>
+                  <option value="H2-2">고 2-2</option>
+                  <option value="H2-3">고 2-3</option>
+                  <option value="H2-4">고 2-4</option>
+                  <option value="H3-1">고 3-1</option>
+                  <option value="H3-2">고 3-2</option>
+                  <option value="H3-3">고 3-3</option>
+                  <option value="H3-4">고 3-4</option>
+                </select>
+              </div>
+              <div id="name" class="gridRow">
+                <label for="nameInput" class="subtitle fw-bold">이름</label>
+                <input
+                  type="text"
+                  id="nameInput"
+                  class="roundBorder name body"
+                />
+              </div>
+              <div id="sex" class="gridRow">
+                <label for="sexCover" class="subtitle fw-bold">성별</label>
+                <div id="sexCover" class="start">
+                  <div class="start">
+                    <input type="radio" value="m" class="sex" checked /><label
+                      for="man"
+                      class="body"
+                      >남성</label
+                    >
+                  </div>
+                  <div class="start">
+                    <input type="radio" value="w" class="sex" /><label
+                      for="woman"
+                      class="body"
+                      >여성</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div id="symptom" class="gridRow">
+                <label for="symptomInput" class="subtitle fw-bold">증상</label>
+                <div id="symptomSelectCover" class="gridColumn">
+                  <input
+                    type="text"
+                    id="symptomInput"
+                    class="roundBorder nanum symptom body"
+                    data-bs-toggle="modal"
+                    data-bs-target="#symptomType"
+                    readonly
+                  />
+                  <div
+                    id="arrowDownCover"
+                    data-bs-toggle="modal"
+                    data-bs-target="#symptomType"
+                  >
+                    <img
+                      src="./image.resize/chevron-down-circle-1-512.png"
+                      class="imgResize"
+                    />
+                  </div>
+                </div>
+                <div id="otherSymptomCover" class="edgeRoundBorder" hidden>
+                  <textarea
+                    id="otherSymptom"
+                    class="nanum otherSymptom"
+                  ></textarea>
+                </div>
+              </div>
+              <div id="time" class="gridRow">
+                <label for="timeInput" class="subtitle fw-bold"
+                  >예약 시간</label
+                >
+                <div id="timeCover" class="gridColumn">
+                  <div id="presentDay">
+                    <div class="center body fw-bold dayTime" id="dayCover">
+                      23.08.05 (SAT)
+                    </div>
+                  </div>
+                  <div id="hourMinute" class="gridColumn">
+                    <select
+                      class="form-select form-select-sm edgeRoundBorder hour body"
+                      aria-label="Small select example"
+                    >
+                      <option value="default" selected>시(Hour)</option>
+                    </select>
+                    <select
+                      class="form-select form-select-sm edgeRoundBorder minute body"
+                      aria-label="Small select example"
+                    >
+                      <option value="default" selected>분(Minute)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div id="applyButton" class="applyButton">
+                <img
+                  src="./image.resize/enterButton.reduct.png"
+                  class="imgResize applyBtn"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="explanation" class="gridRow">
+          <div id="howToUse" class="nanum gridRow">
+            <div id="rule">
+              <img src="./image.resize/howToUse.reduct.png" class="imgResize" />
+            </div>
+            <div id="explOfAdm" class="expl gridRow">
+              <div class="title fw-bold">예약 시스템</div>
+              <div class="body">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam
+                laudantium alias cupiditate itaque doloribus, magnam nesciunt
+                ad. Quas rem exercitationem, officia, blanditiis sint mollitia
+                numquam doloremque tenetur aliquid impedit tempora!
+              </div>
+            </div>
+            <div id="eplOfLaw" class="expl gridRow">
+              <div class="title fw-bold">사용 규칙</div>
+              <div class="body">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Sapiente, facilis? Dolorum, ducimus perspiciatis vero repellat
+                sunt natus. Aperiam iusto cupiditate neque molestias, doloribus
+                modi! Assumenda ducimus dicta vel dignissimos non.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <img src="./image.resize/about.reduct.png" class="imgResize" id="about">
-    <div class="modal fade" id="symptomType" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">증상 등록</h1>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="symList">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="염좌" id="sym01">
-                                <label class="form-check-label" for="sym01">
-                                    염좌(삐었음, 인대의 손상)
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="타박상" id="sym02">
-                                <label class="form-check-label" for="sym02">
-                                    타박상(맞거나 부딪혀서 생긴 상처)
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="열상" id="sym03">
-                                <label class="form-check-label" for="sym03">
-                                열상(찢어짐, 베임)
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="멍" id="sym04">
-                                <label class="form-check-label" for="sym04">
-                                    멍
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="자상" id="sym05">
-                                <label class="form-check-label" for="sym05">
-                                    자상(찔림)
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="찰과상" id="sym06">
-                                <label class="form-check-label" for="sym06">
-                                    찰과상(까짐)
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="복통" id="sym07">
-                                <label class="form-check-label" for="sym07">
-                                    복통
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="설사" id="sym08">
-                                <label class="form-check-label" for="sym08">
-                                    설사
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="식체" id="sym09">
-                                <label class="form-check-label" for="sym09">
-                                    식체(음식 소화 X, 체함)
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="감기" id="sym10">
-                                <label class="form-check-label" for="sym10">
-                                    감기
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="두통" id="sym11">
-                                <label class="form-check-label" for="sym11">
-                                    두통
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="발열" id="sym12">
-                                <label class="form-check-label" for="sym12">
-                                    발열
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="생리통" id="sym13">
-                                <label class="form-check-label" for="sym13">
-                                    생리통
-                                </label>
-                            </li>
-                            <li class="list-group-item">
-                                <input class="form-check-input" type="checkbox" value="그 외" id="sym15">
-                                <label class="form-check-label" for="sym15">
-                                    그 외
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="symSubmit" class="btn btn-primary" data-bs-dismiss="modal">신청하기</button>
-                </div>
+    <img src="./image.resize/about.reduct.png" class="imgResize" id="about" />
+    <div
+      class="modal fade"
+      id="symptomType"
+      data-bs-backdrop="static"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">증상 등록</h1>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div id="symList">
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="염좌"
+                    id="sym01"
+                  />
+                  <label class="form-check-label" for="sym01">
+                    염좌(삐었음, 인대의 손상)
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="타박상"
+                    id="sym02"
+                  />
+                  <label class="form-check-label" for="sym02">
+                    타박상(맞거나 부딪혀서 생긴 상처)
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="열상"
+                    id="sym03"
+                  />
+                  <label class="form-check-label" for="sym03">
+                    열상(찢어짐, 베임)
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="멍"
+                    id="sym04"
+                  />
+                  <label class="form-check-label" for="sym04"> 멍 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="자상"
+                    id="sym05"
+                  />
+                  <label class="form-check-label" for="sym05">
+                    자상(찔림)
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="찰과상"
+                    id="sym06"
+                  />
+                  <label class="form-check-label" for="sym06">
+                    찰과상(까짐)
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="복통"
+                    id="sym07"
+                  />
+                  <label class="form-check-label" for="sym07"> 복통 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="설사"
+                    id="sym08"
+                  />
+                  <label class="form-check-label" for="sym08"> 설사 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="식체"
+                    id="sym09"
+                  />
+                  <label class="form-check-label" for="sym09">
+                    식체(음식 소화 X, 체함)
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="감기"
+                    id="sym10"
+                  />
+                  <label class="form-check-label" for="sym10"> 감기 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="두통"
+                    id="sym11"
+                  />
+                  <label class="form-check-label" for="sym11"> 두통 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="발열"
+                    id="sym12"
+                  />
+                  <label class="form-check-label" for="sym12"> 발열 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="생리통"
+                    id="sym13"
+                  />
+                  <label class="form-check-label" for="sym13"> 생리통 </label>
+                </li>
+                <li class="list-group-item">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="그 외"
+                    id="sym15"
+                  />
+                  <label class="form-check-label" for="sym15"> 그 외 </label>
+                </li>
+              </ul>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="symSubmit"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              신청하기
+            </button>
+          </div>
         </div>
+      </div>
     </div>
     <div id="alerting" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-        </svg>
-        <div id="mention">Undefined Error Occur!</div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-exclamation-triangle-fill"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+        />
+      </svg>
+      <div id="mention">Undefined Error Occur!</div>
     </div>
     <div id="spinner" hidden>
-        <div id="spin" class="spinner-border" role="status"></div>
+      <div id="spin" class="spinner-border" role="status"></div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
     <script type="module" src="./javascript/formCover.js"></script>
     <script type="module" src="./javascript/index.js"></script>
-</body>
+  </body>
 </html>

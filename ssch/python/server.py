@@ -273,21 +273,17 @@ async def service(websocket, path):
             elif pursue == 7:
                 if content_header == "t":
                     data = copy(content_body)
-                    h, m = data['time'].split(":")
-                    sql_executor(
-                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
-                    time_flag = True
 
                     sql = inputSql(
                         "daily", day_keys, data)
-                    sql_executor(sql_command, sql, pursue, "02", data)
+                    sql_executor(sql_command, sql, pursue, "01", data)
 
                     sql = delSql("waiters", data['time'])
-                    sql_executor(sql_command, sql, pursue, "03", data)
+                    sql_executor(sql_command, sql, pursue, "02", data)
                     waiter_flag = True
 
                     res = sql_executor(
-                        sql_command, f'select * from daily', pursue, "04", data)
+                        sql_command, f'select * from daily', pursue, "03", data)
                     await sending_2_all(header=3, body_body=data['time'])
                 else:
                     raise RuntimeError(
