@@ -80,13 +80,10 @@ def delSql(db, time):
 
 
 def restart():
-    m = date.split(".")[1]
     res = sql_executor(sql_command, "select * from daily", -1, "01", "restart")
     for r in res:
         sql_executor(sql_command, inputSql(
             "yearly", day_keys, r), -1, "02", "restart")
-        sql_executor(sql_command, inputSql(
-            f"yearly_{m}", day_keys, r), -1, "03", "restart")
     sql_executor(sql_command, "truncate daily", -1, "04", "restart")
     sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
     reset_time()
@@ -306,7 +303,7 @@ async def service(websocket, path):
                 if content_header == "t":
                     res = sql_executor(
                         sql_command, 'select * from daily', pursue, "01", None)
-                    m = date.split(".")[1]
+                    tm = datetime.now().strftime("%Y.%m")
                     ret01_m = ret02_m = ret03_m = ret01_w = ret02_w = ret03_w = []
 
                     for t in treatType:
@@ -315,9 +312,9 @@ async def service(websocket, path):
                         ret01_w.append(sql_executor(
                             sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)['cnt'])
                         ret02_m.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly_{m} where sex="남" and disease like "%{t}%"', pursue, "04", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)['cnt'])
                         ret02_w.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly_{m} where sex="여" and disease like "%{t}%"', pursue, "05", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)['cnt'])
                         ret03_m.append(sql_executor(
                             sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)['cnt'])
                         ret03_w.append(sql_executor(
