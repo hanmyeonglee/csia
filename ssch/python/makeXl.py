@@ -30,7 +30,7 @@ def divider(data, height):
             return ret01, ret02
 
 
-def makeFile(data: list, stat: list):
+def makeFile(data: list, stat: list, dateFileName: str):
     wb = Workbook()
     sheet: Sheet = wb.active
     sheet.page_margins.left = 0.2519685
@@ -110,7 +110,7 @@ def makeFile(data: list, stat: list):
             cell.alignment = Alignment(
                 wrap_text=True, horizontal='left', vertical='center')
 
-    sheet['A1'].font = Font(size=26, bold=True)
+    sheet['A1'].font = Font(size=24, bold=True)
 
     """ for row in sheet.iter_rows(min_row=11, max_row=11, min_col=2, max_col=7):
         values = ['연변', '학년반', '성명', '성별', '병명', '처\t치']
@@ -122,7 +122,7 @@ def makeFile(data: list, stat: list):
         for cell, value in zip(row, values):
             cell.value = value """
 
-    wb.save('test.xlsx')
+    wb.save(f'/var/www/html/ssch/csv/{dateFileName}.xlsx')
 
 
 makeFile([{'id': 0, 'number': 0, 'name': 0, 'sex': 0,

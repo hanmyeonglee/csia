@@ -1,9 +1,11 @@
 import pymysql
+from logs import log as logging
 
 mysql = pymysql.connect(user="SSCH", passwd="rBXAm7WN", host="localhost",
                         db="ssch", charset="utf8", autocommit=True)
-"""with mysql.cursor() as commander:
+""" with mysql.cursor() as commander:
     for i in range(8, 18):
+        if i == 12: continue
         h = str(i).rjust(2, '0')
         commander.execute(f'drop table time_{h}')
         commander.execute(
@@ -13,6 +15,12 @@ mysql = pymysql.connect(user="SSCH", passwd="rBXAm7WN", host="localhost",
             commander.execute(f'insert into time_{h} values("{m}", 1)')
     commander.execute('select min from time_08 where pos=1')
     print(commander.fetchall()) """
+
+with mysql.cursor() as commander:
+    for i in range(1, 13):
+        m = str(i).rjust(2, '0')
+        commander.execute(
+            f'create table yearly_{m}(id int(11) not null auto_increment, number char(5), name varchar(20), sex char(5), time varchar(100), disease varchar(1000), treat varchar(1000), primary key(id))')
 
 
 def reset_time():

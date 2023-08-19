@@ -4,7 +4,8 @@ import json
 import pymysql
 import traceback
 import csv
-import openpyxl
+from sqlModule import reset_time
+from makeXl import makeFile
 from copy import deepcopy as copy
 import logs as logging
 from pymysql import cursors
@@ -79,12 +80,16 @@ def delSql(db, time):
 
 
 def restart():
-    res = sql_executor(sql_command, "select * from daily", 0, "01", "restart")
+    m = date.split(".")[1]
+    res = sql_executor(sql_command, "select * from daily", -1, "01", "restart")
     for r in res:
         sql_executor(sql_command, inputSql(
-            "yearly", day_keys, r), 0, "02", "restart")
-    sql_executor(sql_command, "truncate daily", 0, "03", "restart")
-    sql_executor(sql_command, "truncate waiters", 0, "04", "restart")
+            "yearly", day_keys, r), -1, "02", "restart")
+        sql_executor(sql_command, inputSql(
+            f"yearly_{m}", day_keys, r), -1, "03", "restart")
+    sql_executor(sql_command, "truncate daily", -1, "04", "restart")
+    sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
+    reset_time()
 
 
 def getTime():
@@ -145,8 +150,8 @@ async def service(websocket, path):
             global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter
 
             if date != datetime.now().strftime("%Y.%m.%d"):
-                main()
                 restart()
+                main()
 
             if time_flag:
                 time = getTime()
@@ -299,11 +304,42 @@ async def service(websocket, path):
 
             elif pursue == 10:
                 if content_header == "t":
-                    makeCSV()
+                    res = sql_executor(
+                        sql_command, 'select * from daily', pursue, "01", None)
+                    m = date.split(".")[1]
+                    ret01_m = ret02_m = ret03_m = ret01_w = ret02_w = ret03_w = []
+
+                    for t in treatType:
+                        ret01_m.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None)['cnt'])
+                        ret01_w.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)['cnt'])
+                        ret02_m.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from yearly_{m} where sex="남" and disease like "%{t}%"', pursue, "04", None)['cnt'])
+                        ret02_w.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from yearly_{m} where sex="여" and disease like "%{t}%"', pursue, "05", None)['cnt'])
+                        ret03_m.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)['cnt'])
+                        ret03_w.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)['cnt'])
+
+                    makeFile(
+                        res,
+                        [
+                            ['성별'] + copy(treatType) + ['', '', '계'],
+                            ['남'] + ret01_m + ['', '', str(sum(ret01_m))],
+                            ['여'] + ret01_w + ['', '', str(sum(ret01_w))],
+                            ['남'] + ret02_m + ['', '', str(sum(ret02_m))],
+                            ['여'] + ret02_w + ['', '', str(sum(ret02_w))],
+                            ['남'] + ret03_m + ['', '', str(sum(ret03_m))],
+                            ['여'] + ret03_w + ['', '', str(sum(ret03_w))]
+                        ],
+                        dateFileName
+                    )
                 else:
                     raise RuntimeError(
                         "pursue: 9, content_header error: not t")
-                await websocket.send(form(header=6, body_return=10, body_body=f"{dateFileName}.daily"))
+                await websocket.send(form(header=6, body_return=10, body_body=f"{dateFileName}"))
 
             else:
                 raise RuntimeError(
@@ -339,6 +375,8 @@ def main():
 main()
 wait_keys = ["number", "name", "sex", "time", "symptom"]
 day_keys = ["number", "name", "sex", "time", "disease", "treat"]
+treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
+    " ")
 server = websockets.serve(service, "0.0.0.0", 52125)
 loop = asyncio.get_event_loop()
 loop.run_until_complete(server)
