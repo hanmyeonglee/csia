@@ -5,7 +5,8 @@ import pymysql
 import traceback
 import csv
 import openpyxl
-import logging as log
+from copy import deepcopy as copy
+import logs as logging
 from pymysql import cursors
 from datetime import datetime
 
@@ -39,12 +40,6 @@ def makeCSV():
         writer.writeheader()
         writer.writerows(res)
         csvf.close()
-
-
-def logging(message):
-    # global logger
-    # logger.info(f'\n{message}')
-    pass
 
 
 def sql_command(command):
@@ -83,15 +78,6 @@ def delSql(db, time):
     return f'delete from {db} where time="{time}"'
 
 
-def makeLogger():
-    logger = log.getLogger("SSCH-server")
-    handler = log.FileHandler(f"/var/www/html/ssch/logs/{dateFileName}.log")
-    handler.setLevel(log.INFO)
-    handler.setFormatter('%(name)s[%(levelname)s] : %(message)s')
-    logger.addHandler(handler)
-    return logger
-
-
 def restart():
     res = sql_executor(sql_command, "select * from daily", 0, "01", "restart")
     for r in res:
@@ -111,10 +97,6 @@ def getTime():
         for r in res:
             ret[hour].append(r['min'])
     return ret
-
-
-def copy(data):
-    return json.loads(json.dumps(data))
 
 
 def form(status=1, header=0, body_return=-1, body_body=[]):

@@ -370,7 +370,7 @@ confirmModal
     }
     let contents = copy(tempConfirm);
     contents["disease"] = diseVal.value.trim();
-    contents["treat"] = treatVal.value.trim();
+    contents["treat"] = `${contents["symptom"]} : ${treatVal.value.trim()}`;
     delete contents.symptom;
 
     let information = confirmModal.querySelector("#hiddenInfo").value;
