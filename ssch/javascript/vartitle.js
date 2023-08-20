@@ -253,14 +253,14 @@ const makeListAll = () => {
 };
 
 const downloadFile = async (filename) => {
-  const response = await fetch(`./csv/${filename}.csv`);
+  const response = await fetch(`./csv/${filename}.xlsx`);
   const file = await response.blob();
   const downloadUrl = window.URL.createObjectURL(file); // 해당 file을 가리키는 url 생성
 
   const anchorElement = document.createElement("a");
   anchorElement.setAttribute("hidden", true);
   document.body.appendChild(anchorElement);
-  anchorElement.download = `${filename}.csv`;
+  anchorElement.download = `${filename}.xlsx`;
   anchorElement.href = downloadUrl; // href에 url 달아주기
 
   anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
