@@ -7,7 +7,7 @@ import csv
 from sqlModule import reset_time
 from makeXl import makeFile
 from copy import deepcopy as copy
-import logs as logging
+from logs import log as logging
 from pymysql import cursors
 from datetime import datetime
 
@@ -63,7 +63,7 @@ def sql_executor(func, sql, pursue, num, data):
     except:
         err = traceback.format_exc()
         print('err01 :', err)
-        logging(err)
+        logging(err, dateFileName)
         raise RuntimeError(
             f"pursue: {pursue}, mysql stdio error{num}: data = {data}")
 
@@ -92,6 +92,7 @@ def restart():
 def getTime():
     ret = {}
     for h in range(8, 18):
+        if h == 12: continue
         hour = str(h).rjust(2, '0')
         ret[hour] = []
         res = sql_executor(
@@ -345,7 +346,7 @@ async def service(websocket, path):
                     "main if clause, pursue is not 1 ~ 5 or 7~10")
     except:
         err = traceback.format_exc()
-        logging(err)
+        logging(err, dateFileName)
         print('err02 :', err)
         await websocket.send(form(status=0))
 
@@ -369,6 +370,7 @@ def main():
     waiter = sql_executor(
         sql_command, 'select * from waiters', 'setting', "01", None)
     # logger = makeLogger()
+    logging("server (re)started", dateFileName)
 
 
 main()

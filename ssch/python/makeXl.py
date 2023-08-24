@@ -125,7 +125,3 @@ def makeFile(data: list, stat: list, dateFileName: str):
     wb.save(f'/var/www/html/ssch/csv/{dateFileName}.xlsx')
 
 
-makeFile([{'id': 0, 'number': 0, 'name': 0, 'sex': 0,
-         'disease': 0, 'treat': 0, 'time': 0} for _ in range(29)],
-         [[0 for _ in range(17)] for __ in range(7)]
-         )
