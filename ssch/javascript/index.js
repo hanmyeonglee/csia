@@ -35,6 +35,7 @@ const hourSelect = Array.from(document.getElementsByClassName("hour"));
 const diagPosImg = Array.from(document.getElementsByClassName("diagPos"));
 const bedNumImg = Array.from(document.getElementsByClassName("bedNum"));
 const about = document.getElementById("about");
+const download = document.getElementById("download");
 let diagPos = false;
 let bedNum = 4;
 let current = examineCurrentInterface(interfaces);
@@ -294,3 +295,5 @@ about.addEventListener("click", (e) => {
     "https://docs.google.com/document/d/1degMd317t3KixcS9bujQ--YyTdfb7kVPpdHn9UZeeq8/edit?usp=sharing"
   );
 });
+
+download.

@@ -139,6 +139,8 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
                 removeds.append(other)
     for removed in removeds:
         others.remove(removed)
+    else:
+        print(f"disconnected - {len(removed)}")
 
 
 async def service(websocket, path):
@@ -312,13 +314,13 @@ async def service(websocket, path):
                         ret01_w.append(sql_executor(
                             sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)['cnt'])
                         ret02_m.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)['cnt'] + ret01_m[-1])
                         ret02_w.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)['cnt'] + ret01_w[-1])
                         ret03_m.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)['cnt'] + ret01_m[-1])
                         ret03_w.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)['cnt'] + ret01_w[-1])
 
                     makeFile(
                         res,
