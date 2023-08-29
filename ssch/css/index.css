@@ -42,7 +42,7 @@
 }
 #navExternal {
   width: 100%;
-  padding-top: 25px;
+  padding-top: 10px;
   padding-bottom: 0;
 }
 #navExternal > div {
@@ -52,11 +52,12 @@
   width: 100%;
   display: block;
   border-top: 3px solid black;
+  margin-top: 12.5px;
+  margin-bottom: 12.5px;
 }
 #interfaceCover {
   width: 100%;
   grid-template-columns: 1.15fr 1fr;
-  margin-top: 15px;
   column-gap: 70px;
 }
 #explanation {
@@ -73,7 +74,7 @@
   padding-left: 2vw;
 }
 #rule > img {
-  width: 7vw;
+  width: 5vw;
   /* max-width: 160px; */
 }
 #howToUse {
@@ -150,12 +151,11 @@
 .applyBtn:hover {
   cursor: pointer;
 }
-#about {
+.abdown {
   cursor: pointer;
-  position: fixed;
-  right: 1%;
-  bottom: 0%;
-  width: 7vw;
+  height: 1.8vw;
+  padding: 0 !important;
+  object-fit: contain;
 }
 .mobile {
   display: none !important;
@@ -226,7 +226,6 @@
     grid-template-columns: none;
     grid-auto-flow: row;
     padding: 10px;
-    margin-top: 0;
     row-gap: 20px;
   }
   .imgResize {
@@ -246,7 +245,7 @@
     padding-left: 1vh;
   }
   #rule > img {
-    width: 8vh;
+    width: 6vh;
     /* max-width: 160px; */
   }
   .title {
@@ -261,12 +260,10 @@
   .applyBtn {
     width: 8vh;
   }
-  #about {
+  .abdown {
     cursor: pointer;
-    position: fixed;
-    right: 1%;
-    bottom: 0%;
-    width: 7vh;
+    height: 1.8vh;
+    padding: 0 !important;
   }
   #applyCover {
     padding: 0;

@@ -92,7 +92,8 @@ def restart():
 def getTime():
     ret = {}
     for h in range(8, 18):
-        if h == 12: continue
+        if h == 12:
+            continue
         hour = str(h).rjust(2, '0')
         ret[hour] = []
         res = sql_executor(
