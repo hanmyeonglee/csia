@@ -173,4 +173,4 @@ def makeFile(data: list, stat: list, dateFileName: str):
         for cell, value in zip(row, values):
             cell.value = value """
 
-    wb.save(f'/var/www/html/ssch/csv/{dateFileName}.xlsx')
+    wb.save(f'/var/www/html/ssch/csv/{"".join(date)}.xlsx')

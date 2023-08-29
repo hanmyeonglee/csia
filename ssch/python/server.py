@@ -311,7 +311,8 @@ async def service(websocket, path):
                     ret01_m = ret02_m = ret03_m = ret01_w = ret02_w = ret03_w = []
 
                     for t in treatType:
-                        ret01_m.append(sql_executor(sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None)[0]['cnt'])
+                        ret01_m.append(sql_executor(
+                            sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None)[0]['cnt'])
                         ret01_w.append(sql_executor(
                             sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)[0]['cnt'])
                         ret02_m.append(sql_executor(
@@ -334,7 +335,7 @@ async def service(websocket, path):
                             ['남'] + ret03_m + ['', '', str(sum(ret03_m))],
                             ['여'] + ret03_w + ['', '', str(sum(ret03_w))]
                         ],
-                        dateFileName
+                        date
                     )
                 else:
                     raise RuntimeError(
