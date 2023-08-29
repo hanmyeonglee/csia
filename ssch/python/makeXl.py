@@ -35,6 +35,7 @@ def makeFile(data: list, stat: list, dateFileName: str):
     sheet: Sheet = wb.active
     sheet.page_margins.left = 0.2519685
     sheet.page_margins.right = 0.2519685
+    date = dateFileName.split(".")
 
     sheet.column_dimensions['A'].width = 4.95
     for i in range(18):
@@ -48,7 +49,7 @@ def makeFile(data: list, stat: list, dateFileName: str):
         bottom=Side(border_style="thin", color="000000")
     )
 
-    header = {'A1:N3': '보   건   일   지', 'A4:N4': '2023년 4월 3일 월요일', 'O1:O4': '결\n재', 'P1:Q1': '계', 'P2:Q4': '', 'R1:S1': '부장', 'R2:S4': '', 'A5:C7': '보건교육',
+    header = {'A1:N3': '보   건   일   지', 'A4:N4': f'{date[0]}년 {date[1]}월 {date[2]}일 월요일', 'O1:O4': '결\n재', 'P1:Q1': '계', 'P2:Q4': '', 'R1:S1': '부장', 'R2:S4': '', 'A5:C7': '보건교육',
               'D5:J7': '', 'K5:M7': '보건행사', 'N5:S7': '', 'A8:C10': '병원치료', 'D8:J10': '', 'K8:M10': '특이사항', 'N8:S10': ''}
 
     d1, d2 = divider(data, height)
@@ -112,6 +113,56 @@ def makeFile(data: list, stat: list, dateFileName: str):
 
     sheet['A1'].font = Font(size=24, bold=True)
 
+    for column in sheet.iter_cols(min_col=3, max_col=3, min_row=12, max_row=10+height):
+        for cell in column:
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal='left', vertical='center')
+
+    for column in sheet.iter_cols(min_col=4, max_col=4, min_row=12, max_row=10+height):
+        for cell in column:
+            cell.font = Font(size=9)
+
+    for column in sheet.iter_cols(min_col=7, max_col=7, min_row=12, max_row=10+height):
+        for cell in column:
+            if len(cell.value) > 4:
+                cell.font = Font(size=8)
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal='left', vertical='center')
+
+    for column in sheet.iter_cols(min_col=9, max_col=9, min_row=12, max_row=10+height):
+        for cell in column:
+            cell.font = Font(size=9)
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal='left', vertical='center')
+
+    for row in sheet.iter_rows(min_row=11+height, max_row=11+height, min_col=4, max_col=16):
+        for cell in row:
+            cell.font = Font(size=5)
+
+    #
+
+    for column in sheet.iter_cols(min_col=12, max_col=12, min_row=12, max_row=10+height):
+        for cell in column:
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal='left', vertical='center')
+
+    for column in sheet.iter_cols(min_col=13, max_col=13, min_row=12, max_row=10+height):
+        for cell in column:
+            cell.font = Font(size=9)
+
+    for column in sheet.iter_cols(min_col=15, max_col=15, min_row=12, max_row=10+height):
+        for cell in column:
+            if len(cell.value) > 4:
+                cell.font = Font(size=8)
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal='left', vertical='center')
+
+    for column in sheet.iter_cols(min_col=17, max_col=17, min_row=12, max_row=10+height):
+        for cell in column:
+            cell.font = Font(size=9)
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal='left', vertical='center')
+
     """ for row in sheet.iter_rows(min_row=11, max_row=11, min_col=2, max_col=7):
         values = ['연변', '학년반', '성명', '성별', '병명', '처\t치']
         for cell, value in zip(row, values):
@@ -123,5 +174,3 @@ def makeFile(data: list, stat: list, dateFileName: str):
             cell.value = value """
 
     wb.save(f'/var/www/html/ssch/csv/{dateFileName}.xlsx')
-
-
