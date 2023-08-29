@@ -311,18 +311,17 @@ async def service(websocket, path):
                     ret01_m = ret02_m = ret03_m = ret01_w = ret02_w = ret03_w = []
 
                     for t in treatType:
-                        ret01_m.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None)['cnt'])
+                        ret01_m.append(sql_executor(sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None)[0]['cnt'])
                         ret01_w.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)['cnt'])
+                            sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)[0]['cnt'])
                         ret02_m.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)['cnt'] + ret01_m[-1])
+                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)[0]['cnt'] + ret01_m[-1])
                         ret02_w.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)['cnt'] + ret01_w[-1])
+                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)[0]['cnt'] + ret01_w[-1])
                         ret03_m.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)['cnt'] + ret01_m[-1])
+                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)[0]['cnt'] + ret01_m[-1])
                         ret03_w.append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)['cnt'] + ret01_w[-1])
+                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)[0]['cnt'] + ret01_w[-1])
 
                     makeFile(
                         res,
