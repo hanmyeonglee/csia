@@ -136,7 +136,7 @@ def makeFile(data: list, stat: list, dateFileName: str):
 
     for row in sheet.iter_rows(min_row=11+height, max_row=11+height, min_col=4, max_col=16):
         for cell in row:
-            cell.font = Font(size=5)
+            cell.font = Font(size=8)
 
     #
 
