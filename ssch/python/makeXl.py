@@ -9,7 +9,7 @@ def divider(data, height):
     form = {'id': '', 'number': '', 'name': '',
             'sex': '', 'disease': '', 'treat': '', 'time': ''}
     head = {'id': '연변', 'number': '학년반', 'name': '성명',
-            'sex': '성별', 'disease': '병명', 'treat': '처 치', 'time': '시간'}
+            'sex': '성별', 'disease': '병명', 'treat': '처치', 'time': '시간'}
     if len(data) <= 46:
         data.extend([copy(form) for _ in range(46 - len(data))])
         ret01, ret02 = [copy(head)], [copy(head)]
@@ -122,13 +122,13 @@ def makeFile(data: list, stat: list, dateFileName: str):
         for cell in column:
             cell.font = Font(size=9)
 
-    for column in sheet.iter_cols(min_col=7, max_col=7, min_row=12, max_row=10+height):
+    for column in sheet.iter_cols(min_col=6, max_col=6, min_row=12, max_row=10+height):
         for cell in column:
             cell.font = Font(size=8)
             cell.alignment = Alignment(
                 wrap_text=False, horizontal='left', vertical='center')
 
-    for column in sheet.iter_cols(min_col=9, max_col=9, min_row=12, max_row=10+height):
+    for column in sheet.iter_cols(min_col=8, max_col=8, min_row=12, max_row=10+height):
         for cell in column:
             cell.font = Font(size=9)
             cell.alignment = Alignment(
