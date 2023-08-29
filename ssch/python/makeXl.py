@@ -124,8 +124,7 @@ def makeFile(data: list, stat: list, dateFileName: str):
 
     for column in sheet.iter_cols(min_col=7, max_col=7, min_row=12, max_row=10+height):
         for cell in column:
-            if len(cell.value) > 4:
-                cell.font = Font(size=8)
+            cell.font = Font(size=8)
             cell.alignment = Alignment(
                 wrap_text=False, horizontal='left', vertical='center')
 
@@ -152,8 +151,7 @@ def makeFile(data: list, stat: list, dateFileName: str):
 
     for column in sheet.iter_cols(min_col=15, max_col=15, min_row=12, max_row=10+height):
         for cell in column:
-            if len(cell.value) > 4:
-                cell.font = Font(size=8)
+            cell.font = Font(size=8)
             cell.alignment = Alignment(
                 wrap_text=False, horizontal='left', vertical='center')
 
