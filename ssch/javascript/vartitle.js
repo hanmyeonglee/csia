@@ -117,11 +117,24 @@ const makeTable = (data) => {
     let tmp = tempRow.querySelector(`.${query}Data`);
     tmp.value = data[query];
     valVerify[query] = tmp;
-    if (query == "disease" || query == "treat") {
+    if (query == "disease" || query == "treat" || query == "sex") {
       let drdw = tmp.parentElement.querySelector(".dropdown-menu");
-      query == "disease"
-        ? makeDiseaseList(drdw, data["id"])
-        : makeTreatList(false, drdw, data["id"]);
+      if(query == "disease"){
+        makeDiseaseList(drdw, data["id"]);
+      } else if(query == "treat") {
+        makeTreatList(false, drdw, data["id"]);
+      } else {
+        let m = listItem.cloneNode(true);
+        let w = listItem.cloneNode(true);
+        m.removeAttribute("hidden");
+        w.removeAttribute("hidden");
+        w.querySelector(".form-check-input").classList = "form-check-input sex";
+        m.querySelector(".form-check-input").classList = "form-check-input sex";
+        w.querySelector(".form-check-input").id = `sexm${data['id']}`;
+        m.querySelector(".form-check-input").id = `sexw${data['id']}`;
+        w.querySelector("label").setAttribute("for", `sexm${data['id']}`);
+        m.querySelector("label").setAttribute("for", `sexw${data['id']}`);
+      }
       drdw.addEventListener("click", (e) => {
         let inp = drdw.querySelectorAll(`.form-check-input.${query}`);
         let text = drdw.parentElement.querySelector("input[type='text']");

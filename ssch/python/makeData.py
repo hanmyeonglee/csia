@@ -16,7 +16,7 @@ def hash160(string):
 
 with mysql.cursor() as commander:
     for _ in range(100):
-        number = f'{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}'
+        number = f'{choice(["M", "H"])}{randint(1, 3)}-{randint(1, 4)}'
         name = choice(names)
         sex = choice(["남", "여"])
         dise = choice(dis)
@@ -29,7 +29,7 @@ with mysql.cursor() as commander:
         s = f'insert into daily(number, name, sex, time, disease, treat, uniq) values("{number}", "{name}", "{sex}", "{time}", "{dise}", "{treat}", "{ha}")'
         commander.execute(s)
     for _ in range(700):
-        number = f'{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}'
+        number = f'{choice(["M", "H"])}{randint(1, 3)}-{randint(1, 4)}'
         name = choice(names)
         sex = choice(["남", "여"])
         dise = choice(dis)
