@@ -75,7 +75,7 @@ const makeTreatList = (flag = false, parent, suffix) => {
   for (let i = 0; i < diags.length; i += 7) {
     let $div = document.createElement('div');
     $div.classList = "treatCover";
-    for(let j = i ; j < i+7 ; j++){
+    for(let j = i ; j < i+7 && j < diags.length ; j++){
       let d = diags[j];
       let tempItem = listItem.cloneNode(true);
       tempItem.querySelector("input").value = d;

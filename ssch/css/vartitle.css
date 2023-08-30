@@ -251,9 +251,9 @@
 }
 .show > .treatCover{
   display: grid;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
 }
 .divTreatCover.show{
   display: grid;
-  grid-auto-flow: row;
+  grid-auto-flow: column;
 }
