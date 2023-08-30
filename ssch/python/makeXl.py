@@ -121,6 +121,8 @@ def makeFile(data: list, stat: list, dateFileName: str):
     for column in sheet.iter_cols(min_col=4, max_col=4, min_row=12, max_row=10+height):
         for cell in column:
             cell.font = Font(size=9)
+            cell.alignment = Alignment(
+                wrap_text=False, horizontal="center", vertical="center")
 
     for column in sheet.iter_cols(min_col=6, max_col=6, min_row=12, max_row=10+height):
         for cell in column:
