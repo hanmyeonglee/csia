@@ -41,7 +41,7 @@ def makeFile(data: list, stat: list, dateFileName: str):
     for i in range(18):
         sheet.column_dimensions[chr(i+66)].width = 4.79
 
-    height = 24 if len(data) <= 46 else ceil(len(data)/2)
+    height = 24 if len(data) <= 46 else ceil(len(data)/2)+1
     border_style = Border(
         left=Side(border_style="thin", color="000000"),
         right=Side(border_style="thin", color="000000"),

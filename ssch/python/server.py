@@ -69,11 +69,13 @@ def delSql(db, time):
 
 
 def selData(db, pursue, num):
-    res = sql_executor(
+    ret = sql_executor(
         sql_command, f'select * from {db} order by time', pursue, num, None)
-    for i, r in enumerate(res):
+    for i, r in enumerate(ret):
+        if i < 10:
+            print(r)
         r['id'] = i+1
-    return res
+    return ret
 
 
 def restart():
