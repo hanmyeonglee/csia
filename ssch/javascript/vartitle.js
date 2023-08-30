@@ -47,7 +47,7 @@ let bedNum = 4;
 let tempConfirm = undefined;
 let dailyList = [];
 let remake = false;
-//document.querySelector("#tableCover").removeChild(row);
+document.querySelector("#tableCover").removeChild(row);
 body.removeChild(waiterForm);
 body.removeChild(listItem);
 listItem.id = "";
@@ -173,7 +173,7 @@ const makeTable = (data) => {
 const makeTableAll = () => {
   let exVal = table.querySelectorAll(".oneRow.tableElements");
   for (let val of exVal) {
-    //table.removeChild(val);
+    table.removeChild(val);
   }
   for (let data of daily) {
     makeTable(data);
