@@ -11,7 +11,7 @@ dis = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피�
 
 
 def hash160(string):
-    return hashlib.new('ripemd160', string.encode()).digest().hex()
+    return hashlib.new('ripemd160', string.encode('utf-8')).digest().hex()
 
 
 with mysql.cursor() as commander:
