@@ -152,6 +152,9 @@ const makeTable = (data) => {
         for (let i of inp) {
           if (i.checked) {
             write.push(i.value);
+            if(query == "sex"){
+              i.checked = false;
+            }
           }
         }
         text.value = write.join(", ");
