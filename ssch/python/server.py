@@ -292,6 +292,7 @@ async def service(websocket, path):
                     sql = delSql('daily', data)
                     sql_executor(sql_command, sql, pursue, "01", data)
                     sql_executor(initializeId, "daily", pursue, "02", data)
+                    res = selData("daily", pursue, "03")
                 else:
                     raise RuntimeError(
                         "pursue: 9, content_header error: not t")
