@@ -93,8 +93,8 @@ const makeTreatList = (flag = false, parent, suffix) => {
       if (d == "보건실휴식" && flag) {
         tempItem.querySelector("input").classList.add("bed");
       }
+      parent.appendChild(tempItem);
     }
-    parent.appendChild(tempItem);
   }
 };
 
