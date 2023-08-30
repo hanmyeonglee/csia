@@ -173,7 +173,7 @@ const makeTable = (data) => {
 const makeTableAll = () => {
   let exVal = table.querySelectorAll(".oneRow.tableElements");
   for (let val of exVal) {
-    table.removeChild(val);
+    //table.removeChild(val);
   }
   for (let data of daily) {
     makeTable(data);
