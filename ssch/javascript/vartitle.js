@@ -437,6 +437,13 @@ applyButton.addEventListener("click", async (e) => {
     for (let query of changeList) {
       if (origin[query] != change[query].value) {
         flag = true;
+        if(query == "time"){
+          let timeVal = change[query].value.trim();
+          let hm = timeVal.split(":");
+          hm[0] = hm[0].padStart(2, "0");
+          hm[1] = hm[1].padStart(2, "0");
+          change[query].value = hm.join(":");
+        }
         if (!(crit in ret)) {
           ret[crit] = [[query, change[query].value]];
         } else {
