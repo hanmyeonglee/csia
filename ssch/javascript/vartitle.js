@@ -22,7 +22,7 @@ const diags =
  * 9 = delete patient from daily db
  */
 
-const webIO = new WebSocket("ws://192.168.148.185:52125");
+const webIO = new WebSocket("ws://192.168.10.199:52125");
 const locate = "./vartitle.html";
 const table = document.querySelector("#tableCover");
 const row = document.querySelector(".tableElements");
