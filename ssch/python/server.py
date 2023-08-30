@@ -306,7 +306,7 @@ async def service(websocket, path):
             elif pursue == 10:
                 if content_header == "t":
                     res = sql_executor(
-                        sql_command, 'select * from daily', pursue, "01", None)
+                        sql_command, 'select * from daily order by time', pursue, "01", None)
                     tm = datetime.now().strftime("%Y.%m")
                     ret = [[] for _ in range(6)]
 
