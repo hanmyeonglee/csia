@@ -134,6 +134,8 @@ const makeTable = (data) => {
         m.querySelector(".form-check-input").id = `sexw${data['id']}`;
         w.querySelector("label").setAttribute("for", `sexm${data['id']}`);
         m.querySelector("label").setAttribute("for", `sexw${data['id']}`);
+        drdw.appendChild(m);
+        drdw.appendChild(w);
       }
       drdw.addEventListener("click", (e) => {
         let inp = drdw.querySelectorAll(`.form-check-input.${query}`);
