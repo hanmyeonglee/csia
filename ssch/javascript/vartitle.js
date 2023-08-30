@@ -22,7 +22,7 @@ const diags =
  * 9 = delete patient from daily db
  */
 
-const webIO = new WebSocket("ws://192.168.10.199:52125");
+const webIO = new WebSocket("ws://192.168.1.117:52125");
 const locate = location.href.split("/ssch/")[1];
 const table = document.querySelector("#tableCover");
 const row = document.querySelector(".tableElements");
@@ -46,6 +46,7 @@ let diagPos = false;
 let bedNum = 4;
 let tempConfirm = undefined;
 let dailyList = [];
+let remake = false;
 document.querySelector("#tableCover").removeChild(row);
 body.removeChild(waiterForm);
 body.removeChild(listItem);
@@ -291,6 +292,10 @@ webIO.onmessage = async (data) => {
           loading(true);
           break;
         case 8:
+          if(remake){
+            daily.sort((a, b) => {return a['time'].localeCompare(b['time']);})
+            makeTableAll();
+          }
           loading(true);
           alert("등록되었습니다.");
           break;
@@ -407,6 +412,8 @@ applyButton.addEventListener("click", async (e) => {
           )) {
             inp.checked = false;
           }
+        } else if (query == "time"){
+          remake = true;
         }
       }
     }
