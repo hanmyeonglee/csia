@@ -249,11 +249,11 @@
 .tableDataCover > input {
   height: 100%;
 }
-.treatCover.show{
+.show > .treatCover{
   display: grid;
   grid-auto-flow: column;
 }
-.show > .divTreatCover{
+.divTreatCover.show{
   display: grid;
   grid-auto-flow: row;
 }
