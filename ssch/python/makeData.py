@@ -22,7 +22,7 @@ with mysql.cursor() as commander:
         dise = choice(dis)
         time = f'{str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}'
         treat = "테스트"*randint(1, 5)
-        ha = hash160(''.join(shuffle(number, name, sex, dise, time, treat)))
+        ha = hash160(''.join(shuffle([number, name, sex, dise, time, treat])))
 
         s = f'insert into daily(number, name, sex, time, disease, treat, uniq) values("{number}", "{name}", "{sex}", "{time}", "{dise}", "{treat}", "{ha}")'
         commander.execute(s)
@@ -33,7 +33,7 @@ with mysql.cursor() as commander:
         dise = choice(dis)
         time = f'2023.08.{str(randint(25, 29)).rjust(2, "0")} {str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}'
         treat = "테스트"*randint(1, 5)
-        ha = hash160(''.join(shuffle(number, name, sex, dise, time, treat)))
+        ha = hash160(''.join(shuffle([number, name, sex, dise, time, treat])))
 
         s = f'insert into yearly(number, name, sex, time, disease, treat, uniq) values("{number}", "{name}", "{sex}", "{time}", "{dise}", "{treat}", "{ha}")'
         commander.execute(s)
