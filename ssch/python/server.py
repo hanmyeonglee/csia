@@ -208,8 +208,7 @@ async def service(websocket, path):
                     try:
                         await teacher.send(form(header=2, body_body=data))
                     except:
-                        raise RuntimeError(
-                            f"pursue: 2, teacher not already connected = {data}")
+                        pass
                     h, m = data['time'].split(":")
                     if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
                         await websocket.send(form(header=6, body_return=2, body_body=-1))
