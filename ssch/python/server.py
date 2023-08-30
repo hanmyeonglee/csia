@@ -32,17 +32,6 @@ header
 """
 
 
-def makeCSV():
-    # raise RuntimeError("my mom")
-    with open(file=f'/var/www/html/ssch/csv/{dateFileName}.daily.csv', mode='w', encoding='utf-8') as csvf:
-        res = sql_executor(sql_command, 'select * from daily', 10, "01", None)
-        keys = ["id", "number", "name", "sex", "disease", "treat", "time"]
-        writer = csv.DictWriter(csvf, fieldnames=keys)
-        writer.writeheader()
-        writer.writerows(res)
-        csvf.close()
-
-
 def sql_command(command):
     with mysql.cursor() as commander:
         commander.execute(command)
@@ -79,8 +68,16 @@ def delSql(db, time):
     return f'delete from {db} where time="{time}"'
 
 
+def selData(db, pursue, num):
+    res = sql_executor(
+        sql_command, f'select * from {db} order by time', pursue, num, None)
+    for i, r in enumerate(res):
+        r['id'] = i+1
+    return res
+
+
 def restart():
-    res = sql_executor(sql_command, "select * from daily", -1, "01", "restart")
+    res = selData("daily", -1, "01")
     for r in res:
         sql_executor(sql_command, inputSql(
             "yearly", day_keys, r), -1, "02", "restart")
@@ -158,8 +155,7 @@ async def service(websocket, path):
                 time = getTime()
                 time_flag = False
             if waiter_flag:
-                waiter = sql_executor(
-                    sql_command, 'select * from waiters', 'setting', "01", None)
+                waiter = selData("waiters", 'setting', "01")
                 waiter_flag = False
 
             print(message)
@@ -179,8 +175,7 @@ async def service(websocket, path):
 
             elif pursue == 1:
                 if content_header == "t":
-                    res_d = sql_executor(
-                        sql_command, 'select * from daily', pursue, "02", None)
+                    res_d = selData("daily", pursue, "02")
                     ret = {"waiters": waiter, "daily": res_d,
                            "diagPos": possible, "bedNum": bed}
                     await websocket.send(form(header=6, body_return=1, body_body=ret))
@@ -270,8 +265,7 @@ async def service(websocket, path):
                     sql_executor(sql_command, sql, pursue, "02", data)
                     waiter_flag = True
 
-                    res = sql_executor(
-                        sql_command, f'select * from daily', pursue, "03", data)
+                    res = selData("daily", pursue, "03")
                     await sending_2_all(header=3, body_body=data['time'])
                 else:
                     raise RuntimeError(
@@ -305,8 +299,7 @@ async def service(websocket, path):
 
             elif pursue == 10:
                 if content_header == "t":
-                    res = sql_executor(
-                        sql_command, 'select * from daily order by time', pursue, "01", None)
+                    res = selData("daily", pursue, "01")
                     tm = datetime.now().strftime("%Y.%m")
                     ret = [[] for _ in range(6)]
 
@@ -368,8 +361,7 @@ def main():
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
     time = getTime()
-    waiter = sql_executor(
-        sql_command, 'select * from waiters', 'setting', "01", None)
+    waiter = selData("daily", 'setting', "01")
     # logger = makeLogger()
     logging("server (re)started", dateFileName)
 
