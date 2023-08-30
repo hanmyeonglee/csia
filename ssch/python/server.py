@@ -361,7 +361,7 @@ def main():
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
     time = getTime()
-    waiter = selData("daily", 'setting', "01")
+    waiter = selData("waiters", 'setting', "01")
     # logger = makeLogger()
     logging("server (re)started", dateFileName)
 
