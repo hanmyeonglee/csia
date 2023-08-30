@@ -71,23 +71,28 @@ const makeDiseaseList = (parent, suffix) => {
 };
 
 const makeTreatList = (flag = false, parent, suffix) => {
-  for (let i = 0; i < diags.length; i++) {
-    let d = diags[i];
-    let tempItem = listItem.cloneNode(true);
-    tempItem.querySelector("input").value = d;
-    tempItem.querySelector("input").id = `treat${String(i).padStart(
-      2,
-      "0"
-    )}${suffix}`;
-    tempItem.querySelector("label").innerText = d;
-    tempItem.querySelector("input").classList.remove("disease");
-    tempItem.querySelector("input").classList.add("treat");
-    tempItem
-      .querySelector("label")
-      .setAttribute("for", `treat${String(i).padStart(2, "0")}${suffix}`);
-    tempItem.removeAttribute("hidden");
-    if (d == "보건실휴식" && flag) {
-      tempItem.querySelector("input").classList.add("bed");
+  parent.classList.add("divTreatCover")
+  for (let i = 0; i < diags.length; i += 7) {
+    let $div = document.createElement('div');
+    $div.classList = "treatCover";
+    for(let j = i ; j < i+7 ; j++){
+      let d = diags[i];
+      let tempItem = listItem.cloneNode(true);
+      tempItem.querySelector("input").value = d;
+      tempItem.querySelector("input").id = `treat${String(i).padStart(
+        2,
+        "0"
+      )}${suffix}`;
+      tempItem.querySelector("label").innerText = d;
+      tempItem.querySelector("input").classList.remove("disease");
+      tempItem.querySelector("input").classList.add("treat");
+      tempItem
+        .querySelector("label")
+        .setAttribute("for", `treat${String(i).padStart(2, "0")}${suffix}`);
+      tempItem.removeAttribute("hidden");
+      if (d == "보건실휴식" && flag) {
+        tempItem.querySelector("input").classList.add("bed");
+      }
     }
     parent.appendChild(tempItem);
   }
@@ -293,7 +298,10 @@ webIO.onmessage = async (data) => {
           break;
         case 8:
           if(remake){
-            daily.sort((a, b) => {return a['time'].localeCompare(b['time']);})
+            daily.sort((a, b) => {return a['time'].localeCompare(b['time']);});
+            for(let i = 0 ; i < daily.length ; i++){
+              daily[i]['id'] = i+1;
+            }
             makeTableAll();
           }
           loading(true);
