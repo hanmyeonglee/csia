@@ -136,8 +136,12 @@ const makeTable = (data) => {
         mm.id = `sexw${data['id']}`;
         ww.value = "여";
         mm.value = "남";
-        w.querySelector("label").setAttribute("for", `sexm${data['id']}`);
-        m.querySelector("label").setAttribute("for", `sexw${data['id']}`);
+        let wl = w.querySelector("label");
+        let ml = m.querySelector("label");
+        wl.setAttribute("for", `sexm${data['id']}`);
+        ml.setAttribute("for", `sexw${data['id']}`);
+        wl.innerText = "여";
+        ml.innerText = "남";
         drdw.appendChild(m);
         drdw.appendChild(w);
       }
