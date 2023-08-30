@@ -279,9 +279,11 @@ async def service(websocket, path):
                         queries = []
                         for val in value:
                             queries.append(f'{val[0]}="{val[1]}"')
-                        print(queries)
+                        q = f'update daily set {", ".join(queries)} where id={id}'
                         sql_executor(
-                            sql_command, f'update daily set {", ".join(queries)} where id={id}', pursue, "01", data)
+                            sql_command, q, pursue, "01", data)
+                        print(q)
+
                 else:
                     raise RuntimeError(
                         "pursue: 8, content_header error: not t")
