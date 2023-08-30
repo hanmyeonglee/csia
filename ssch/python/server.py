@@ -309,7 +309,8 @@ async def service(websocket, path):
 
             elif pursue == 10:
                 if content_header == "t":
-                    res = selData("daily", pursue, "01")
+                    res = sql_executor(
+                        sql_command, "select id, number, name, sex, disease, treat from daily", pursue, "01", None)
                     tm = datetime.now().strftime("%Y.%m")
                     ret = [[] for _ in range(6)]
 
@@ -353,6 +354,8 @@ async def service(websocket, path):
         logging(err, dateFileName)
         print('err02 :', err)
         await websocket.send(form(status=0))
+        time_flag = True
+        waiter_flag = True
 
 
 def main():

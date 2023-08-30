@@ -13,19 +13,19 @@ def divider(data, height):
     if len(data) <= 46:
         data.extend([copy(form) for _ in range(46 - len(data))])
         ret01, ret02 = [copy(head)], [copy(head)]
-        ret01 += (data[:23])
-        ret02 += (data[23:])
+        ret01 += data[:23]
+        ret02 += data[23:]
         return ret01, ret02
     else:
         if len(data) % 2 == 0:
             ret01, ret02 = [copy(head)], [copy(head)]
-            ret01 += (data[:height])
-            ret02 += (data[height:])
+            ret01 += data[:height]
+            ret02 += data[height:]
             return ret01, ret02
         else:
             ret01, ret02 = [copy(head)], [copy(head)]
-            ret01 += (data[:height-1])
-            ret02 += (data[height-1:])
+            ret01 += data[:height-1]
+            ret02 += data[height-1:]
             ret02.append(copy(form))
             return ret01, ret02
 
