@@ -1,6 +1,6 @@
 import pymysql
-from random import choice
-from random import randint
+from random import choice, randint, shuffle
+import hashlib
 
 mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                         db="ssch", charset="utf8", autocommit=True)
@@ -9,10 +9,31 @@ names = ['James', 'Robert', 'John', 'Michael', 'David', 'William', 'Richard', 'J
 dis = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " ")
 
+
+def hash160(string):
+    return hashlib.new('ripemd160', string.encode()).digest().hex()
+
+
 with mysql.cursor() as commander:
     for _ in range(100):
-        s = f'insert into daily(number, name, sex, time, disease, treat) values("{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}", "{choice(names)}", "{choice(["남", "여"])}", "{str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}", "{choice(dis)}", "{"테스트"*randint(1, 5)}")'
+        number = f'{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}'
+        name = choice(names)
+        sex = choice(["남", "여"])
+        dise = choice(dis)
+        time = f'{str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}'
+        treat = "테스트"*randint(1, 5)
+        ha = hash160(''.join(shuffle(number, name, sex, dise, time, treat)))
+
+        s = f'insert into daily(number, name, sex, time, disease, treat, uniq) values("{number}", "{name}", "{sex}", "{time}", "{dise}", "{treat}", "{ha}")'
         commander.execute(s)
-    for _ in range(500):
-        s = f'insert into yearly(number, name, sex, time, disease, treat) values("{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}", "{choice(names)}", "{choice(["남", "여"])}", "2023.08.{str(randint(25, 29)).rjust(2, "0")} {str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}", "{choice(dis)}", "{"테스트"*randint(1, 5)}")'
+    for _ in range(700):
+        number = f'{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}'
+        name = choice(names)
+        sex = choice(["남", "여"])
+        dise = choice(dis)
+        time = f'2023.08.{str(randint(25, 29)).rjust(2, "0")} {str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}'
+        treat = "테스트"*randint(1, 5)
+        ha = hash160(''.join(shuffle(number, name, sex, dise, time, treat)))
+
+        s = f'insert into yearly(number, name, sex, time, disease, treat, uniq) values("{number}", "{name}", "{sex}", "{time}", "{dise}", "{treat}", "{ha}")'
         commander.execute(s)
