@@ -128,10 +128,14 @@ const makeTable = (data) => {
         let w = listItem.cloneNode(true);
         m.removeAttribute("hidden");
         w.removeAttribute("hidden");
-        w.querySelector(".form-check-input").classList = "form-check-input sex";
-        m.querySelector(".form-check-input").classList = "form-check-input sex";
-        w.querySelector(".form-check-input").id = `sexm${data['id']}`;
-        m.querySelector(".form-check-input").id = `sexw${data['id']}`;
+        let mm = m.querySelector(".form-check-input");
+        let ww = w.querySelector(".form-check-input");
+        ww.classList = "form-check-input sex";
+        mm.classList = "form-check-input sex";
+        ww.id = `sexm${data['id']}`;
+        mm.id = `sexw${data['id']}`;
+        ww.value = "여";
+        mm.value = "남";
         w.querySelector("label").setAttribute("for", `sexm${data['id']}`);
         m.querySelector("label").setAttribute("for", `sexw${data['id']}`);
         drdw.appendChild(m);
@@ -169,7 +173,7 @@ const makeTable = (data) => {
 const makeTableAll = () => {
   let exVal = table.querySelectorAll(".oneRow.tableElements");
   for (let val of exVal) {
-    table.removeChild(val);
+    //table.removeChild(val);
   }
   for (let data of daily) {
     makeTable(data);
