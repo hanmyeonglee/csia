@@ -426,14 +426,14 @@ applyButton.addEventListener("click", async (e) => {
   for (let subList of dailyList) {
     let origin = subList[0];
     let change = subList[1];
-    let id = origin["id"];
+    let crit_time = origin["time"];
     for (let query of changeList) {
       if (origin[query] != change[query].value) {
         flag = true;
-        if (!(id in ret)) {
-          ret[id] = [[query, change[query].value]];
+        if (!(crit_time in ret)) {
+          ret[crit_time] = [[query, change[query].value]];
         } else {
-          ret[id].push([query, change[query].value]);
+          ret[crit_time].push([query, change[query].value]);
         }
         origin[query] = change[query].value;
         if (query == "disease" || query == "treat") {

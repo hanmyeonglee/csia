@@ -3,7 +3,6 @@ import asyncio
 import json
 import pymysql
 import traceback
-import csv
 from sqlModule import reset_time
 from makeXl import makeFile
 from copy import deepcopy as copy
@@ -73,8 +72,6 @@ def selData(db, pursue, num):
         sql_command, f'select * from {db} order by time', pursue, num, None)
     for i, r in enumerate(ret):
         r['id'] = i+1
-        if i < 10:
-            print(r)
     return ret
 
 
@@ -277,15 +274,12 @@ async def service(websocket, path):
             elif pursue == 8:
                 if content_header == "t":
                     data = copy(content_body)
-                    for id, value in content_body.items():
+                    for crit_time, value in content_body.items():
                         queries = []
                         for val in value:
                             queries.append(f'{val[0]}="{val[1]}"')
-                        q = f'update daily set {", ".join(queries)} where id={id}'
                         sql_executor(
-                            sql_command, q, pursue, "01", data)
-                        print(q)
-
+                            sql_command, f'update daily set {", ".join(queries)} where time={crit_time}', pursue, "01", data)
                 else:
                     raise RuntimeError(
                         "pursue: 8, content_header error: not t")
