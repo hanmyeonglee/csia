@@ -175,7 +175,7 @@ async def service(websocket, path):
 
             elif pursue == 1:
                 if content_header == "t":
-                    res_d = selData("daily", pursue, "02")
+                    res_d = selData("daily", pursue, "01")
                     ret = {"waiters": waiter, "daily": res_d,
                            "diagPos": possible, "bedNum": bed}
                     await websocket.send(form(header=6, body_return=1, body_body=ret))
@@ -279,6 +279,7 @@ async def service(websocket, path):
                         queries = []
                         for val in value:
                             queries.append(f'{val[0]}="{val[1]}"')
+                        print(queries)
                         sql_executor(
                             sql_command, f'update daily set {", ".join(queries)} where id={id}', pursue, "01", data)
                 else:
