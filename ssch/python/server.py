@@ -195,13 +195,6 @@ async def service(websocket, path):
             elif pursue == 2:
                 if content_header == "s":
                     data = copy(content_body)
-                    h, m = data['time'].split(":")
-                    if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
-                        await websocket.send(form(header=6, body_return=2, body_body=-1))
-                        return
-                    sql_executor(
-                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
-                    time_flag = True
                     temp = list(data.values())
                     shuffle(temp)
                     data["uniq"] = hash160(
@@ -217,6 +210,13 @@ async def service(websocket, path):
                     except:
                         raise RuntimeError(
                             f"pursue: 2, teacher not already connected = {data}")
+                    h, m = data['time'].split(":")
+                    if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
+                        await websocket.send(form(header=6, body_return=2, body_body=-1))
+                        return
+                    sql_executor(
+                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
+                    time_flag = True
                 else:
                     raise RuntimeError(
                         "pursue: 2, content_header error: not s")
@@ -227,15 +227,15 @@ async def service(websocket, path):
                     data = copy(content_body)
                     h, m = data['time'].split(":")
                     uniq = data['uniq']
-                    sql_executor(
-                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
-                    time_flag = True
                     # waiters = list(filter(lambda x: x['time'] != content_body, waiters))
                     sql = delSql("waiters", uniq)
                     sql_executor(sql_command, sql, pursue, "02", data)
                     sql_executor(initializeId, "waiters", pursue, "03", data)
                     waiter_flag = True
                     await sending_2_all(header=3, body_body=data)
+                    sql_executor(
+                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
+                    time_flag = True
                 else:
                     raise RuntimeError(
                         "pursue: 3, content_header error: not t")
