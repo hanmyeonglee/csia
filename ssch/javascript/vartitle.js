@@ -76,10 +76,10 @@ const makeTreatList = (flag = false, parent, suffix) => {
     let $div = document.createElement('div');
     $div.classList = "treatCover";
     for(let j = i ; j < i+7 ; j++){
-      let d = diags[i];
+      let d = diags[j];
       let tempItem = listItem.cloneNode(true);
       tempItem.querySelector("input").value = d;
-      tempItem.querySelector("input").id = `treat${String(i).padStart(
+      tempItem.querySelector("input").id = `treat${String(j).padStart(
         2,
         "0"
       )}${suffix}`;
@@ -93,8 +93,9 @@ const makeTreatList = (flag = false, parent, suffix) => {
       if (d == "보건실휴식" && flag) {
         tempItem.querySelector("input").classList.add("bed");
       }
-      parent.appendChild(tempItem);
+      $div.appendChild(tempItem);
     }
+    parent.appendChild($div);
   }
 };
 
