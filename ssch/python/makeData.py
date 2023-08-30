@@ -11,7 +11,7 @@ dis = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피�
 
 with mysql.cursor() as commander:
     for _ in range(100):
-        s = f'insert into daily(number, name, sex, time, disease, treat) values("{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}", "{choice(names)}", "{choice(["남", "여"])}", "2023.08.30 {str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}", "{choice(dis)}", "{"테스트"*randint(1, 5)}")'
+        s = f'insert into daily(number, name, sex, time, disease, treat) values("{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}", "{choice(names)}", "{choice(["남", "여"])}", "{str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}", "{choice(dis)}", "{"테스트"*randint(1, 5)}")'
         commander.execute(s)
     for _ in range(500):
         s = f'insert into yearly(number, name, sex, time, disease, treat) values("{choice(["M", "H"])}{randint(1, 4)}-{randint(1, 4)}", "{choice(names)}", "{choice(["남", "여"])}", "2023.08.{str(randint(25, 29)).rjust(2, "0")} {str(randint(8, 17)).rjust(2, "0")}:{str(randint(0, 59)).rjust(2, "0")}", "{choice(dis)}", "{"테스트"*randint(1, 5)}")'
