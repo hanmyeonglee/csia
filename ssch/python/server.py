@@ -144,7 +144,7 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
     for removed in removeds:
         others.remove(removed)
     else:
-        print(f"disconnected - {len(removed)}")
+        print(f"disconnected - {len(removeds)}")
 
 
 async def service(websocket, path):
