@@ -233,7 +233,7 @@ async def service(websocket, path):
                     waiter_flag = True
                     await sending_2_all(header=3, body_body=data)
                     sql_executor(
-                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
+                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data['time'])
                     time_flag = True
                 else:
                     raise RuntimeError(
