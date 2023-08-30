@@ -23,7 +23,7 @@ const diags =
  */
 
 const webIO = new WebSocket("ws://192.168.141.185:52125");
-const locate = "./vartitle.html";
+const locate = location.href.split("/ssch/")[1];
 const table = document.querySelector("#tableCover");
 const row = document.querySelector(".tableElements");
 const waiterList = document.getElementById("waiterList");
@@ -95,17 +95,6 @@ const makeTreatList = (flag = false, parent, suffix) => {
 makeDiseaseList(diseList, 0);
 makeTreatList(true, diagList, 0);
 
-const tableTimeChange = () => {
-  for (let subList of dailyList) {
-    let originT = subList[0]["time"];
-    let changeT = subList[1]["time"].value;
-    if (originT != changeT) {
-      return true;
-    }
-  }
-  return false;
-};
-
 /**
  *
  * @param {object} data : id, number, name, sex, time, symptom, diag object
@@ -139,17 +128,10 @@ const makeTable = (data) => {
   delBtn.addEventListener("click", async (e) => {
     let flag = confirm("정말로 삭제하시겠습니까? 영구적으로 삭제됩니다.");
     if (flag) {
-      if (tableTimeChange()) {
-        errorHandling({
-          message:
-            "시간 값이 바뀌었습니다. Apply 버튼을 통해 저장하고 삭제해주십시오.",
-        });
-      } else {
-        let fetchInfo = tempRow.querySelector(".timeData").value;
-        await webIO.send(
-          form({ type: 9, stat: 1, header: "t", body: fetchInfo })
-        );
-      }
+      let fetchInfo = data['uniq'];
+      await webIO.send(
+        form({ type: 9, stat: 1, header: "t", body: fetchInfo })
+      );
     } else {
       return;
     }
@@ -170,7 +152,7 @@ const makeTableAll = () => {
 
 const deleteWaiter = (crit) => {
   waiters = waiters.filter((waiter) => {
-    return waiter["time"] != crit;
+    return waiter["uniq"] != crit;
   });
   makeListAll();
 };
@@ -187,12 +169,12 @@ const pprint = (timeExp) => {
 const makeList = (data, num) => {
   let tempWaiter = waiterForm.cloneNode(true);
   tempWaiter.removeAttribute("hidden");
-  tempWaiter.id = data["time"];
+  tempWaiter.id = data["uniq"];
   tempWaiter.querySelector(".numInfo").innerText = num;
 
   let content = tempWaiter.querySelector(".nameInfo");
   content.innerText = `${data["name"]}, ${pprint(data["time"])}`;
-  tempWaiter.classList.add(`${data["time"]}`);
+  tempWaiter.classList.add(`${data["uniq"]}`);
 
   tempWaiter.querySelector(".dropdownQuote").innerHTML = `${data["number"]} ${
     data["name"]
@@ -207,7 +189,7 @@ const makeList = (data, num) => {
       "#confirmModalTitle"
     ).innerText = `${data["name"]}의 처치 기록`;
     confirmModal.querySelector("#confirmModalSymptom").value = data["symptom"];
-    confirmModal.querySelector("#hiddenInfo").value = data["time"];
+    confirmModal.querySelector("#hiddenInfo").value = data["uniq"];
   });
 
   let btnX = tempWaiter.querySelector(".confirmX");
@@ -215,9 +197,9 @@ const makeList = (data, num) => {
     let flag = confirm("정말로 삭제하시겠습니까?");
     if (flag) {
       await webIO.send(
-        form({ type: 3, stat: 1, header: "t", body: data["time"] })
+        form({ type: 3, stat: 1, header: "t", body: {"uniq":data["uniq"], "time":data["time"]} })
       );
-      deleteWaiter(data["time"]);
+      deleteWaiter(data["uniq"]);
     } else {
       return;
     }
@@ -226,27 +208,8 @@ const makeList = (data, num) => {
   waiterList.appendChild(tempWaiter);
 };
 
-const timeCompare = (a, b) => {
-  let tA = a["time"].split(":");
-  let tB = b["time"].split(":");
-  if (Number(tA[0]) > Number(tB[0])) {
-    return 1;
-  } else if (Number(tA[0]) < Number(tB[0])) {
-    return -1;
-  } else {
-    if (Number(tA[1]) > Number(tB[1])) {
-      return 1;
-    } else if (Number(tA[1]) < Number(tB[1])) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
-};
-
 const makeListAll = () => {
   waiterList.innerHTML = "";
-  waiters.sort(timeCompare);
   for (let i = 0; i < waiters.length; i++) {
     makeList(waiters[i], i + 1);
   }
@@ -426,14 +389,14 @@ applyButton.addEventListener("click", async (e) => {
   for (let subList of dailyList) {
     let origin = subList[0];
     let change = subList[1];
-    let crit_time = origin["time"];
+    let crit = origin["uniq"];
     for (let query of changeList) {
       if (origin[query] != change[query].value) {
         flag = true;
-        if (!(crit_time in ret)) {
-          ret[crit_time] = [[query, change[query].value]];
+        if (!(crit in ret)) {
+          ret[crit] = [[query, change[query].value]];
         } else {
-          ret[crit_time].push([query, change[query].value]);
+          ret[crit].push([query, change[query].value]);
         }
         origin[query] = change[query].value;
         if (query == "disease" || query == "treat") {

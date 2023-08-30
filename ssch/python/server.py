@@ -3,12 +3,14 @@ import asyncio
 import json
 import pymysql
 import traceback
+import hashlib
 from sqlModule import reset_time
 from makeXl import makeFile
 from copy import deepcopy as copy
 from logs import log as logging
 from pymysql import cursors
 from datetime import datetime
+from random import shuffle
 
 
 """ 
@@ -29,6 +31,10 @@ header
 "t" = teacher
 "s" = student
 """
+
+
+def hash160(string):
+    return hashlib.new('ripemd160', string.encode()).digest().hex()
 
 
 def sql_command(command):
@@ -64,7 +70,7 @@ def inputSql(db, keys, data):
 
 
 def delSql(db, time):
-    return f'delete from {db} where time="{time}"'
+    return f'delete from {db} where uniq="{time}"'
 
 
 def selData(db, pursue, num):
@@ -196,6 +202,7 @@ async def service(websocket, path):
                     sql_executor(
                         sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
                     time_flag = True
+                    data["uniq"] = hash160(''.join(shuffle(data.values())))
                     sql = inputSql(
                         "waiters", wait_keys, data)
                     sql_executor(sql_command, sql, pursue, "02", data)
@@ -216,11 +223,12 @@ async def service(websocket, path):
                 if content_header == "t":
                     data = copy(content_body)
                     h, m = data['time'].split(":")
+                    uniq = data['uniq']
                     sql_executor(
                         sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data)
                     time_flag = True
                     # waiters = list(filter(lambda x: x['time'] != content_body, waiters))
-                    sql = delSql("waiters", data)
+                    sql = delSql("waiters", uniq)
                     sql_executor(sql_command, sql, pursue, "02", data)
                     sql_executor(initializeId, "waiters", pursue, "03", data)
                     waiter_flag = True
@@ -260,7 +268,7 @@ async def service(websocket, path):
                         "daily", day_keys, data)
                     sql_executor(sql_command, sql, pursue, "01", data)
 
-                    sql = delSql("waiters", data['time'])
+                    sql = delSql("waiters", data['uniq'])
                     sql_executor(sql_command, sql, pursue, "02", data)
                     waiter_flag = True
 
@@ -367,8 +375,8 @@ def main():
 
 
 main()
-wait_keys = ["number", "name", "sex", "time", "symptom"]
-day_keys = ["number", "name", "sex", "time", "disease", "treat"]
+wait_keys = ["number", "name", "sex", "time", "symptom", "uniq"]
+day_keys = ["number", "name", "sex", "time", "disease", "treat", "uniq"]
 treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " ")
 server = websockets.serve(service, "0.0.0.0", 52125)
