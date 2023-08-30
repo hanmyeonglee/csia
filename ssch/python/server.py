@@ -69,8 +69,8 @@ def inputSql(db, keys, data):
     return f'insert into {db}({", ".join(keys)}) values({", ".join(queries)})'
 
 
-def delSql(db, time):
-    return f'delete from {db} where uniq="{time}"'
+def delSql(db, uniq):
+    return f'delete from {db} where uniq="{uniq}"'
 
 
 def selData(db, pursue, num):
@@ -282,12 +282,12 @@ async def service(websocket, path):
             elif pursue == 8:
                 if content_header == "t":
                     data = copy(content_body)
-                    for crit_time, value in content_body.items():
+                    for crit, value in content_body.items():
                         queries = []
                         for val in value:
                             queries.append(f'{val[0]}="{val[1]}"')
                         sql_executor(
-                            sql_command, f'update daily set {", ".join(queries)} where time={crit_time}', pursue, "01", data)
+                            sql_command, f'update daily set {", ".join(queries)} where uniq={crit}', pursue, "01", data)
                 else:
                     raise RuntimeError(
                         "pursue: 8, content_header error: not t")
