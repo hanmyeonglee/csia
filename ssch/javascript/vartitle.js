@@ -414,6 +414,12 @@ applyButton.addEventListener("click", async (e) => {
           }
         } else if (query == "time"){
           remake = true;
+          for(let day of daily){
+            if(day['uniq'] == crit){
+              day['time'] = origin[query];
+              break;
+            }
+          }
         }
       }
     }
