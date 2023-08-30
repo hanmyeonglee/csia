@@ -311,6 +311,8 @@ async def service(websocket, path):
                 if content_header == "t":
                     res = sql_executor(
                         sql_command, "select id, number, name, sex, time, disease, treat from daily order by time", pursue, "01", None)
+                    for i, r in enumerate(res, start=1):
+                        r['id'] = i
                     tm = datetime.now().strftime("%Y.%m")
                     ret = [[] for _ in range(6)]
 
