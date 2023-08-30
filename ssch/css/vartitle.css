@@ -256,4 +256,5 @@
 .divTreatCover.show{
   display: grid;
   grid-auto-flow: column;
+  overflow-x: auto;
 }
