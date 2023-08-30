@@ -195,6 +195,10 @@ async def service(websocket, path):
             elif pursue == 2:
                 if content_header == "s":
                     data = copy(content_body)
+                    h, m = data['time'].split(":")
+                    if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
+                        await websocket.send(form(header=6, body_return=2, body_body=-1))
+                        return
                     temp = list(data.values())
                     shuffle(temp)
                     data["uniq"] = hash160(
@@ -209,10 +213,6 @@ async def service(websocket, path):
                         await teacher.send(form(header=2, body_body=data))
                     except:
                         pass
-                    h, m = data['time'].split(":")
-                    if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
-                        await websocket.send(form(header=6, body_return=2, body_body=-1))
-                        return
                     sql_executor(
                         sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
                     time_flag = True
