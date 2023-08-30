@@ -72,9 +72,9 @@ def selData(db, pursue, num):
     ret = sql_executor(
         sql_command, f'select * from {db} order by time', pursue, num, None)
     for i, r in enumerate(ret):
+        r['id'] = i+1
         if i < 10:
             print(r)
-        r['id'] = i+1
     return ret
 
 
