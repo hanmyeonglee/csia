@@ -202,7 +202,8 @@ async def service(websocket, path):
                     sql_executor(
                         sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
                     time_flag = True
-                    data["uniq"] = hash160(''.join(shuffle(data.values())))
+                    data["uniq"] = hash160(
+                        ''.join(shuffle(list(data.values()))))
                     sql = inputSql(
                         "waiters", wait_keys, data)
                     sql_executor(sql_command, sql, pursue, "02", data)
