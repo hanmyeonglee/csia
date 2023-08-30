@@ -295,5 +295,3 @@ about.addEventListener("click", (e) => {
     "https://docs.google.com/document/d/1degMd317t3KixcS9bujQ--YyTdfb7kVPpdHn9UZeeq8/edit?usp=sharing"
   );
 });
-
-download.
