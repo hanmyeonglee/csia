@@ -27,7 +27,7 @@ const examineCurrentInterface = (inters) => {
   });
 })();
 
-const webIO = new WebSocket("ws://10.13.19.49:52125");
+const webIO = new WebSocket("ws://192.168.10.53:52125");
 const interfaces = document.getElementsByClassName("interface");
 const applyBtns = Array.from(document.getElementsByClassName("applyBtn"));
 const modal = document.getElementById("symptomType");
