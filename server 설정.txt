@@ -1,0 +1,11 @@
+wsl 설치 - ubuntu
+mysql-server/client 설치
+방화벽 설정 - 22, 80, 52125
+apache2, php 설치
+python 설치
+git 설치
+ssh 설치
+배치파일, ip 고정
+타임 스케줄러
+
+파일 옮겨서 실행
