@@ -151,7 +151,7 @@ async def service(websocket, path):
     try:
         async for message in websocket:
             global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter
-            print(type(websocket))
+            print(dir(websocket))
             if date != datetime.now().strftime("%Y.%m.%d"):
                 restart()
                 main()
