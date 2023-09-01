@@ -106,6 +106,9 @@ def restart():
             "yearly", day_keys, r), -1, "02", "restart")
     sql_executor(sql_command, "truncate daily", -1, "04", "restart")
     sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
+    sql_executor(sql_command, "truncate posttime", -1, "06", "restart")
+    sql_executor(
+        sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
     reset_time()
 
 
@@ -432,6 +435,8 @@ def main():
 
 
 main()
+if sql_executor(sql_command, 'select * from posttime', -1, "00", None)[0]['posttime'] != date:
+    restart()
 wait_keys = ["number", "name", "sex", "time", "symptom", "uniq"]
 day_keys = ["number", "name", "sex", "time", "disease", "treat", "uniq"]
 treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
