@@ -409,7 +409,7 @@ async def close_confirm():
 
 
 async def server():
-    server = await websockets.serve(service, "0.0.0.0", 52125)
+    server = websockets.serve(service, "0.0.0.0", 52125)
     return asyncio.gather(asyncio.create_task(server), asyncio.create_task(close_confirm()))
 
 
