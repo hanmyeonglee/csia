@@ -441,7 +441,6 @@ wait_keys = ["number", "name", "sex", "time", "symptom", "uniq"]
 day_keys = ["number", "name", "sex", "time", "disease", "treat", "uniq"]
 treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " ")
-server_system = server()
 loop = asyncio.get_event_loop()
-loop.run_until_complete(server_system)
+loop.run_until_complete(server())
 loop.run_forever()
