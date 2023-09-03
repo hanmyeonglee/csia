@@ -17,6 +17,6 @@ with mysql.cursor() as commander:
     n = int(input("sql number: "))
     for _ in range(n):
         m = input("SQL: ")
-        commander.execute('%s', m)
+        commander.execute(m)
 
 mysql.close()
