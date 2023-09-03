@@ -361,7 +361,6 @@ def main():
     global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter  # , logger
     date = datetime.now().strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
-    open(f"/var/www/html/ssch/logs/{dateFileName}.log", 'w')
     teacher = None  # 선생님 웹소켓
     others = set()  # 다른 학생들의 웹소켓 정보
     time_flag = False
