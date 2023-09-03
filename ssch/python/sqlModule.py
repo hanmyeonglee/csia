@@ -5,7 +5,7 @@ from logs import log as logging
 def reset_time():
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", charset="utf8", autocommit=True)
-    with mysql.cursor() as commander:
+    """ with mysql.cursor() as commander:
         commander.execute(
             f'create table waiters(id smallint(10) not null auto_increment, number char(5), name varchar(20), sex char(10), time char(7), symptom varchar(10000), uniq char(40), primary key(id))')
         commander.execute(
@@ -26,13 +26,13 @@ def reset_time():
                 m = str(j).rjust(2, '0')
                 commander.execute(f'insert into time_{h} values("{m}", 1)')
         commander.execute('select * from posttime')
-        print(commander.fetchall())
+        print(commander.fetchall()) """
 
-    """ with mysql.cursor() as commander:
+    with mysql.cursor() as commander:
         for i in range(8, 18):
             if i == 12:
                 continue
             h = str(i).rjust(2, '0')
             commander.execute(
-                f'update time_{h} set pos=1') """
+                f'update time_{h} set pos=1')
     mysql.close()
