@@ -33,24 +33,6 @@ header
 """
 
 
-class Client:
-    def __init__(self, websocket):
-        self.client = websocket
-        self.time = datetime.now().timestamp()
-
-    def timeUpdate(self):
-        self.time = datetime.now().timestamp()
-
-    def conTest(self):
-        if self.client.closed:
-            return False
-        elif datetime.now().timestamp() - self.time > 600:
-            self.client.close()
-            return False
-        else:
-            return True
-
-
 def hash160(string):
     return hashlib.new('ripemd160', string.encode()).digest().hex()
 
@@ -156,13 +138,8 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
     """
     global others
     removeds = []
-    for client in others:
-        try:
-            other = client.client
-        except:
-            others.remove(client)
-            continue
-        if other != except_websocket and client.conTest:
+    for other in others:
+        if other != except_websocket:
             try:
                 await other.send(form(header=header, body_return=body_return, body_body=body_body))
             except:
@@ -198,7 +175,7 @@ async def service(websocket, path):
                 if content_header == "t":
                     teacher = websocket
                 elif content_header == "s":
-                    others.add(Client(websocket))
+                    others.add(websocket)
                 else:
                     raise RuntimeError(
                         "pursue: 1, content_header error: neither t or s")
@@ -242,15 +219,6 @@ async def service(websocket, path):
                     sql_executor(
                         sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
                     time_flag = True
-                    for client in others:
-                        try:
-                            other = client.client
-                            if other == websocket:
-                                client.timeUpdate()
-                            break
-                        except:
-                            others.remove(other)
-                            continue
                 else:
                     raise RuntimeError(
                         "pursue: 2, content_header error: not s")
@@ -395,24 +363,6 @@ async def service(websocket, path):
         waiter_flag = True
 
 
-async def close_confirm():
-    while True:
-        await asyncio.sleep(300)  # 300초마다 실행
-        for client in others:
-            try:
-                flag = client.conTest()
-                if not flag:
-                    others.remove(client)
-                    del client
-            except:
-                continue
-
-
-async def server():
-    server = websockets.serve(service, "0.0.0.0", 52125)
-    await asyncio.gather(asyncio.create_task(server), asyncio.create_task(close_confirm()))
-
-
 def main():
     global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter  # , logger
     date = datetime.now().strftime("%Y.%m.%d")
@@ -441,6 +391,7 @@ treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계
 main()
 if sql_executor(sql_command, 'select * from posttime', -1, "00", None)[0]['posttime'] != date:
     restart()
+server = websockets.serve(service, "0.0.0.0", 52125)
 loop = asyncio.get_event_loop()
-loop.run_until_complete(server())
+loop.run_until_complete(server)
 loop.run_forever()
