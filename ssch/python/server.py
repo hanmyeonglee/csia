@@ -56,7 +56,6 @@ def sql_executor(func, sql, pursue, num, data):
         return func(sql)
     except:
         err = traceback.format_exc()
-        print('err01 :', err)
         logging(err, dateFileName)
         raise RuntimeError(
             f"pursue: {pursue}, mysql stdio error{num}: data = {data}")
@@ -146,15 +145,12 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
                 removeds.append(other)
     for removed in removeds:
         others.remove(removed)
-    else:
-        print(f"disconnected - {len(removeds)}")
 
 
 async def service(websocket, path):
     try:
         async for message in websocket:
             global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter
-            print(dir(websocket))
             if date != datetime.now().strftime("%Y.%m.%d"):
                 restart()
                 main()
@@ -166,7 +162,6 @@ async def service(websocket, path):
                 waiter = selData("waiters", 'setting', "01")
                 waiter_flag = False
 
-            print(message)
             message = json.loads(message)
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
@@ -357,7 +352,6 @@ async def service(websocket, path):
     except:
         err = traceback.format_exc()
         logging(err, dateFileName)
-        print('err02 :', err)
         await websocket.send(form(status=0))
         time_flag = True
         waiter_flag = True
