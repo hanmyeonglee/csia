@@ -1,5 +1,4 @@
 import pymysql
-from logs import log as logging
 
 
 def reset_time():
