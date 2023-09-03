@@ -18,5 +18,6 @@ with mysql.cursor() as commander:
     for _ in range(n):
         m = input("SQL: ")
         commander.execute(m)
+        print(commander.fetchall())
 
 mysql.close()
