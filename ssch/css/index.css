@@ -4,7 +4,7 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 .main {
-  width: 80%;
+  width: 70%;
   margin: auto;
 }
 .stretch {
@@ -19,8 +19,8 @@
   justify-content: left;
 }
 .imgResize {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   width: 15vw;
   /* max-width: 300px; */
 }
@@ -40,45 +40,47 @@
   grid-auto-flow: column;
   column-gap: 5px;
 }
+.navbar.bg-primary{
+  background-color: #3474BB !important;
+}
 #navExternal {
   width: 100%;
-  padding-top: 10px;
+  padding-top: 25px;
   padding-bottom: 0;
 }
 #navExternal > div {
-  font-size: 2.22vw;
+  font-size: 1.65vw;
 }
 #mainNavHr {
   width: 100%;
   display: block;
   border-top: 3px solid black;
-  margin-top: 12.5px;
-  margin-bottom: 12.5px;
+  margin-top: 13.5px;
+  margin-bottom: 25px;
 }
 #interfaceCover {
   width: 100%;
   grid-template-columns: 1.15fr 1fr;
-  column-gap: 70px;
 }
 #explanation {
   row-gap: 35px;
 }
 .infoImg {
-  width: 16vw;
+  width: 14vw;
   /* max-width: 400px; */
   left: 0%;
   transform: translate(0%, -50%);
 }
 .imgCover {
-  padding-right: 2vw;
   padding-left: 2vw;
+}
+.imgCover.stretch{
+  padding-right: 4vw;
+  padding-left: 3vw;
 }
 #rule > img {
   width: 5vw;
   /* max-width: 160px; */
-}
-#howToUse {
-  row-gap: 20px;
 }
 .expl {
   row-gap: 10px;
@@ -106,10 +108,10 @@
 }
 #apply {
   padding: 22px;
-  row-gap: 15px;
+  row-gap: 10px;
 }
 .roundBorder {
-  border: 2px solid black;
+  border: 1.5px solid black;
   border-radius: 30px;
 }
 #symptomSelectCover {
@@ -132,7 +134,7 @@
   padding: 10px;
 }
 .edgeRoundBorder {
-  border: 2px solid black;
+  border: 1.5px solid black;
   border-radius: 15px;
 }
 #otherSymptom {
@@ -153,7 +155,7 @@
 }
 .abdown {
   cursor: pointer;
-  height: 1.8vw;
+  height: 1.5vw;
   padding: 0 !important;
   object-fit: contain;
 }
@@ -204,7 +206,7 @@
   grid-template-columns: 30px auto;
 }
 .navImg01 {
-  width: 16vw;
+  width: 14vw;
 }
 .navImg02 {
   width: 12vw;
@@ -220,7 +222,7 @@
     display: none !important;
   }
   #navExternal > div {
-    font-size: 2.22vh;
+    font-size: 1.7vh;
   }
   #interfaceCover {
     grid-template-columns: none;
@@ -229,20 +231,23 @@
     row-gap: 20px;
   }
   .imgResize {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     width: 15vh;
     /* max-width: 300px; */
   }
   .infoImg {
-    width: 16vh;
+    width: 14vh;
     /* max-width: 400px; */
     left: 0%;
     transform: translate(0%, -50%);
   }
   .imgCover {
-    padding-right: 1vh;
     padding-left: 1vh;
+  }
+  .imgCover.stretch{
+    padding-right: 4vh;
+    padding-left: 4vh;
   }
   #rule > img {
     width: 6vh;
@@ -262,7 +267,7 @@
   }
   .abdown {
     cursor: pointer;
-    height: 1.8vh;
+    height: 1.5vh;
     padding: 0 !important;
   }
   #applyCover {
@@ -272,7 +277,7 @@
     width: 40%;
   }
   .navImg01 {
-    width: 16vh;
+    width: 14vh;
   }
   .navImg02 {
     width: 12vh;

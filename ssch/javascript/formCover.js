@@ -26,7 +26,7 @@ export const errorHandling = ({message="통신 간 오류가 발생하였습니�
     setTimeout(() => {
         alarm.setAttribute("hidden", true);
         if(reload){
-            //location.href = locate;
+            location.href = locate;
         }
     }, 3000);
 };

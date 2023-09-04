@@ -27,7 +27,7 @@ const examineCurrentInterface = (inters) => {
   });
 })();
 
-const webIO = new WebSocket("ws://192.168.10.53:52125");
+const webIO = new WebSocket("ws://10.13.19.49:52125");
 const interfaces = document.getElementsByClassName("interface");
 const applyBtns = Array.from(document.getElementsByClassName("applyBtn"));
 const modal = document.getElementById("symptomType");
@@ -135,6 +135,9 @@ const makeOptions = () => {
       let minuteSelect = current.querySelector(".minute");
       minuteSelect.innerHTML = minuteDefaultOption;
       for (let i = 0; i < 60; i++) {
+	if(i < 45 && i % 5 != 0){
+	    continue;
+	}
         let flag = false;
         if (appointedTime[hourVal].includes(String(i).padStart(2, "0"))) {
           // || i < minute){
@@ -148,15 +151,27 @@ const makeOptions = () => {
 
 const verifyBed = () => {
   bedNumImg.forEach((e) => {
-    e.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
+    let inf = examineCurrentInterface(interfaces);
+    if(inf.classList.value.includes('desktop')){
+        e.src = `./image.resize/bedRemain0${bedNum}.png`;
+    } else {
+        e.src = `./image.resize/bedRemain0${bedNum}.png`;
+    }
   });
 };
 
 const verifyDiagPos = () => {
   diagPosImg.forEach((e) => {
-    e.src = diagPos
-      ? "./image.resize/diagPos.reduct.png"
-      : "./image.resize/diagImpos.reduct.png";
+    let inf = examineCurrentInterface(interfaces);
+    if(inf.classList.value.includes('desktop')){
+        e.src = diagPos
+          ? "./image.resize/diagPos.png"
+          : "./image.resize/diagImpos.png";
+    } else {
+	e.src = diagPos
+         ? "./image.resize/diagPos.reduct.png"
+         : "./image.resize/diagImpos.reduct.png";
+    }
   });
 };
 
@@ -197,6 +212,7 @@ webIO.onmessage = async (data) => {
           if (innerData == -1) {
             errorHandling({ message: "이미 신청된 시간입니다." });
           }
+	  alert("신청되었습니다.");
           loading(true);
           break;
         default:

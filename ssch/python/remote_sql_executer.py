@@ -11,8 +11,8 @@ db = {
 id = input("id: ")
 if id == "root":
     db[id] = input("db: ")
-mysql = pymysql.connect(user="login", passwd=pw[id], host="localhost",
-                        db=db[id], charset="utf8", autocommit=True)
+mysql = pymysql.connect(user=id, passwd=pw[id], host="localhost",
+                        db=db[id], port=23474, charset="utf8", autocommit=True)
 with mysql.cursor() as commander:
     n = int(input("sql number: "))
     for _ in range(n):

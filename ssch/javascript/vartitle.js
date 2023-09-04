@@ -22,7 +22,7 @@ const diags =
  * 9 = delete patient from daily db
  */
 
-const webIO = new WebSocket("ws://192.168.10.53:52125");
+const webIO = new WebSocket("ws://10.13.19.49:52125");
 const locate = location.href.split("/ssch/")[1];
 const table = document.querySelector("#tableCover");
 const row = document.querySelector(".tableElements");
@@ -83,7 +83,7 @@ const makeTreatList = (flag = false, parent, suffix) => {
       let d = diags[j];
       let tempItem = listItem.cloneNode(true);
       tempItem.querySelector("input").value = d;
-      tempItem.querySelector("input").id = `treat${String(j).padStart(
+      tempItem.querySelector("input").id = `treat${String(i+j).padStart(
         2,
         "0"
       )}${suffix}`;
@@ -270,12 +270,13 @@ const downloadFile = async (filename) => {
 };
 
 webIO.onopen = async () => {
-  console.log("WebSocket Opened");
+  console.log(`WebSocket Opened ${new Date().getTime()}`);
   await webIO.send(form({ type: 0, header: "t" }));
+  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 1800000);
 };
 
 webIO.onclose = () => {
-  console.log("WebSocket Closed");
+  console.log(`WebSocket Closed ${new Date().getTime()}`);
 };
 
 webIO.onmessage = async (data) => {
@@ -290,6 +291,8 @@ webIO.onmessage = async (data) => {
   } else {
     if (head == 6) {
       switch (returnType) {
+	case "pong":
+	  break;
         case 0:
           await webIO.send(form({ type: 1, header: "t" }));
           break;
@@ -312,9 +315,9 @@ webIO.onmessage = async (data) => {
           makeTableAll();
           makeListAll();
           diagBtn.src = diagPos
-            ? "./image.resize/diagPos.reduct.png"
-            : "./image.resize/diagImpos.reduct.png";
-          bedBtn.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
+            ? "./image.resize/diagPos.png"
+            : "./image.resize/diagImpos.png";
+          bedBtn.src = `./image.resize/bedRemain0${bedNum}.png`;
           break;
         case 3:
         case 4:
@@ -389,7 +392,7 @@ confirmModal
       }
       bedNum--;
       await webIO.send(form({ type: 4, stat: 1, header: "t", body: -1 }));
-      bedBtn.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
+      bedBtn.src = `./image.resize/bedRemain0${bedNum}.png`;
     }
 
     // content: id, number, name, sex, time, disease, treat object
@@ -409,8 +412,8 @@ confirmModal
 diagBtn.addEventListener("click", async (e) => {
   diagPos = !diagPos;
   diagBtn.src = diagPos
-    ? "./image.resize/diagPos.reduct.png"
-    : "./image.resize/diagImpos.reduct.png";
+    ? "./image.resize/diagPos.png"
+    : "./image.resize/diagImpos.png";
   await webIO.send(form({ type: 5, stat: 1, header: "t", body: diagPos }));
 });
 
@@ -423,7 +426,7 @@ bedBtn.addEventListener("click", async () => {
     }
     bedNum++;
     await webIO.send(form({ type: 4, stat: 1, header: "t", body: 1 }));
-    bedBtn.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
+    bedBtn.src = `./image.resize/bedRemain0${bedNum}.png`;
   }
 });
 

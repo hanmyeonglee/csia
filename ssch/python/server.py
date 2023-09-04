@@ -10,6 +10,7 @@ from copy import deepcopy as copy
 from logs import log as logging
 from pymysql import cursors
 from datetime import datetime
+from pytz import timezone
 from random import shuffle
 
 
@@ -151,7 +152,7 @@ async def service(websocket, path):
     try:
         async for message in websocket:
             global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter
-            if date != datetime.now().strftime("%Y.%m.%d"):
+            if date != datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d"):
                 restart()
                 main()
 
@@ -165,6 +166,9 @@ async def service(websocket, path):
             message = json.loads(message)
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
+            
+            if pursue == 'ping':
+                await websocket.send(form(header=6, body_return="pong"))
 
             if pursue == 0:
                 if content_header == "t":
@@ -311,7 +315,7 @@ async def service(websocket, path):
                         sql_command, "select id, number, name, sex, time, disease, treat from daily order by time", pursue, "01", None)
                     for i, r in enumerate(res, start=1):
                         r['id'] = i
-                    tm = datetime.now().strftime("%Y.%m")
+                    tm = datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m")
                     ret = [[] for _ in range(6)]
 
                     for t in treatType:
@@ -320,14 +324,14 @@ async def service(websocket, path):
                         ret[1].append(sql_executor(
                             sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)[0]['cnt'])
                         ret[2].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)[0]['cnt'] + ret[0][-1])
+                            sql_command, f'select count(*) as cnt from yearly where time like "%{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)[0]['cnt'] + ret[0][-1])
                         ret[3].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)[0]['cnt'] + ret[1][-1])
+                            sql_command, f'select count(*) as cnt from yearly where time like "%{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)[0]['cnt'] + ret[1][-1])
                         ret[4].append(sql_executor(
                             sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)[0]['cnt'] + ret[0][-1])
                         ret[5].append(sql_executor(
                             sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)[0]['cnt'] + ret[1][-1])
-
+                    
                     makeFile(
                         res,
                         [
@@ -359,7 +363,7 @@ async def service(websocket, path):
 
 def main():
     global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter  # , logger
-    date = datetime.now().strftime("%Y.%m.%d")
+    date = datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
     teacher = None  # 선생님 웹소켓
     others = set()  # 다른 학생들의 웹소켓 정보
@@ -370,7 +374,7 @@ def main():
     possible = False  # 현재 진료 가능한 상황인지 여부, 0은 불가능 1은 가능
     bed = 4  # 현재 사용 가능한 침대 개수(0~2)
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
-                            db="ssch", charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
+                            db="ssch", port=23474, charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
     time = getTime()
     waiter = selData("waiters", 'setting', "01")
     # logger = makeLogger()
@@ -384,7 +388,17 @@ treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계
 main()
 if sql_executor(sql_command, 'select * from posttime', -1, "00", None)[0]['posttime'] != date:
     restart()
-server = websockets.serve(service, "0.0.0.0", 52125)
-loop = asyncio.get_event_loop()
-loop.run_until_complete(server)
-loop.run_forever()
+try:
+    server = websockets.serve(service, "0.0.0.0", 52125)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(server)
+    loop.run_forever()
+except asyncio.exceptions.CancelledError:
+    logging("molar monga connection error", dateFileName)
+except ConnectionResetError:
+    logging("peerga connection discon", dateFileName)
+except:
+    err = traceback.format_exc()
+    logging("WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC\n\n"+err, dateFileName)
+    time_flag = True
+    waiter_flag = True

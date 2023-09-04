@@ -17,7 +17,7 @@
       <div class="main stretch">
         <div class="navImgCover">
           <img
-            src="./image.resize/csiaNLogo.reduct.png"
+            src="./image.resize/csiaLogo.reduct.png"
             class="imgResize center navImg01"
           />
         </div>
@@ -34,9 +34,9 @@
         <div id="navExternal">
           <div class="nanum fw-bold stretch">
             <div>청심국제중고등학교 보건실</div>
-            <div class="btnCover">
-              <img src="./image.resize/download.reduct.png" class="abdown" id="download" />
-              <img src="./image.resize/about.reduct.png" class="abdown" id="about" />
+            <div class="btnCover gridColumn">
+              <img src="./image.resize/download.reduct.png" class="abdown center" id="download" />
+              <img src="./image.resize/about.reduct.png" class="abdown center" id="about" />
             </div>
           </div>
           <hr id="mainNavHr" />
@@ -48,13 +48,13 @@
             <div id="nurseInfo" class="stretch imgCover">
               <div id="diagPos">
                 <img
-                  src="./image.resize/diagImpos.reduct.png"
+                  src="./image.resize/diagImpos.png"
                   class="imgResize infoImg center diagPos"
                 />
               </div>
               <div id="bedNum">
                 <img
-                  src="./image.resize/bedRemain04.reduct.png"
+                  src="./image.resize/bedRemain04.png"
                   class="imgResize infoImg center bedNum"
                 />
               </div>
@@ -65,19 +65,22 @@
                 class="imgResize specialImg"
               />
             </div>
+	    <div style="height: 3px;"></div>
             <div id="explOfAdm" class="expl gridRow">
-              <div class="title fw-bold">예약 시스템</div>
+		    <div class="title fw-bold">소개</div>
               <div class="body">
-                본 사이트는 청심국제중고 공식 보건실 사이트로써,<br>전면 예약 시스템을 통해 체계적이고 효율적인 보건실 방문을 돕습니다. 
+		      이 사이트는 청심국제중고 공식 보건실 사이트로써,<br>전면 예약 시스템을 통해 체계적이고 효율적인 보건실 방문을 돕습니다.<br><br>
               </div>
             </div>
             <div id="eplOfLaw" class="expl gridRow">
-              <div class="title fw-bold">사용 규칙</div>
+              <div class="title fw-bold">이용 방법</div>
               <div class="body">
                 1. 오른쪽 시트로 보건실 방문을 예약해 주세요<br>
                 2. 예약 시간에 맞춰 보건실을 방문해 주세요<br><br>
 
-                * 응급환자는 보건 선생님 판단 하에 즉시 진료가 가능합니다
+		* 응급환자는 보건 선생님 판단 하에 즉시 진료가 가능합니다<br>
+		(이 경우 일정에 일부 차질이 생길 수 있습니다)<br>
+		<br> * 예약 시 개인정보/의료 정보 수집 및 이용 동의로 간주합니다
               </div>
             </div>
           </div>
@@ -138,17 +141,19 @@
                       type="radio"
                       class="sex"
                       value="m"
-                      name="gender"
+                      name="genderD"
+		      id="manD"
                       checked
-                    /><label for="man" class="body">남성</label>
+                    /><label for="manD" class="body">남성</label>
                   </div>
                   <div class="start">
                     <input
                       type="radio"
                       class="sex"
-                      name="gender"
+                      name="genderD"
+		      id="womanD"
                       value="w"
-                    /><label for="woman" class="body">여성</label>
+                    /><label for="womanD" class="body">여성</label>
                   </div>
                 </div>
               </div>
@@ -177,7 +182,7 @@
                 <div id="otherSymptomCover" class="edgeRoundBorder" hidden>
                   <textarea
                     id="otherSymptom"
-                    class="nanum otherSymptom"
+                    class="nanum otherSymptom body"
                   ></textarea>
                 </div>
               </div>
@@ -286,15 +291,15 @@
                 <label for="sexCover" class="subtitle fw-bold">성별</label>
                 <div id="sexCover" class="start">
                   <div class="start">
-                    <input type="radio" value="m" class="sex" checked /><label
-                      for="man"
+                    <input type="radio" value="m" class="sex" name="genderM" id="manM" checked /><label
+                      for="manM"
                       class="body"
                       >남성</label
                     >
                   </div>
                   <div class="start">
-                    <input type="radio" value="w" class="sex" /><label
-                      for="woman"
+                    <input type="radio" value="w" class="sex" name="genderM" id="womanM" /><label
+                      for="womanM"
                       class="body"
                       >여성</label
                     >
@@ -326,7 +331,7 @@
                 <div id="otherSymptomCover" class="edgeRoundBorder" hidden>
                   <textarea
                     id="otherSymptom"
-                    class="nanum otherSymptom"
+                    class="nanum otherSymptom body"
                   ></textarea>
                 </div>
               </div>
@@ -371,25 +376,25 @@
               <img src="./image.resize/howToUse.reduct.png" class="imgResize" />
             </div>
             <div id="explOfAdm" class="expl gridRow">
-              <div class="title fw-bold">예약 시스템</div>
+              <div class="title fw-bold">소개</div>
               <div class="body">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam
-                laudantium alias cupiditate itaque doloribus, magnam nesciunt
-                ad. Quas rem exercitationem, officia, blanditiis sint mollitia
-                numquam doloremque tenetur aliquid impedit tempora!
+		      본 사이트는 청심국제중고 공식 보건실 사이트로써,<br>전면 예약 시스템을 통해 체계적이고 효율적인 보건실 방문을 돕습니다.<br><br>
               </div>
             </div>
             <div id="eplOfLaw" class="expl gridRow">
-              <div class="title fw-bold">사용 규칙</div>
+	    <div class="title fw-bold">이용 방법</div>
               <div class="body">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Sapiente, facilis? Dolorum, ducimus perspiciatis vero repellat
-                sunt natus. Aperiam iusto cupiditate neque molestias, doloribus
-                modi! Assumenda ducimus dicta vel dignissimos non.
+	          1. 오른쪽 시트로 보건실 방문을 예약해 주세요<br>
+                2. 예약 시간에 맞춰 보건실을 방문해 주세요<br><br>
+
+		* 응급환자는 보건 선생님 판단 하에 즉시 진료가 가능합니다<br>
+		(이 경우 일정에 일부 차질이 생길 수 있습니다.)<br>
+		<br> * 예약 시 개인정보/의료 정보 수집 및 이용 동의로 간주합니다
               </div>
             </div>
           </div>
         </div>
+	<div id="SizedBox" style="height: 50px;"></div>
       </div>
     </div>
     <div
