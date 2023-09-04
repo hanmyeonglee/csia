@@ -35,7 +35,10 @@ const hourSelect = Array.from(document.getElementsByClassName("hour"));
 const diagPosImg = Array.from(document.getElementsByClassName("diagPos"));
 const bedNumImg = Array.from(document.getElementsByClassName("bedNum"));
 const about = document.getElementById("about");
-const download = document.getElementById("download");
+const windows = document.getElementById("windows");
+const mac = document.getElementById("mac");
+const android = document.getElementById("android");
+const ios = document.getElementById("ios");
 let diagPos = false;
 let bedNum = 4;
 let current = examineCurrentInterface(interfaces);
@@ -310,4 +313,20 @@ about.addEventListener("click", (e) => {
   location.replace(
     "https://docs.google.com/document/d/1degMd317t3KixcS9bujQ--YyTdfb7kVPpdHn9UZeeq8/edit?usp=sharing"
   );
+});
+
+windows.addEventListener("click", () => {
+  location.href = "./html/windows.html";
+});
+
+mac.addEventListener("click", () => {
+  location.href = "./html/mac.html";
+});
+
+android.addEventListener("click", () => {
+  location.href = "./html/android.html";
+});
+
+ios.addEventListener("click", () => {
+  location.href = "./html/ios.html";
 });

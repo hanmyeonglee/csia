@@ -211,6 +211,13 @@
 .navImg02 {
   width: 12vw;
 }
+.downBtn{
+  background-color: #41ABC0;
+  color: white;
+}
+.modal-body.gridColumn{
+  grid-template-columns: repeat(4, 1fr);
+}
 @media all and (max-aspect-ratio: 1/1) {
   .main {
     width: 90%;
