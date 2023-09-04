@@ -8,7 +8,7 @@ download.addEventListener("click", async () => {
     const anchorElement = document.createElement("a");
     anchorElement.setAttribute("hidden", true);
     document.body.appendChild(anchorElement);
-    anchorElement.download = "CSIAOnline-win.apk";
+    anchorElement.download = "CSIAOnline.apk";
     anchorElement.href = downloadUrl; // href에 url 달아주기
 
     anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
