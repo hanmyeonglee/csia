@@ -166,7 +166,7 @@ async def service(websocket, path):
             message = json.loads(message)
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
-            
+
             if pursue == 'ping':
                 await websocket.send(form(header=6, body_return="pong"))
 
@@ -233,7 +233,7 @@ async def service(websocket, path):
                     sql_executor(sql_command, sql, pursue, "02", data)
                     sql_executor(initializeId, "waiters", pursue, "03", data)
                     waiter_flag = True
-                    await sending_2_all(header=3, body_body=data)
+                    await sending_2_all(header=3, body_body=data['time'])
                     sql_executor(
                         sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data['time'])
                     time_flag = True
@@ -331,7 +331,7 @@ async def service(websocket, path):
                             sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)[0]['cnt'] + ret[0][-1])
                         ret[5].append(sql_executor(
                             sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)[0]['cnt'] + ret[1][-1])
-                    
+
                     makeFile(
                         res,
                         [
@@ -399,6 +399,7 @@ except ConnectionResetError:
     logging("peerga connection discon", dateFileName)
 except:
     err = traceback.format_exc()
-    logging("WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC\n\n"+err, dateFileName)
+    logging("WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC\n\n" +
+            err, dateFileName)
     time_flag = True
     waiter_flag = True

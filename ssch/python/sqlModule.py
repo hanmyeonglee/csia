@@ -2,6 +2,7 @@ import pymysql
 
 
 def reset_time():
+    print("aaa")
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", port=23474, charset="utf8", autocommit=True)
     """ with mysql.cursor() as commander:
@@ -28,24 +29,23 @@ def reset_time():
         print(commander.fetchall()) """
 
     with mysql.cursor() as commander:
-        for i in range(8, 18):
-            if i == 12:
-                continue
+        """print("bbb")
+        for i in [8, 16]:
+            print("ccc")
             h = str(i).rjust(2, '0')
             commander.execute(f'drop table time_{h}')
             commander.execute(
                 f'create table time_{h}(min char(5), pos tinyint(1), primary key(min))')
             for j in range(0, 60):
-                if j < 45 and j % 5 != 0:
-                    continue
                 m = str(j).rjust(2, '0')
-                commander.execute(f'insert into time_{h} values("{m}", 1)')
-        """for i in range(8, 18):
+                if i == 8 and j in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]:
+                    commander.execute(f'insert into time_{h} values("{m}", 0)')
+                else:
+                    commander.execute(f'insert into time_{h} values("{m}", 1)')"""
+        for i in range(8, 17):
             if i == 12:
                 continue
             h = str(i).rjust(2, '0')
-            commander.execute(
-                f'update time_{h} set pos=1')"""
+            commander.execute(f'update time_{h} set pos=1')
     mysql.close()
 
-reset_time()

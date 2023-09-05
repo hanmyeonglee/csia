@@ -39,6 +39,7 @@ const windows = document.getElementById("windows");
 const mac = document.getElementById("mac");
 const android = document.getElementById("android");
 const ios = document.getElementById("ios");
+const logo = document.querySelector(".imgResize.center.navImg01");
 let diagPos = false;
 let bedNum = 4;
 let current = examineCurrentInterface(interfaces);
@@ -123,10 +124,11 @@ const makeOptions = () => {
 
   hourSelect.forEach((element) => {
     element.innerHTML = hourDefaultOption;
-    for (let i = 8; i <= 17; i++) {
+    for (let i = 8; i <= 16; i++) {
       //element.appendChild(optionForm(i, "시", (i >= hour) ? false : true));
       if (i == 12) continue;
-      element.appendChild(optionForm(i, "시", false));
+      if (i < hour) element.appendChild(optionForm(i, "시", true));
+      else element.appendChild(optionForm(i, "시", false));
     }
 
     element.addEventListener("focusout", (e) => {
@@ -138,12 +140,11 @@ const makeOptions = () => {
       let minuteSelect = current.querySelector(".minute");
       minuteSelect.innerHTML = minuteDefaultOption;
       for (let i = 0; i < 60; i++) {
-	if(i < 45 && i % 5 != 0){
+	if(i < 45 && i % 5 != 0 && hourVal != "08" && hourVal != "16"){
 	    continue;
 	}
         let flag = false;
-        if (appointedTime[hourVal].includes(String(i).padStart(2, "0"))) {
-          // || i < minute){
+        if (appointedTime[hourVal].includes(String(i).padStart(2, "0")) || (i < minute && Number(hourVal) == hour)){
           flag = true;
         }
         minuteSelect.appendChild(optionForm(i, "분", flag));
@@ -329,4 +330,8 @@ android.addEventListener("click", () => {
 
 ios.addEventListener("click", () => {
   location.href = "./html/ios.html";
+});
+
+logo.addEventListener("click", () => {
+  location.href = "./";
 });

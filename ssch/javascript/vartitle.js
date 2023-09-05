@@ -83,7 +83,8 @@ const makeTreatList = (flag = false, parent, suffix) => {
       let d = diags[j];
       let tempItem = listItem.cloneNode(true);
       tempItem.querySelector("input").value = d;
-      tempItem.querySelector("input").id = `treat${String(i+j).padStart(
+      let k = i + j;
+      tempItem.querySelector("input").id = `treat${String(k).padStart(
         2,
         "0"
       )}${suffix}`;
@@ -92,7 +93,7 @@ const makeTreatList = (flag = false, parent, suffix) => {
       tempItem.querySelector("input").classList.add("treat");
       tempItem
         .querySelector("label")
-        .setAttribute("for", `treat${String(i).padStart(2, "0")}${suffix}`);
+        .setAttribute("for", `treat${String(k).padStart(2, "0")}${suffix}`);
       tempItem.removeAttribute("hidden");
       if (d == "보건실휴식" && flag) {
         tempItem.querySelector("input").classList.add("bed");
