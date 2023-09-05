@@ -337,3 +337,7 @@ ios.addEventListener("click", () => {
 logo.addEventListener("click", () => {
   location.href = "./index-01.html";
 });
+
+window.addEventListener('beforeunload', async (event) => {
+  await webIO.close();
+});

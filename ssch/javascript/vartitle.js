@@ -515,3 +515,7 @@ download.addEventListener("click", async (e) => {
     await webIO.send(form({ type: 10, stat: 1, header: "t" }));
   }
 });
+
+window.addEventListener('beforeunload', async (event) => {
+  await webIO.close();
+});
