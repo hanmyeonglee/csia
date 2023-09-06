@@ -40,6 +40,7 @@ const mac = document.getElementById("mac");
 const android = document.getElementById("android");
 const ios = document.getElementById("ios");
 const logo = document.querySelector(".imgResize.center.navImg01");
+const locate = "./index-01.html";
 let diagPos = false;
 let bedNum = 4;
 let current = examineCurrentInterface(interfaces);
@@ -182,7 +183,7 @@ const verifyDiagPos = () => {
 webIO.onopen = async () => {
   console.log("WebSocket Opened");
   await webIO.send(form({ type: 0, header: "s" }));
-  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 1800000);
+  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 300000);
 };
 
 webIO.onclose = () => {
@@ -197,7 +198,7 @@ webIO.onmessage = async (data) => {
   let returnType = message["content"]["body"]["return"];
   let innerData = message["content"]["body"]["body"];
   if (stat != 1) {
-    errorHandling({ reload: true });
+    errorHandling({ reload: true, locate: locate });
   } else {
     if (head == 6) {
       switch (returnType) {
@@ -217,12 +218,14 @@ webIO.onmessage = async (data) => {
           if (innerData == -1) {
             errorHandling({ message: "이미 신청된 시간입니다." });
           }
-	  alert("신청되었습니다.");
+	        alert("신청되었습니다.");
           loading(true);
-	  location.replace("./index-01.html");
+	        location.replace("./index-01.html");
           break;
+        case "pong":
+          return;
         default:
-          errorHandling({ reload: true });
+          errorHandling({ reload: true, locate: locate });
       }
     } else if (head == 2) {
       let t = innerData.split(":");
@@ -240,7 +243,7 @@ webIO.onmessage = async (data) => {
       diagPos = innerData;
       verifyDiagPos();
     } else {
-      errorHandling({ reload: true });
+      errorHandling({ reload: true, locate: locate });
     }
   }
 };
@@ -283,7 +286,7 @@ applyBtns.forEach((element) => {
       return false;
     }
 
-    await webIO.send(form({ type: 2, header: "s", body: verified }));
+    await webIO.send(form({ type: 2, stat: 49, header: "s", body: verified }));
     return true;
   });
 });

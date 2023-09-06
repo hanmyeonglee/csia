@@ -35,11 +35,8 @@ const hourSelect = Array.from(document.getElementsByClassName("hour"));
 const diagPosImg = Array.from(document.getElementsByClassName("diagPos"));
 const bedNumImg = Array.from(document.getElementsByClassName("bedNum"));
 const about = document.getElementById("about");
-const windows = document.getElementById("windows");
-const mac = document.getElementById("mac");
-const android = document.getElementById("android");
-const ios = document.getElementById("ios");
 const logo = document.querySelector(".imgResize.center.navImg01");
+const names = ["chrome", "edge", "safari", "windows", "mac", "android", "ios"]
 let diagPos = false;
 let bedNum = 4;
 let current = examineCurrentInterface(interfaces);
@@ -190,7 +187,6 @@ webIO.onclose = () => {
 
 webIO.onmessage = async (data) => {
   let message = JSON.parse(data.data);
-  console.log(message);
   let stat = message["stat"];
   let head = message["content"]["header"];
   let returnType = message["content"]["body"]["return"];
@@ -316,20 +312,10 @@ about.addEventListener("click", (e) => {
   );
 });
 
-windows.addEventListener("click", () => {
-  location.href = "./html/windows.html";
-});
-
-mac.addEventListener("click", () => {
-  location.href = "./html/mac.html";
-});
-
-android.addEventListener("click", () => {
-  location.href = "./html/android.html";
-});
-
-ios.addEventListener("click", () => {
-  location.href = "./html/ios.html";
+names.forEach((name) => {
+  document.getElementById(name).addEventListener("click", () => {
+    location.href = `./html/${name}.html`;
+  });
 });
 
 logo.addEventListener("click", () => {

@@ -211,11 +211,18 @@
 .navImg02 {
   width: 12vw;
 }
-.downBtn{
+.downBtn01{
   background-color: #41ABC0;
   color: white;
 }
-.modal-body.gridColumn{
+.downBtn02{
+  background-color: #41ABC0;
+  color: white;
+}
+.r3-col{
+  grid-template-columns: repeat(3, 1fr);
+}
+.r4-col{
   grid-template-columns: repeat(4, 1fr);
 }
 @media all and (max-aspect-ratio: 1/1) {

@@ -48,4 +48,3 @@ def reset_time():
             h = str(i).rjust(2, '0')
             commander.execute(f'update time_{h} set pos=1')
     mysql.close()
-

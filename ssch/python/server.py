@@ -151,7 +151,7 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
 async def service(websocket, path):
     try:
         async for message in websocket:
-            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter
+            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter, static
             if date != datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d"):
                 restart()
                 main()
@@ -169,8 +169,7 @@ async def service(websocket, path):
 
             if pursue == 'ping':
                 await websocket.send(form(header=6, body_return="pong"))
-
-            if pursue == 0:
+            elif pursue == 0:
                 if content_header == "t":
                     teacher = websocket
                 elif content_header == "s":
@@ -207,7 +206,7 @@ async def service(websocket, path):
                         ''.join(temp))
                     sql = inputSql(
                         "waiters", wait_keys, data)
-                    sql_executor(sql_command, sql, pursue, "02", data)
+                    sql_executor(sql_command, sql, pursue, "01", data)
                     waiter_flag = True
                     # content_body structure : {'number':~, 'name':~, 'sex':~, 'symptom':~, 'time':~}
                     await sending_2_all(header=2, body_body=data['time'])
@@ -215,9 +214,18 @@ async def service(websocket, path):
                         await teacher.send(form(header=2, body_body=data))
                     except:
                         pass
+                    n = sql_executor(
+                        sql_command, f'select number from static where time="{static}"',
+                        pursue, "03", None)
+                    if len(n) == 0:
+                        sql_executor(
+                            sql_command, f'insert into static values(1, "{static}")', pursue, "04", None)
+                    else:
+                        k = n[0]['number']
+
                     sql_executor(
-                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "01", data)
-                    time_flag = True
+                        sql_command, f'update static set number={k+1} where time="{static}"', pursue, "05",
+                        None)
                 else:
                     raise RuntimeError(
                         "pursue: 2, content_header error: not s")
@@ -352,7 +360,7 @@ async def service(websocket, path):
 
             else:
                 raise RuntimeError(
-                    "main if clause, pursue is not 1 ~ 5 or 7~10")
+                    "main if clause, pursue is not 1 ~ 5 or 7~10 or pingpong")
     except:
         err = traceback.format_exc()
         logging(err, dateFileName)
@@ -362,9 +370,10 @@ async def service(websocket, path):
 
 
 def main():
-    global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter  # , logger
+    global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter, static  # , logger
     date = datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
+    static = datetime.now(timezone('Asia/Seoul')).strftime("%m.%d")
     teacher = None  # 선생님 웹소켓
     others = set()  # 다른 학생들의 웹소켓 정보
     time_flag = False
@@ -393,10 +402,8 @@ try:
     loop = asyncio.get_event_loop()
     loop.run_until_complete(server)
     loop.run_forever()
-except asyncio.exceptions.CancelledError:
-    logging("molar monga connection error", dateFileName)
-except ConnectionResetError:
-    logging("peerga connection discon", dateFileName)
+except websockets.exceptions.ConnectionClosedError:
+    pass
 except:
     err = traceback.format_exc()
     logging("WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC\n\n" +

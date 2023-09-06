@@ -273,7 +273,7 @@ const downloadFile = async (filename) => {
 webIO.onopen = async () => {
   console.log(`WebSocket Opened ${new Date().getTime()}`);
   await webIO.send(form({ type: 0, header: "t" }));
-  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 1800000);
+  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 300000);
 };
 
 webIO.onclose = () => {
@@ -345,6 +345,8 @@ webIO.onmessage = async (data) => {
         case 10:
           downloadFile(innerData);
           break;
+        case "pong":
+          return;
         default:
           errorHandling({ reload: true, locate: locate });
           break;
