@@ -225,6 +225,10 @@
 .r4-col{
   grid-template-columns: repeat(4, 1fr);
 }
+.newCover{
+  left: -10px;
+  transform: scale(0.8);
+}
 @media all and (max-aspect-ratio: 1/1) {
   .main {
     width: 90%;

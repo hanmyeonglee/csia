@@ -1,0 +1,432 @@
+
+
+
+===============18:58:54===============
+
+server (re)started
+
+
+===============19:05:23===============
+
+server (re)started
+
+
+===============19:06:10===============
+
+server (re)started
+
+
+===============19:09:17===============
+
+server (re)started
+
+
+===============19:19:54===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 708, in readexactly
+    await self._wait_for_data('readexactly')
+  File "/usr/lib/python3.10/asyncio/streams.py", line 501, in _wait_for_data
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 944, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: sent 1011 (unexpected error) keepalive ping timeout; no close frame received
+
+
+
+===============19:23:46===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 706, in readexactly
+    raise exceptions.IncompleteReadError(incomplete, n)
+asyncio.exceptions.IncompleteReadError: 0 bytes read on a total of 2 expected bytes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 935, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: no close frame received or sent
+
+
+
+===============19:55:06===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 706, in readexactly
+    raise exceptions.IncompleteReadError(incomplete, n)
+asyncio.exceptions.IncompleteReadError: 0 bytes read on a total of 2 expected bytes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 935, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: no close frame received or sent
+
+
+
+===============22:15:44===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 708, in readexactly
+    await self._wait_for_data('readexactly')
+  File "/usr/lib/python3.10/asyncio/streams.py", line 501, in _wait_for_data
+    await self._waiter
+  File "/usr/lib/python3.10/asyncio/selector_events.py", line 862, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 935, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: no close frame received or sent
+
+
+
+===============22:36:21===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 708, in readexactly
+    await self._wait_for_data('readexactly')
+  File "/usr/lib/python3.10/asyncio/streams.py", line 501, in _wait_for_data
+    await self._waiter
+  File "/usr/lib/python3.10/asyncio/selector_events.py", line 862, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 935, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: no close frame received or sent
+
+
+
+===============23:07:09===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 708, in readexactly
+    await self._wait_for_data('readexactly')
+  File "/usr/lib/python3.10/asyncio/streams.py", line 501, in _wait_for_data
+    await self._waiter
+  File "/usr/lib/python3.10/asyncio/selector_events.py", line 862, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 935, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: no close frame received or sent
+
+
+
+===============23:26:39===============
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/framing.py", line 68, in read
+    data = await reader(2)
+  File "/usr/lib/python3.10/asyncio/streams.py", line 708, in readexactly
+    await self._wait_for_data('readexactly')
+  File "/usr/lib/python3.10/asyncio/streams.py", line 501, in _wait_for_data
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 153, in service
+    async for message in websocket:
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 497, in __aiter__
+    yield await self.recv()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 568, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/protocol.py", line 944, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: sent 1011 (unexpected error) keepalive ping timeout; no close frame received
+
+
+
+===============23:42:29===============
+
+server (re)started
+
+
+===============23:44:49===============
+
+server (re)started
+
+
+===============23:46:24===============
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 223, in service
+    n = sql_executor(
+TypeError: sql_executor() missing 3 required positional arguments: 'pursue', 'num', and 'data'
+
+
+
+===============23:50:36===============
+
+server (re)started
+
+
+===============23:51:28===============
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 57, in sql_executor
+    return func(sql)
+  File "/var/www/html/ssch/python/server.py", line 43, in sql_command
+    commander.execute(command)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.05' at line 1")
+
+
+
+===============23:51:28===============
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 57, in sql_executor
+    return func(sql)
+  File "/var/www/html/ssch/python/server.py", line 43, in sql_command
+    commander.execute(command)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/usr/local/lib/python3.10/dist-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.05' at line 1")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 223, in service
+    n = sql_executor(
+  File "/var/www/html/ssch/python/server.py", line 61, in sql_executor
+    raise RuntimeError(
+RuntimeError: pursue: 2, mysql stdio error03: data = None
+
+
+
+===============23:52:53===============
+
+WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 401, in <module>
+    loop.run_forever()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 603, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+  File "/usr/lib/python3.10/selectors.py", line 469, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+KeyboardInterrupt
+
+
+
+===============23:52:56===============
+
+server (re)started
+
+
+===============23:56:23===============
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 226, in service
+    sql_command, f'update static set number={n+1} where time="{t}"', pursue, "04", None)
+TypeError: can only concatenate tuple (not "int") to tuple
+
+
+
+===============23:57:19===============
+
+WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 401, in <module>
+    loop.run_forever()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 603, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+  File "/usr/lib/python3.10/selectors.py", line 469, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+KeyboardInterrupt
+
+
+
+===============23:57:20===============
+
+server (re)started
+
+
+===============23:57:49===============
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 223, in service
+    n = sql_executor(
+IndexError: tuple index out of range
+
+
+
+===============23:59:44===============
+
+WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC
+
+Traceback (most recent call last):
+  File "/var/www/html/ssch/python/server.py", line 401, in <module>
+    restart()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 603, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+  File "/usr/lib/python3.10/selectors.py", line 469, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+KeyboardInterrupt
+
+
+
+===============23:59:45===============
+
+server (re)started
