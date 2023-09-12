@@ -92,6 +92,8 @@ def restart():
     sql_executor(
         sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
     reset_time()
+    sql_executor(
+        sql_command, f"insert into static values(0, 0, {datetime.now(timezone('Asia/Seoul')).strftime('%m.%d')})", -1, "08", "restart")
 
 
 def getTime():
@@ -163,6 +165,10 @@ async def service(websocket, path):
                 waiter = selData("waiters", 'setting', "01")
                 waiter_flag = False
 
+            if message == '!':
+                websocket.send('?')
+                return
+
             message = json.loads(message)
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
@@ -214,18 +220,11 @@ async def service(websocket, path):
                         await teacher.send(form(header=2, body_body=data))
                     except:
                         pass
-                    n = sql_executor(
-                        sql_command, f'select number from static where time="{static}"',
-                        pursue, "03", None)
-                    if len(n) == 0:
-                        sql_executor(
-                            sql_command, f'insert into static values(1, "{static}")', pursue, "04", None)
-                    else:
-                        k = n[0]['number']
-
                     sql_executor(
-                        sql_command, f'update static set number={k+1} where time="{static}"', pursue, "05",
-                        None)
+                        sql_command, f"update static set total=static.total+1 where time='{static}'", pursue, "02", data)
+                    if stat == 49:
+                        sql_executor(
+                            sql_command, f"update static set number=static.number+1 where time='{static}'", pursue, "03", data)
                 else:
                     raise RuntimeError(
                         "pursue: 2, content_header error: not s")
@@ -402,11 +401,10 @@ try:
     loop = asyncio.get_event_loop()
     loop.run_until_complete(server)
     loop.run_forever()
-except websockets.exceptions.ConnectionClosedError:
-    pass
 except:
     err = traceback.format_exc()
-    logging("WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC\n\n" +
-            err, dateFileName)
-    time_flag = True
-    waiter_flag = True
+    if "websockets.exceptions.ConnectionClosedError" not in err:
+        logging("WARNING EXCEPTION - WEBSOCKET ERROR, CODE EDIT NEC\n\n" +
+                err, dateFileName)
+        time_flag = True
+        waiter_flag = True

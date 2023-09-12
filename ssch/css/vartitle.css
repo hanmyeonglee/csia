@@ -202,8 +202,8 @@
 }
 #diagList {
   height: 70vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden!important;
+  overflow-x: auto!important;
 }
 .form-check-label {
   width: 100%;
