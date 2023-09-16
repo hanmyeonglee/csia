@@ -82,18 +82,23 @@ def selData(db, pursue, num):
 
 
 def restart():
-    res = selData("daily", -1, "01")
-    for r in res:
-        sql_executor(sql_command, inputSql(
-            "yearly", day_keys, r), -1, "02", "restart")
-    sql_executor(sql_command, "truncate daily", -1, "04", "restart")
-    sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
-    sql_executor(sql_command, "truncate posttime", -1, "06", "restart")
-    sql_executor(
-        sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
-    reset_time()
-    sql_executor(
-        sql_command, f"insert into static values(0, 0, {datetime.now(timezone('Asia/Seoul')).strftime('%m.%d')})", -1, "08", "restart")
+    try:
+        res = selData("daily", -1, "01")
+        for r in res:
+            r['time'] = f"{date} {r['time']}"
+            sql_executor(sql_command, inputSql(
+                "yearly", day_keys, r), -1, "02", "restart")
+        sql_executor(sql_command, "truncate daily", -1, "04", "restart")
+        sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
+        sql_executor(sql_command, "truncate posttime", -1, "06", "restart")
+        sql_executor(
+            sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
+        reset_time()
+        future = datetime.now(timezone('Asia/Seoul')).strftime('%m.%d')
+        sql_executor(
+            sql_command, f"insert into static values(0, 0, '{future}')", -1, "08", "restart")
+    finally:
+        mysql.close()
 
 
 def getTime():
@@ -153,7 +158,7 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
 async def service(websocket, path):
     try:
         async for message in websocket:
-            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter, static
+            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter, static, master
             if date != datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d"):
                 restart()
                 main()
@@ -165,21 +170,21 @@ async def service(websocket, path):
                 waiter = selData("waiters", 'setting', "01")
                 waiter_flag = False
 
-            if message == '!':
-                websocket.send('?')
-                return
-
             message = json.loads(message)
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
 
             if pursue == 'ping':
+                if content_header == "reconnect":
+                    sql_executor(sql_command, "select 1", pursue, "01", None)
                 await websocket.send(form(header=6, body_return="pong"))
             elif pursue == 0:
                 if content_header == "t":
                     teacher = websocket
                 elif content_header == "s":
                     others.add(websocket)
+                elif content_header == "m":
+                    master = websocket
                 else:
                     raise RuntimeError(
                         "pursue: 1, content_header error: neither t or s")
@@ -213,11 +218,13 @@ async def service(websocket, path):
                     sql = inputSql(
                         "waiters", wait_keys, data)
                     sql_executor(sql_command, sql, pursue, "01", data)
-                    waiter_flag = True
+                    sql_executor(
+                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "02", data['time'])
                     # content_body structure : {'number':~, 'name':~, 'sex':~, 'symptom':~, 'time':~}
                     await sending_2_all(header=2, body_body=data['time'])
                     try:
                         await teacher.send(form(header=2, body_body=data))
+                        await master.send(form(header=2, body_body=data))
                     except:
                         pass
                     sql_executor(
@@ -225,6 +232,8 @@ async def service(websocket, path):
                     if stat == 49:
                         sql_executor(
                             sql_command, f"update static set number=static.number+1 where time='{static}'", pursue, "03", data)
+                    waiter_flag = True
+                    time_flag = True
                 else:
                     raise RuntimeError(
                         "pursue: 2, content_header error: not s")
@@ -368,12 +377,13 @@ async def service(websocket, path):
         waiter_flag = True
 
 
-def main():
-    global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter, static  # , logger
+def main(flag=True):
+    global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter, static, master  # , logger
     date = datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
     static = datetime.now(timezone('Asia/Seoul')).strftime("%m.%d")
     teacher = None  # 선생님 웹소켓
+    master = None
     others = set()  # 다른 학생들의 웹소켓 정보
     time_flag = False
     waiter_flag = False
@@ -381,6 +391,8 @@ def main():
     # 예약된 시간, "hour" : [ "appointedMinute1", "appointedMinute2" ]의 형식임
     possible = False  # 현재 진료 가능한 상황인지 여부, 0은 불가능 1은 가능
     bed = 4  # 현재 사용 가능한 침대 개수(0~2)
+    if flag:
+        mysql.close()
     mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
                             db="ssch", port=23474, charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
     time = getTime()
@@ -393,7 +405,7 @@ wait_keys = ["number", "name", "sex", "time", "symptom", "uniq"]
 day_keys = ["number", "name", "sex", "time", "disease", "treat", "uniq"]
 treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " ")
-main()
+main(False)
 if sql_executor(sql_command, 'select * from posttime', -1, "00", None)[0]['posttime'] != date:
     restart()
 try:

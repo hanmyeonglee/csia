@@ -230,6 +230,14 @@
   top: -4px;
   transform: scale(0.8);
 }
+.popupImg{
+  width: 100%;
+  object-fit: contain;
+}
+#taxi{
+  transform-origin: center;
+  transform: scale(1.5)!important;
+}
 @media all and (max-aspect-ratio: 1/1) {
   .main {
     width: 90%;

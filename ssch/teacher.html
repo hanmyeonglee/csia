@@ -111,9 +111,9 @@
       const pw = document.getElementById("password");
       const btn = document.getElementById("loginBtn");
 
-      btn.addEventListener("click", (e) => {
+      btn.addEventListener("click", async (e) => {
         btn.setAttribute("disabled", true);
-        fetch("./php/teacher.php", {
+        await fetch("./php/teacher.php", {
           method: "POST",
           headers: { "Content-Type": "application/json; charset=UTF-8" },
           body: JSON.stringify([id.value, pw.value])
