@@ -190,6 +190,7 @@ webIO.client.onclose = () => {
 
 webIO.client.onmessage = async (data) => {
   let message = JSON.parse(data.data);
+  console.log(message);
   let stat = message["stat"];
   let head = message["content"]["header"];
   let returnType = message["content"]["body"]["return"];
