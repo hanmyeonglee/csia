@@ -63,11 +63,11 @@ export class WsClient extends Client{
     type_decrypt(mes){
         let type = mes['type'];
         let enc = null;
-        
+
         if(type == 0){
             enc = mes['enc'];
         } else if(type == 2){
-            enc = JSON.parse(this.decrypt(mes['enc']));
+            enc = this.decrypt(mes['enc']);
         }
 
         return enc;
