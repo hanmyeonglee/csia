@@ -4,9 +4,6 @@ export class WsClient extends Client{
     constructor(websocket){
         super();
         this.client = websocket;
-        this.onopen = websocket.onopen;
-        this.onclose = websocket.onclose;
-        this.onmessage = websocket.onmessage;
         this.pubkey = null;
     }
 

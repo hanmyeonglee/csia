@@ -179,16 +179,16 @@ const verifyDiagPos = () => {
   });
 };
 
-webIO.onopen = async () => {
+webIO.client.onopen = async () => {
   console.log("WebSocket Opened");
   await webIO.send({ enc: 0, type: 0, header: "s" });
 };
 
-webIO.onclose = () => {
+webIO.client.onclose = () => {
   console.log("WebSocket Closed");
 };
 
-webIO.onmessage = async (data) => {
+webIO.client.onmessage = async (data) => {
   let message = JSON.parse(data.data);
   let stat = message["stat"];
   let head = message["content"]["header"];
