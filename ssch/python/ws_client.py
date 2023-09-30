@@ -19,12 +19,12 @@ class Client:
             raise NoKeyOrIVError()
         data = pad(data.encode('utf-8'), 16)
         cipher = AES.new(self.key.encode('utf-8'), AES.MODE_CBC, self.iv)
-        return base64.b64encode(cipher.encrypt(data))
+        return base64.b64encode(cipher.encrypt(data)).decode('ascii')
 
     def decrypt(self, enc):
         enc = base64.b64decode(enc)
         cipher = AES.new(self.key.encode('utf-8'), AES.MODE_CBC, self.iv)
-        return unpad(cipher.decrypt(enc), 16)
+        return unpad(cipher.decrypt(enc), 16).decode("utf-8")
 
 
 class WsClient(Client):

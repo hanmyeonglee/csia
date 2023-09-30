@@ -25,8 +25,8 @@ export class Client{
     }
 
     encrypt(mes){
-        key_enc = CryptoJS.enc.Utf8.parse(this.key);
-        iv_enc = CryptoJS.enc.Utf8.parse(this.iv);
+        let key_enc = CryptoJS.enc.Utf8.parse(this.key);
+        let iv_enc = CryptoJS.enc.Utf8.parse(this.iv);
 
         let message = CryptoJS.enc.Utf8.parse(mes);
         let encrypted = CryptoJS.AES.encrypt(message, key_enc, {
@@ -38,8 +38,8 @@ export class Client{
     }
 
     decrypt(enc){
-        key_enc = CryptoJS.enc.Utf8.parse(this.key);
-        iv_enc = CryptoJS.enc.Utf8.parse(this.iv);
+        let key_enc = CryptoJS.enc.Utf8.parse(this.key);
+        let iv_enc = CryptoJS.enc.Utf8.parse(this.iv);
 
         let decrypted = CryptoJS.AES.decrypt(enc, key_enc, {
             iv : iv_enc,
