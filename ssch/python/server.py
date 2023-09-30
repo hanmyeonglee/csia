@@ -153,6 +153,7 @@ async def service(websocket, path):
                 waiter_flag = False
 
             message = json.loads(message)
+            print(message)
             if message['type'] == 0:
                 pass
             elif message['type'] == 1:
@@ -166,6 +167,7 @@ async def service(websocket, path):
                                  "01", None, dateFileName)
                 await websocket.send(form(type=0, header=6, body_return="pong"))
                 return
+            print(message)
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
 

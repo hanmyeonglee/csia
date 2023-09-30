@@ -27,7 +27,10 @@ export class WsClient extends Client{
         let send = "";
 
         if(enc == 0){
-            send = plain;
+            send = JSON.stringify({
+                "type":enc,
+                "enc":plain
+            });
         }
         else if(enc == 1){
             let publicKey = forge.pki.publicKeyFromPem(this.pubkey);
@@ -40,7 +43,7 @@ export class WsClient extends Client{
             let base64 = forge.util.encode64(encrypted);
             
             send = JSON.stringify({
-                "type":0,
+                "type":enc,
                 "enc":base64
             });
         }
@@ -48,7 +51,7 @@ export class WsClient extends Client{
             let encrypted = this.encrypt(plain);
 
             send = JSON.stringify({
-                "type":1,
+                "type":enc,
                 "enc":encrypted
             });
         }
