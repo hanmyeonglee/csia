@@ -12,14 +12,14 @@ export class WsClient extends Client{
     }
 
     form({type=1, stat=1, header="", body=[]}) {
-        return JSON.stringify({
+        return {
             "type": type,
             "stat": stat,
             "content": {
                 "header": header,
                 "body": body
             }
-        });
+        };
     };
 
     send({enc=2, type=1, stat=1, header="", body=[]}){
