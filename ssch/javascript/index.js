@@ -203,7 +203,7 @@ webIO.client.onmessage = async (data) => {
       switch (returnType) {
         case 0:
           webIO.set_pubkey(innerData);
-          jsonContent = JSON.stringify({
+          let jsonContent = JSON.stringify({
             "key": webIO.key,
             "iv": webIO.iv
           });
