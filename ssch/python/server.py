@@ -155,12 +155,12 @@ async def service(websocket, path):
             message = json.loads(message)
             print(message)
             if message['type'] == 0:
-                pass
+                message = json.loads(message['enc'])
             elif message['type'] == 1:
-                message = RSA_decrypt(message['enc'])
+                message = json.loads(RSA_decrypt(message['enc']))
             elif message['type'] == 2:
                 client: WsClient = others[websocket]
-                message = client.decrypt(message['enc'])
+                message = json.loads(client.decrypt(message['enc']))
             elif message['type'] == "ping":
                 if message['enc'] == "reconnect":
                     sql_executor(sql_command, "select 1", pursue,
