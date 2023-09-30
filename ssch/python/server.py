@@ -39,7 +39,7 @@ def hash160(string):
 
 
 def restart():
-    res = selData("daily", -1, "01")
+    res = selData("daily", -1, "01", dateFileName)
     for r in res:
         r['time'] = f"{date} {r['time']}"
         sql_executor(sql_command, inputSql(
@@ -149,7 +149,7 @@ async def service(websocket, path):
                 time = getTime()
                 time_flag = False
             if waiter_flag:
-                waiter = selData("waiters", 'setting', "01")
+                waiter = selData("waiters", 'setting', "01", dateFileName)
                 waiter_flag = False
 
             message = json.loads(message)
@@ -183,7 +183,7 @@ async def service(websocket, path):
 
             elif pursue == 1:
                 if content_header == "t":
-                    res_d = selData("daily", pursue, "01")
+                    res_d = selData("daily", pursue, "01", dateFileName)
                     ret = {"waiters": waiter, "daily": res_d,
                            "diagPos": possible, "bedNum": bed}
                     teacher.set_ki(content_body['key'], content_body['iv'])
@@ -291,7 +291,7 @@ async def service(websocket, path):
                                  "02", data, dateFileName)
                     waiter_flag = True
 
-                    res = selData("daily", pursue, "03")
+                    res = selData("daily", pursue, "03", dateFileName)
                     await sending_2_all(header=3, body_body=data['time'])
                 else:
                     raise RuntimeError(
@@ -320,7 +320,7 @@ async def service(websocket, path):
                                  "01", data, dateFileName)
                     sql_executor(initializeId, "daily", pursue,
                                  "02", data, dateFileName)
-                    res = selData("daily", pursue, "03")
+                    res = selData("daily", pursue, "03", dateFileName)
                 else:
                     raise RuntimeError(
                         "pursue: 9, content_header error: not t")
@@ -393,7 +393,7 @@ def main():
     possible = False  # 현재 진료 가능한 상황인지 여부, 0은 불가능 1은 가능
     bed = 4  # 현재 사용 가능한 침대 개수(0~2)
     time = getTime()
-    waiter = selData("waiters", 'setting', "01")
+    waiter = selData("waiters", 'setting', "01", dateFileName)
     pubkey = open('/var/www/html/ssch/pem/pubkey.pem').read()
     # logger = makeLogger()
     logging("server (re)started", dateFileName)

@@ -59,9 +59,9 @@ def delSql(db, uniq):
     return f'delete from {db} where uniq="{uniq}"'
 
 
-def selData(db, pursue, num):
+def selData(db, pursue, num, dateFileName):
     ret = sql_executor(
-        sql_command, f'select * from {db} order by time', pursue, num, None)
+        sql_command, f'select * from {db} order by time', pursue, num, None, dateFileName)
     for i, r in enumerate(ret):
         r['id'] = i+1
     return ret
