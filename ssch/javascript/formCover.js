@@ -32,7 +32,7 @@ export class WsClient extends Client{
         else if(enc == 1){
             let publicKey = forge.pki.publicKeyFromPem(this.pubkey);
         
-            let secretMessage = this.uint8ArrayToBinary(encoder.encode(plain));
+            let secretMessage = this.uint8ArrayToBinary(new TextEncoder("utf-8").encode(plain));
             let encrypted = publicKey.encrypt(secretMessage, "RSA-OAEP", {
                 md: forge.md.sha256.create(),
                 mgf1: forge.mgf1.create()
