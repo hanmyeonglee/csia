@@ -32,18 +32,33 @@
     <div class="main coverMain">
       <nav class="navbar bg-body">
         <div id="navExternal">
-          <div class="nanum fw-bold stretch">
+          <div class="nanum fw-bold stretch desktop">
             <div>청심국제중고등학교 보건실</div>
             <div class="btnCover gridColumn">
-              <div class="position-relative newCover">
+              <!-- <div class="position-relative newCover">
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fw-bolder">
                   new update
                 </span>
-              </div>
+              </div> --> 
               <img src="./image.resize/download.reduct.png" class="abdown center" id="download" data-bs-toggle="modal" data-bs-target="#downloadModal"/>
               <img src="./image.resize/about.reduct.png" class="abdown center" id="about" />
-              <div class="abdown center" data-bs-toggle="modal" data-bs-target="#taxiModal">
-                <img src="./image.resize/taxi.png" id="taxi" class="abdown">
+              <img src="./image.resize/taxi.png" id="taxi" class="abdown center" data-bs-toggle="modal" data-bs-target="#taxiModal">
+            </div>
+          </div>
+          <div class="nanum fw-bold gridRow mobile">
+            <div>청심국제중고등학교 보건실</div>
+            <div class="btnCover mobileImgs">
+              <!-- <div class="position-relative newCover">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fw-bolder">
+                  new update
+                </span>
+              </div> -->
+              <div class="gridColumn">
+                <div class="gridColumn" style="margin-right: 2vw;">
+                  <img src="./image.resize/download.reduct.png" class="abdown center" id="download" data-bs-toggle="modal" data-bs-target="#downloadModal"/>
+                  <img src="./image.resize/about.reduct.png" class="abdown center" id="about" />
+                </div>
+                <img src="./image.resize/taxi.png" id="taxi" class="abdown center" data-bs-toggle="modal" data-bs-target="#taxiModal">
               </div>
             </div>
           </div>
@@ -56,13 +71,13 @@
             <div id="nurseInfo" class="stretch imgCover">
               <div id="diagPos">
                 <img
-                  src="./image.resize/diagImpos.png"
+                  src="./image.resize/diagImpos.reduct.png"
                   class="imgResize infoImg center diagPos"
                 />
               </div>
               <div id="bedNum">
                 <img
-                  src="./image.resize/bedRemain04.png"
+                  src="./image.resize/bedRemain04.reduct.png"
                   class="imgResize infoImg center bedNum"
                 />
               </div>
@@ -664,12 +679,8 @@
     <div class="modal fade" id="taxiModal" tabindex="-1" aria-labelledby="taxiModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="taxiModalLabel">청심병원 버스 시간</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
           <div class="modal-body">
-            <div style="max-width: 100%;">
+            <div>
               <img src="./image.resize/taxi_popup.png" class="popupImg">
             </div>
           </div>
@@ -681,6 +692,9 @@
       integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js" integrity="sha512-95iy0RZIbw3H/FgfAj2wnCQJlzFQ+eaSfUeV/l8WVyGHKSRMzm3M/O+85j9ba/HFphkijrCTDjcuDX0BL2lthA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="module" src="./javascript/client.js"></script>
     <script type="module" src="./javascript/formCover.js"></script>
     <script type="module" src="./javascript/index.js"></script>
   </body>

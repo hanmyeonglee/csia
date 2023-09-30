@@ -1,17 +1,17 @@
 import websockets
 import asyncio
 import json
+import pymysql
 import traceback
 import hashlib
-from sqlModule import *
+from sqlModule import reset_time
 from makeXl import makeFile
 from copy import deepcopy as copy
 from logs import log as logging
+from pymysql import cursors
 from datetime import datetime
 from pytz import timezone
 from random import shuffle
-from ws_client import WsClient, NoKeyOrIVError
-from RSA_layer import RSA_decrypt
 
 
 """ 
@@ -38,21 +38,67 @@ def hash160(string):
     return hashlib.new('ripemd160', string.encode()).digest().hex()
 
 
+def sql_command(command):
+    with mysql.cursor() as commander:
+        commander.execute(command)
+        res = commander.fetchall()
+        return res
+
+
+def initializeId(tableN):
+    with mysql.cursor() as commander:
+        commander.execute('SET @count=0')
+        commander.execute(f'update {tableN} SET id=@count:=@count+1')
+        commander.execute(f'alter table {tableN} auto_increment=1')
+
+
+def sql_executor(func, sql, pursue, num, data):
+    try:
+        return func(sql)
+    except:
+        err = traceback.format_exc()
+        logging(err, dateFileName)
+        raise RuntimeError(
+            f"pursue: {pursue}, mysql stdio error{num}: data = {data}")
+
+
+def inputSql(db, keys, data):
+    queries = []
+    for key in keys:
+        queries.append(f'"{data[key]}"')
+    return f'insert into {db}({", ".join(keys)}) values({", ".join(queries)})'
+
+
+def delSql(db, uniq):
+    return f'delete from {db} where uniq="{uniq}"'
+
+
+def selData(db, pursue, num):
+    ret = sql_executor(
+        sql_command, f'select * from {db} order by time', pursue, num, None)
+    for i, r in enumerate(ret):
+        r['id'] = i+1
+    return ret
+
+
 def restart():
-    res = selData("daily", -1, "01")
-    for r in res:
-        r['time'] = f"{date} {r['time']}"
-        sql_executor(sql_command, inputSql(
-            "yearly", day_keys, r), -1, "02", "restart")
-    sql_executor(sql_command, "truncate daily", -1, "04", "restart")
-    sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
-    sql_executor(sql_command, "truncate posttime", -1, "06", "restart")
-    sql_executor(
-        sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
-    reset_time()
-    future = datetime.now(timezone('Asia/Seoul')).strftime('%m.%d')
-    sql_executor(
-        sql_command, f"insert into static values(0, 0, '{future}')", -1, "08", "restart")
+    try:
+        res = selData("daily", -1, "01")
+        for r in res:
+            r['time'] = f"{date} {r['time']}"
+            sql_executor(sql_command, inputSql(
+                "yearly", day_keys, r), -1, "02", "restart")
+        sql_executor(sql_command, "truncate daily", -1, "04", "restart")
+        sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
+        sql_executor(sql_command, "truncate posttime", -1, "06", "restart")
+        sql_executor(
+            sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
+        reset_time()
+        future = datetime.now(timezone('Asia/Seoul')).strftime('%m.%d')
+        sql_executor(
+            sql_command, f"insert into static values(0, 0, '{future}')", -1, "08", "restart")
+    finally:
+        mysql.close()
 
 
 def getTime():
@@ -69,7 +115,7 @@ def getTime():
     return ret
 
 
-def form(type=2, status=1, header=0, body_return=-1, body_body=[], client: WsClient = None):
+def form(status=1, header=0, body_return=-1, body_body=[]):
     """websocket으로 보낼 반환값을 받는 함수
 
     Args:
@@ -80,30 +126,7 @@ def form(type=2, status=1, header=0, body_return=-1, body_body=[], client: WsCli
     Return:
         json 형태로 반환 객체를 바꾸어 줍니다.
     """
-    plain = json.dumps(
-        {
-            "stat": status,
-            "content": {
-                "header": header,
-                "body": {
-                    "return": body_return,
-                    "body": body_body
-                }
-            }
-        }
-    )
-
-    if type == 0:
-        enc = plain
-    elif type == 2:
-        enc = client.encrypt(plain)
-
-    return json.dumps(
-        {
-            "type": type,
-            "enc": enc
-        }
-    )
+    return json.dumps({"stat": status, "content": {"header": header, "body": {"return": body_return, "body": body_body}}})
 
 
 async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_body=[]):
@@ -122,22 +145,20 @@ async def sending_2_all(except_websocket=None, header=0, body_return=-1, body_bo
     """
     global others
     removeds = []
-    for client, other in others.items():
-        if other.client != except_websocket:
+    for other in others:
+        if other != except_websocket:
             try:
-                await other.send(form(header=header, body_return=body_return, body_body=body_body, client=other))
-            except NoKeyOrIVError:
-                pass
+                await other.send(form(header=header, body_return=body_return, body_body=body_body))
             except:
-                removeds.append(client)
+                removeds.append(other)
     for removed in removeds:
-        del others[removed]
+        others.remove(removed)
 
 
 async def service(websocket, path):
     try:
         async for message in websocket:
-            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter, static, master, pubkey
+            global teacher, others, possible, bed, date, time_flag, waiter_flag, time, waiter, static, master
             if date != datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d"):
                 restart()
                 main()
@@ -150,46 +171,35 @@ async def service(websocket, path):
                 waiter_flag = False
 
             message = json.loads(message)
-            if message['type'] == 0:
-                pass
-            elif message['type'] == 1:
-                message = RSA_decrypt(message['enc'])
-            elif message['type'] == 2:
-                client: WsClient = others[websocket]
-                message = client.decrypt(message['enc'])
-            elif message['type'] == "ping":
-                if message['enc'] == "reconnect":
-                    sql_executor(sql_command, "select 1", pursue, "01", None)
-                await websocket.send(form(type=0, header=6, body_return="pong"))
-                return
             pursue, stat, content_header, content_body = message["type"], message[
                 'stat'], message["content"]["header"], message["content"]["body"]
 
-            if pursue == 0:
+            if pursue == 'ping':
+                if content_header == "reconnect":
+                    sql_executor(sql_command, "select 1", pursue, "01", None)
+                await websocket.send(form(header=6, body_return="pong"))
+            elif pursue == 0:
                 if content_header == "t":
-                    teacher = WsClient(websocket=websocket)
+                    teacher = websocket
                 elif content_header == "s":
-                    others[websocket] = WsClient(websocket=websocket)
+                    others.add(websocket)
                 elif content_header == "m":
-                    master = WsClient(websocket=websocket)
+                    master = websocket
                 else:
                     raise RuntimeError(
                         "pursue: 1, content_header error: neither t or s")
-                await websocket.send(form(type=0, header=6, body_return=0, body_body=pubkey))
+                await websocket.send(form(header=6, body_return=0))
 
             elif pursue == 1:
                 if content_header == "t":
                     res_d = selData("daily", pursue, "01")
                     ret = {"waiters": waiter, "daily": res_d,
                            "diagPos": possible, "bedNum": bed}
-                    teacher.set_ki(content_body['key'], content_body['iv'])
-                    await websocket.send(form(header=6, body_return=1, body_body=ret, client=teacher))
+                    await websocket.send(form(header=6, body_return=1, body_body=ret))
                 elif content_header == "s":
                     ret = {"times": time, "bedNum": bed,
                            "diagPos": possible}
-                    others[websocket].set_ki(
-                        content_body['key'], content_body['iv'])
-                    await websocket.send(form(header=6, body_return=1, body_body=ret, client=others[websocket]))
+                    await websocket.send(form(header=6, body_return=1, body_body=ret))
                 else:
                     raise RuntimeError(
                         "pursue: 1, content_header error: neither t or s")
@@ -199,7 +209,7 @@ async def service(websocket, path):
                     data = copy(content_body)
                     h, m = data['time'].split(":")
                     if m in time[h] or not (8 <= int(h) <= 17) or h == '12':
-                        await websocket.send(form(header=6, body_return=2, body_body=-1, client=others[websocket]))
+                        await websocket.send(form(header=6, body_return=2, body_body=-1))
                         return
                     temp = list(data.values())
                     shuffle(temp)
@@ -213,8 +223,8 @@ async def service(websocket, path):
                     # content_body structure : {'number':~, 'name':~, 'sex':~, 'symptom':~, 'time':~}
                     await sending_2_all(header=2, body_body=data['time'])
                     try:
-                        await teacher.send(form(header=2, body_body=data, client=teacher))
-                        await master.send(form(header=2, body_body=data, client=master))
+                        await teacher.send(form(header=2, body_body=data))
+                        await master.send(form(header=2, body_body=data))
                     except:
                         pass
                     sql_executor(
@@ -227,7 +237,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 2, content_header error: not s")
-                await websocket.send(form(header=6, body_return=2, client=others[websocket]))
+                await websocket.send(form(header=6, body_return=2))
 
             elif pursue == 3:
                 if content_header == "t":
@@ -246,7 +256,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 3, content_header error: not t")
-                await websocket.send(form(header=6, body_return=3, client=teacher))
+                await websocket.send(form(header=6, body_return=3))
 
             elif pursue == 4:
                 if content_header == "t":
@@ -259,7 +269,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 4, content_header error: not t")
-                await websocket.send(form(header=6, body_return=4, client=teacher))
+                await websocket.send(form(header=6, body_return=4))
 
             elif pursue == 5:
                 if content_header == "t":
@@ -268,7 +278,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 5, content_header error: not t")
-                await websocket.send(form(header=6, body_return=5, client=teacher))
+                await websocket.send(form(header=6, body_return=5))
 
             elif pursue == 7:
                 if content_header == "t":
@@ -287,7 +297,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 5, content_header error: not t")
-                await websocket.send(form(header=6, body_return=7, body_body=res, client=teacher))
+                await websocket.send(form(header=6, body_return=7, body_body=res))
 
             elif pursue == 8:
                 if content_header == "t":
@@ -301,7 +311,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 8, content_header error: not t")
-                await websocket.send(form(header=6, body_return=8, client=teacher))
+                await websocket.send(form(header=6, body_return=8))
 
             elif pursue == 9:
                 if content_header == "t":
@@ -313,7 +323,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 9, content_header error: not t")
-                await websocket.send(form(header=6, body_return=9, body_body=res, client=teacher))
+                await websocket.send(form(header=6, body_return=9, body_body=res))
 
             elif pursue == 10:
                 if content_header == "t":
@@ -354,7 +364,7 @@ async def service(websocket, path):
                 else:
                     raise RuntimeError(
                         "pursue: 9, content_header error: not t")
-                await websocket.send(form(header=6, body_return=10, body_body=f"{dateFileName}", client=teacher))
+                await websocket.send(form(header=6, body_return=10, body_body=f"{dateFileName}"))
 
             else:
                 raise RuntimeError(
@@ -362,28 +372,31 @@ async def service(websocket, path):
     except:
         err = traceback.format_exc()
         logging(err, dateFileName)
-        await websocket.send(form(type=0, status=0))
+        await websocket.send(form(status=0))
         time_flag = True
         waiter_flag = True
 
 
-def main():
-    global teacher, others, possible, bed, date, dateFileName, time_flag, waiter_flag, time, waiter, static, master, pubkey  # , logger
+def main(flag=True):
+    global teacher, others, possible, bed, mysql, date, dateFileName, time_flag, waiter_flag, time, waiter, static, master  # , logger
     date = datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m.%d")
     dateFileName = ''.join(date.split('.'))
     static = datetime.now(timezone('Asia/Seoul')).strftime("%m.%d")
     teacher = None  # 선생님 웹소켓
     master = None
-    others = dict()  # 다른 학생들의 웹소켓 정보
+    others = set()  # 다른 학생들의 웹소켓 정보
     time_flag = False
     waiter_flag = False
     # waiters = {} # 지금 기다리고 있는 학생들 리스트, [ 학년반, 이름, 성별, 증상, 시간 ] 5가지로 이루어져 있다.
     # 예약된 시간, "hour" : [ "appointedMinute1", "appointedMinute2" ]의 형식임
     possible = False  # 현재 진료 가능한 상황인지 여부, 0은 불가능 1은 가능
     bed = 4  # 현재 사용 가능한 침대 개수(0~2)
+    if flag:
+        mysql.close()
+    mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
+                            db="ssch", port=23474, charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
     time = getTime()
     waiter = selData("waiters", 'setting', "01")
-    pubkey = open('/var/www/html/ssch/pem/pubkey.pem').read()
     # logger = makeLogger()
     logging("server (re)started", dateFileName)
 
@@ -392,7 +405,7 @@ wait_keys = ["number", "name", "sex", "time", "symptom", "uniq"]
 day_keys = ["number", "name", "sex", "time", "disease", "treat", "uniq"]
 treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " ")
-main()
+main(False)
 if sql_executor(sql_command, 'select * from posttime', -1, "00", None)[0]['posttime'] != date:
     restart()
 try:

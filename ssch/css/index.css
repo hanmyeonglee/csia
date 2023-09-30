@@ -70,6 +70,8 @@
   /* max-width: 400px; */
   left: 0%;
   transform: translate(0%, -50%);
+  padding-bottom: 5.5vh;
+  padding-top: 2vh;
 }
 .imgCover {
   padding-left: 2vw;
@@ -235,8 +237,17 @@
   object-fit: contain;
 }
 #taxi{
-  transform-origin: center;
-  transform: scale(1.5)!important;
+  height: 2.12vw !important;
+}
+#about{
+  margin-right: 1.11vw;
+}
+.mobileImgs{
+  display: grid;
+  place-content: center end;
+}
+.mobile.gridRow{
+  grid-gap: 8.5px;
 }
 @media all and (max-aspect-ratio: 1/1) {
   .main {
@@ -249,7 +260,7 @@
     display: none !important;
   }
   #navExternal > div {
-    font-size: 1.7vh;
+    font-size: 2.5vh;
   }
   #interfaceCover {
     grid-template-columns: none;
@@ -264,7 +275,7 @@
     /* max-width: 300px; */
   }
   .infoImg {
-    width: 14vh;
+    width: 18vh;
     /* max-width: 400px; */
     left: 0%;
     transform: translate(0%, -50%);
@@ -273,8 +284,8 @@
     padding-left: 1vh;
   }
   .imgCover.stretch{
-    padding-right: 4vh;
-    padding-left: 4vh;
+    padding-right: 0;
+    padding-left: 0;
   }
   #rule > img {
     width: 6vh;
@@ -308,5 +319,8 @@
   }
   .navImg02 {
     width: 12vh;
+  }
+  #taxi{
+    height: 2.9vh !important;
   }
 }

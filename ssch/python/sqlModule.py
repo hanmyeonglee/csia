@@ -1,50 +1,67 @@
 import pymysql
+import traceback
+from logs import log as logging
+from pymysql import cursors
+
+
+def make_connection():
+    return pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
+                           db="ssch", port=23474, charset="utf8", cursorclass=cursors.DictCursor, autocommit=True)
 
 
 def reset_time():
-    print("aaa")
-    mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
-                            db="ssch", port=23474, charset="utf8", autocommit=True)
-    """ with mysql.cursor() as commander:
-        commander.execute(
-            f'create table waiters(id smallint(10) not null auto_increment, number char(5), name varchar(20), sex char(10), time char(7), symptom varchar(10000), uniq char(40), primary key(id))')
-        commander.execute(
-            f'create table daily(id smallint(10) not null auto_increment, number char(5), name varchar(20), sex char(10), time char(7), disease varchar(400), treat varchar(1000), uniq char(40), primary key(id))')
-        commander.execute(
-            f'create table yearly(id smallint(10) not null auto_increment, number char(5), name varchar(20), sex char(10), time char(20), disease varchar(400), treat varchar(1000), uniq char(40), primary key(id))')
-        commander.execute(
-            f'create table posttime(posttime char(15))')
-        commander.execute(
-            f'insert into posttime values("1970.01.01")')
-        for i in range(8, 18):
-            if i == 12:
-                continue
-            h = str(i).rjust(2, '0')
-            commander.execute(
-                f'create table time_{h}(min char(5), pos tinyint(1), primary key(min))')
-            for j in range(0, 60):
-                m = str(j).rjust(2, '0')
-                commander.execute(f'insert into time_{h} values("{m}", 1)')
-        commander.execute('select * from posttime')
-        print(commander.fetchall()) """
-
-    with mysql.cursor() as commander:
-        """print("bbb")
-        for i in [8, 16]:
-            print("ccc")
-            h = str(i).rjust(2, '0')
-            commander.execute(f'drop table time_{h}')
-            commander.execute(
-                f'create table time_{h}(min char(5), pos tinyint(1), primary key(min))')
-            for j in range(0, 60):
-                m = str(j).rjust(2, '0')
-                if i == 8 and j in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]:
-                    commander.execute(f'insert into time_{h} values("{m}", 0)')
-                else:
-                    commander.execute(f'insert into time_{h} values("{m}", 1)')"""
+    con = make_connection()
+    with con.cursor() as commander:
         for i in range(8, 17):
             if i == 12:
                 continue
             h = str(i).rjust(2, '0')
             commander.execute(f'update time_{h} set pos=1')
-    mysql.close()
+    con.close()
+
+
+def sql_command(command):
+    con = make_connection()
+    with con.cursor() as commander:
+        commander.execute(command)
+        res = commander.fetchall()
+        con.close()
+        return res
+
+
+def initializeId(tableN):
+    con = make_connection()
+    with con.cursor() as commander:
+        commander.execute('SET @count=0')
+        commander.execute(f'update {tableN} SET id=@count:=@count+1')
+        commander.execute(f'alter table {tableN} auto_increment=1')
+        con.close()
+
+
+def sql_executor(func, sql, pursue, num, data, dateFileName):
+    try:
+        return func(sql)
+    except:
+        err = traceback.format_exc()
+        logging(err, dateFileName)
+        raise RuntimeError(
+            f"pursue: {pursue}, mysql stdio error{num}: data = {data}")
+
+
+def inputSql(db, keys, data):
+    queries = []
+    for key in keys:
+        queries.append(f'"{data[key]}"')
+    return f'insert into {db}({", ".join(keys)}) values({", ".join(queries)})'
+
+
+def delSql(db, uniq):
+    return f'delete from {db} where uniq="{uniq}"'
+
+
+def selData(db, pursue, num):
+    ret = sql_executor(
+        sql_command, f'select * from {db} order by time', pursue, num, None)
+    for i, r in enumerate(ret):
+        r['id'] = i+1
+    return ret

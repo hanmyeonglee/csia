@@ -1,4 +1,4 @@
-import { form, copy, errorHandling, loading } from "./formCover.js";
+import { WsClient, copy, errorHandling, loading } from "./formCover.js";
 /**
  * pursue
  * 0 = connect request
@@ -27,7 +27,7 @@ const examineCurrentInterface = (inters) => {
   });
 })();
 
-const webIO = new WebSocket("ws://10.13.19.49:52125");
+const webIO = new WsClient(new WebSocket("ws://localhost:52125"));
 const interfaces = document.getElementsByClassName("interface");
 const applyBtns = Array.from(document.getElementsByClassName("applyBtn"));
 const modal = document.getElementById("symptomType");
@@ -43,6 +43,9 @@ let current = examineCurrentInterface(interfaces);
 let symptom = [];
 let appointedTime = {};
 let other = false;
+let key = null;
+let iv = null;
+let pubkey = null;
 
 const verify = (data) => {
   let ret = {};
@@ -101,11 +104,10 @@ const verify = (data) => {
 
 const makeOptions = () => {
   let hour = new Date().getHours();
-  let minute = new Date().getMinutes();
   let hourDefaultOption =
-    '<option value="default" class="default" selected>시(hour)</option>';
+  '<option value="default" class="default" selected>시(hour)</option>';
   let minuteDefaultOption =
-    '<option value="default" class="default" selected>분(minute)</option>';
+  '<option value="default" class="default" selected>분(minute)</option>';
   let optionForm = (num, mes, disable) => {
     let ret = document.createElement("option");
     ret.value = String(num).padStart(2, "0");
@@ -118,8 +120,9 @@ const makeOptions = () => {
     }
     return ret;
   };
-
+  
   hourSelect.forEach((element) => {
+    let minute = new Date().getMinutes();
     element.innerHTML = hourDefaultOption;
     for (let i = 8; i <= 16; i++) {
       //element.appendChild(optionForm(i, "시", (i >= hour) ? false : true));
@@ -154,9 +157,9 @@ const verifyBed = () => {
   bedNumImg.forEach((e) => {
     let inf = examineCurrentInterface(interfaces);
     if(inf.classList.value.includes('desktop')){
-        e.src = `./image.resize/bedRemain0${bedNum}.png`;
+        e.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
     } else {
-        e.src = `./image.resize/bedRemain0${bedNum}.png`;
+        e.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
     }
   });
 };
@@ -166,8 +169,8 @@ const verifyDiagPos = () => {
     let inf = examineCurrentInterface(interfaces);
     if(inf.classList.value.includes('desktop')){
         e.src = diagPos
-          ? "./image.resize/diagPos.png"
-          : "./image.resize/diagImpos.png";
+          ? "./image.resize/diagPos.reduct.png"
+          : "./image.resize/diagImpos.reduct.png";
     } else {
 	e.src = diagPos
          ? "./image.resize/diagPos.reduct.png"
@@ -178,7 +181,7 @@ const verifyDiagPos = () => {
 
 webIO.onopen = async () => {
   console.log("WebSocket Opened");
-  await webIO.send(form({ type: 0, header: "s" }));
+  await webIO.send({ enc: 0, type: 0, header: "s" });
 };
 
 webIO.onclose = () => {
@@ -197,7 +200,12 @@ webIO.onmessage = async (data) => {
     if (head == 6) {
       switch (returnType) {
         case 0:
-          await webIO.send(form({ type: 1, header: "s" }));
+          webIO.set_pubkey(innerData);
+          jsonContent = JSON.stringify({
+            "key": webIO.key,
+            "iv": webIO.iv
+          });
+          await webIO.send({ enc: 1, type: 1, header: "s", body: jsonContent });
           break;
         case 1:
           data = copy(innerData);
@@ -277,7 +285,7 @@ applyBtns.forEach((element) => {
       return false;
     }
 
-    await webIO.send(form({ type: 2, header: "s", body: verified }));
+    await webIO.send({ type: 2, header: "s", body: verified });
     return true;
   });
 });

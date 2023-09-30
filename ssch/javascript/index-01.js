@@ -105,11 +105,10 @@ const verify = (data) => {
 
 const makeOptions = () => {
   let hour = new Date().getHours();
-  let minute = new Date().getMinutes();
   let hourDefaultOption =
-    '<option value="default" class="default" selected>시(hour)</option>';
+  '<option value="default" class="default" selected>시(hour)</option>';
   let minuteDefaultOption =
-    '<option value="default" class="default" selected>분(minute)</option>';
+  '<option value="default" class="default" selected>분(minute)</option>';
   let optionForm = (num, mes, disable) => {
     let ret = document.createElement("option");
     ret.value = String(num).padStart(2, "0");
@@ -122,8 +121,9 @@ const makeOptions = () => {
     }
     return ret;
   };
-
+  
   hourSelect.forEach((element) => {
+    let minute = new Date().getMinutes();
     element.innerHTML = hourDefaultOption;
     for (let i = 8; i <= 16; i++) {
       //element.appendChild(optionForm(i, "시", (i >= hour) ? false : true));
@@ -158,9 +158,9 @@ const verifyBed = () => {
   bedNumImg.forEach((e) => {
     let inf = examineCurrentInterface(interfaces);
     if(inf.classList.value.includes('desktop')){
-        e.src = `./image.resize/bedRemain0${bedNum}.png`;
+        e.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
     } else {
-        e.src = `./image.resize/bedRemain0${bedNum}.png`;
+        e.src = `./image.resize/bedRemain0${bedNum}.reduct.png`;
     }
   });
 };
@@ -170,8 +170,8 @@ const verifyDiagPos = () => {
     let inf = examineCurrentInterface(interfaces);
     if(inf.classList.value.includes('desktop')){
         e.src = diagPos
-          ? "./image.resize/diagPos.png"
-          : "./image.resize/diagImpos.png";
+          ? "./image.resize/diagPos.reduct.png"
+          : "./image.resize/diagImpos.reduct.png";
     } else {
 	e.src = diagPos
          ? "./image.resize/diagPos.reduct.png"
