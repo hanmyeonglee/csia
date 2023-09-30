@@ -23,7 +23,7 @@ export class WsClient extends Client{
     };
 
     send({enc=2, type=1, stat=1, header="", body=[]}){
-        let plain = form({type: type, stat: stat, header: header, body: body});
+        let plain = this.form({type: type, stat: stat, header: header, body: body});
         let send = "";
 
         if(enc == 0){
