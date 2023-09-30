@@ -189,8 +189,8 @@ webIO.client.onclose = () => {
 };
 
 webIO.client.onmessage = async (data) => {
-  let message = JSON.parse(JSON.parse(data.data)['enc']);
-  console.log(message);
+  let mes = JSON.parse(data.data);
+  let message = webIO.type_decrypt(mes);
   let stat = message["stat"];
   let head = message["content"]["header"];
   let returnType = message["content"]["body"]["return"];
