@@ -43,16 +43,19 @@ def restart():
     for r in res:
         r['time'] = f"{date} {r['time']}"
         sql_executor(sql_command, inputSql(
-            "yearly", day_keys, r), -1, "02", "restart")
-    sql_executor(sql_command, "truncate daily", -1, "04", "restart")
-    sql_executor(sql_command, "truncate waiters", -1, "05", "restart")
-    sql_executor(sql_command, "truncate posttime", -1, "06", "restart")
+            "yearly", day_keys, r), -1, "02", "restart", dateFileName)
+    sql_executor(sql_command, "truncate daily", -
+                 1, "04", "restart", dateFileName)
+    sql_executor(sql_command, "truncate waiters", -
+                 1, "05", "restart", dateFileName)
+    sql_executor(sql_command, "truncate posttime", -
+                 1, "06", "restart", dateFileName)
     sql_executor(
-        sql_command, f"insert into posttime values('{date}')", -1, "07", "restart")
+        sql_command, f"insert into posttime values('{date}')", -1, "07", "restart", dateFileName)
     reset_time()
     future = datetime.now(timezone('Asia/Seoul')).strftime('%m.%d')
     sql_executor(
-        sql_command, f"insert into static values(0, 0, '{future}')", -1, "08", "restart")
+        sql_command, f"insert into static values(0, 0, '{future}')", -1, "08", "restart", dateFileName)
 
 
 def getTime():
@@ -63,7 +66,7 @@ def getTime():
         hour = str(h).rjust(2, '0')
         ret[hour] = []
         res = sql_executor(
-            sql_command, f'select min from time_{hour} where pos=0', 'setting', '01', None)
+            sql_command, f'select min from time_{hour} where pos=0', 'setting', '01', None, dateFileName)
         for r in res:
             ret[hour].append(r['min'])
     return ret
@@ -159,7 +162,8 @@ async def service(websocket, path):
                 message = client.decrypt(message['enc'])
             elif message['type'] == "ping":
                 if message['enc'] == "reconnect":
-                    sql_executor(sql_command, "select 1", pursue, "01", None)
+                    sql_executor(sql_command, "select 1", pursue,
+                                 "01", None, dateFileName)
                 await websocket.send(form(type=0, header=6, body_return="pong"))
                 return
             pursue, stat, content_header, content_body = message["type"], message[
@@ -207,9 +211,10 @@ async def service(websocket, path):
                         ''.join(temp))
                     sql = inputSql(
                         "waiters", wait_keys, data)
-                    sql_executor(sql_command, sql, pursue, "01", data)
+                    sql_executor(sql_command, sql, pursue,
+                                 "01", data, dateFileName)
                     sql_executor(
-                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "02", data['time'])
+                        sql_command, f'update time_{h} set pos=0 where min="{m}"', pursue, "02", data['time'], dateFileName)
                     # content_body structure : {'number':~, 'name':~, 'sex':~, 'symptom':~, 'time':~}
                     await sending_2_all(header=2, body_body=data['time'])
                     try:
@@ -218,10 +223,10 @@ async def service(websocket, path):
                     except:
                         pass
                     sql_executor(
-                        sql_command, f"update static set total=static.total+1 where time='{static}'", pursue, "02", data)
+                        sql_command, f"update static set total=static.total+1 where time='{static}'", pursue, "02", data, dateFileName)
                     if stat == 49:
                         sql_executor(
-                            sql_command, f"update static set number=static.number+1 where time='{static}'", pursue, "03", data)
+                            sql_command, f"update static set number=static.number+1 where time='{static}'", pursue, "03", data, dateFileName)
                     waiter_flag = True
                     time_flag = True
                 else:
@@ -236,12 +241,14 @@ async def service(websocket, path):
                     uniq = data['uniq']
                     # waiters = list(filter(lambda x: x['time'] != content_body, waiters))
                     sql = delSql("waiters", uniq)
-                    sql_executor(sql_command, sql, pursue, "02", data)
-                    sql_executor(initializeId, "waiters", pursue, "03", data)
+                    sql_executor(sql_command, sql, pursue,
+                                 "02", data, dateFileName)
+                    sql_executor(initializeId, "waiters", pursue,
+                                 "03", data, dateFileName)
                     waiter_flag = True
                     await sending_2_all(header=3, body_body=data['time'])
                     sql_executor(
-                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data['time'])
+                        sql_command, f'update time_{h} set pos=1 where min="{m}"', pursue, "01", data['time'], dateFileName)
                     time_flag = True
                 else:
                     raise RuntimeError(
@@ -276,10 +283,12 @@ async def service(websocket, path):
 
                     sql = inputSql(
                         "daily", day_keys, data)
-                    sql_executor(sql_command, sql, pursue, "01", data)
+                    sql_executor(sql_command, sql, pursue,
+                                 "01", data, dateFileName)
 
                     sql = delSql("waiters", data['uniq'])
-                    sql_executor(sql_command, sql, pursue, "02", data)
+                    sql_executor(sql_command, sql, pursue,
+                                 "02", data, dateFileName)
                     waiter_flag = True
 
                     res = selData("daily", pursue, "03")
@@ -297,7 +306,7 @@ async def service(websocket, path):
                         for val in value:
                             queries.append(f'{val[0]}="{val[1]}"')
                         sql_executor(
-                            sql_command, f'update daily set {", ".join(queries)} where uniq="{crit}"', pursue, "01", data)
+                            sql_command, f'update daily set {", ".join(queries)} where uniq="{crit}"', pursue, "01", data, dateFileName)
                 else:
                     raise RuntimeError(
                         "pursue: 8, content_header error: not t")
@@ -307,8 +316,10 @@ async def service(websocket, path):
                 if content_header == "t":
                     data = content_body
                     sql = delSql('daily', data)
-                    sql_executor(sql_command, sql, pursue, "01", data)
-                    sql_executor(initializeId, "daily", pursue, "02", data)
+                    sql_executor(sql_command, sql, pursue,
+                                 "01", data, dateFileName)
+                    sql_executor(initializeId, "daily", pursue,
+                                 "02", data, dateFileName)
                     res = selData("daily", pursue, "03")
                 else:
                     raise RuntimeError(
@@ -318,7 +329,7 @@ async def service(websocket, path):
             elif pursue == 10:
                 if content_header == "t":
                     res = sql_executor(
-                        sql_command, "select id, number, name, sex, time, disease, treat from daily order by time", pursue, "01", None)
+                        sql_command, "select id, number, name, sex, time, disease, treat from daily order by time", pursue, "01", None, dateFileName)
                     for i, r in enumerate(res, start=1):
                         r['id'] = i
                     tm = datetime.now(timezone('Asia/Seoul')).strftime("%Y.%m")
@@ -326,17 +337,17 @@ async def service(websocket, path):
 
                     for t in treatType:
                         ret[0].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None)[0]['cnt'])
+                            sql_command, f'select count(*) as cnt from daily where sex="남" and disease like "%{t}%"', pursue, "02", None, dateFileName)[0]['cnt'])
                         ret[1].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None)[0]['cnt'])
+                            sql_command, f'select count(*) as cnt from daily where sex="여" and disease like "%{t}%"', pursue, "03", None, dateFileName)[0]['cnt'])
                         ret[2].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "%{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None)[0]['cnt'] + ret[0][-1])
+                            sql_command, f'select count(*) as cnt from yearly where time like "%{tm}%" and sex="남" and disease like "%{t}%"', pursue, "04", None, dateFileName)[0]['cnt'] + ret[0][-1])
                         ret[3].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where time like "%{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None)[0]['cnt'] + ret[1][-1])
+                            sql_command, f'select count(*) as cnt from yearly where time like "%{tm}%" and sex="여" and disease like "%{t}%"', pursue, "05", None, dateFileName)[0]['cnt'] + ret[1][-1])
                         ret[4].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None)[0]['cnt'] + ret[0][-1])
+                            sql_command, f'select count(*) as cnt from yearly where sex="남" and disease like "%{t}%"', pursue, "06", None, dateFileName)[0]['cnt'] + ret[0][-1])
                         ret[5].append(sql_executor(
-                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None)[0]['cnt'] + ret[1][-1])
+                            sql_command, f'select count(*) as cnt from yearly where sex="여" and disease like "%{t}%"', pursue, "07", None, dateFileName)[0]['cnt'] + ret[1][-1])
 
                     makeFile(
                         res,
@@ -393,7 +404,7 @@ day_keys = ["number", "name", "sex", "time", "disease", "treat", "uniq"]
 treatType = "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " ")
 main()
-if sql_executor(sql_command, 'select * from posttime', -1, "00", None)[0]['posttime'] != date:
+if sql_executor(sql_command, 'select * from posttime', -1, "00", None, dateFileName)[0]['posttime'] != date:
     restart()
 try:
     server = websockets.serve(service, "0.0.0.0", 52125)
