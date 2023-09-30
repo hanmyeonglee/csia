@@ -30,9 +30,6 @@ export class WsClient extends Client{
             send = plain;
         }
         else if(enc == 1){
-            key_enc = CryptoJS.enc.Utf8.parse(this.key);
-            iv_enc = CryptoJS.enc.Utf8.parse(this.iv);
-
             let publicKey = forge.pki.publicKeyFromPem(this.pubkey);
         
             let secretMessage = uint8ArrayToBinary(encoder.encode(plain));

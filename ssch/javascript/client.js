@@ -41,7 +41,7 @@ export class Client{
         key_enc = CryptoJS.enc.Utf8.parse(this.key);
         iv_enc = CryptoJS.enc.Utf8.parse(this.iv);
 
-        let decrypted = CryptoJS.AES.encrypt(enc, key_enc, {
+        let decrypted = CryptoJS.AES.decrypt(enc, key_enc, {
             iv : iv_enc,
             mode : CryptoJS.mode.CBC
         });
