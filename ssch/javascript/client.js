@@ -46,6 +46,7 @@ export class Client{
             mode : CryptoJS.mode.CBC
         });
 
-        return decrypted.toString();
+        return decrypted.toString(CryptoJS.enc.Utf8)
+
     }
 }

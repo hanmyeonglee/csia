@@ -19,7 +19,7 @@ class Client:
             raise NoKeyOrIVError()
         data = pad(data.encode('utf-8'), 16)
         cipher = AES.new(self.key.encode('utf-8'), AES.MODE_CBC, self.iv)
-        return base64.b64encode(cipher.encrypt(data)).decode('ascii')
+        return base64.b64encode(cipher.encrypt(data)).decode("utf-8")
 
     def decrypt(self, enc):
         enc = base64.b64decode(enc)
