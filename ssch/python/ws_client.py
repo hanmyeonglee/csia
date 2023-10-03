@@ -43,8 +43,8 @@ class WsClient(Client):
     def time_recon(self):
         self.time = datetime.now().timestamp()
 
-    def send(self, mes=""):
-        self.client.send(mes)
+    async def send(self, mes=""):
+        await self.client.send(mes)
 
 
 class NoKeyOrIVError(Exception):
