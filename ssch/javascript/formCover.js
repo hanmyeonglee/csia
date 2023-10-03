@@ -56,7 +56,6 @@ export class WsClient extends Client{
             });
         }
 
-        console.log(send);
         return this.client.send(send);
     }
 
