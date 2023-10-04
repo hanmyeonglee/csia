@@ -175,11 +175,15 @@ async def service(websocket, path):
             elif message['type'] == 1:
                 message = json.loads(RSA_decrypt(message['enc']))
             elif message['type'] == 2:
-                if websocket == teacher.client:
-                    client = teacher
-                else:
+                if websocket in others.keys():
                     client = others[websocket]
-                message = json.loads(client.decrypt(message['enc']))
+                else:
+                    client = teacher
+                try:
+                    message = json.loads(client.decrypt(message['enc']))
+                except:
+                    raise RuntimeError(
+                        "while decrypting, none of recognized websocket does have instant websocket")
             elif message['type'] == "ping":
                 if message['enc'] == "initialize":
                     initialize_db_connect()
