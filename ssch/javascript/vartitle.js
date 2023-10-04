@@ -1,4 +1,4 @@
-import { form, copy, errorHandling, loading } from "./formCover.js";
+import { WsClient, copy, errorHandling, loading } from "./formCover.js";
 const dises =
   "호흡기계 소화기계 순환기계 정신신경계 근골격계 피부피하계 비뇨생식기계 구강치아계 이비인후과계 안과계 감염병 알러지 기타".split(
     " "
@@ -19,7 +19,7 @@ const dises =
  * 9 = delete patient from daily db
  */
 
-const webIO = new WebSocket("ws://10.13.19.49:52125");
+const webIO = new WsClient(new WebSocket("ws://localhost:52125"));
 const locate = location.href.split("/ssch/")[1];
 const table = document.querySelector("#tableCover");
 const row = document.querySelector(".tableElements");
@@ -165,7 +165,7 @@ const makeTable = (data) => {
     if (flag) {
       let fetchInfo = data['uniq'];
       await webIO.send(
-        form({ type: 9, stat: 1, header: "t", body: fetchInfo })
+        { type: 9, stat: 1, header: "t", body: fetchInfo }
       );
     } else {
       return;
@@ -232,7 +232,7 @@ const makeList = (data, num) => {
     let flag = confirm("정말로 삭제하시겠습니까?");
     if (flag) {
       await webIO.send(
-        form({ type: 3, stat: 1, header: "t", body: {"uniq":data["uniq"], "time":data["time"]} })
+        { type: 3, stat: 1, header: "t", body: {"uniq":data["uniq"], "time":data["time"]} }
       );
       deleteWaiter(data["uniq"]);
     } else {
@@ -267,19 +267,19 @@ const downloadFile = async (filename) => {
   window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
 };
 
-webIO.onopen = async () => {
+webIO.client.onopen = async () => {
   console.log(`WebSocket Opened ${new Date().getTime()}`);
-  await webIO.send(form({ type: 0, header: "t" }));
-  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 300000);
+  await webIO.send({ enc: 0, type: 0, header: "t"});
+  setInterval(async () => {await webIO.send({type: "ping"});}, 300000);
 };
 
-webIO.onclose = () => {
+webIO.client.onclose = () => {
   console.log(`WebSocket Closed ${new Date().getTime()}`);
 };
 
-webIO.onmessage = async (data) => {
-  let message = JSON.parse(data.data);
-  console.log(message);
+webIO.client.onmessage = async (data) => {
+  let mes = JSON.parse(data.data);
+  let message = JSON.parse(webIO.type_decrypt(mes));
   let stat = message["stat"];
   let head = message["content"]["header"];
   let returnType = message["content"]["body"]["return"];
@@ -292,7 +292,12 @@ webIO.onmessage = async (data) => {
 	case "pong":
 	  break;
         case 0:
-          await webIO.send(form({ type: 1, header: "t" }));
+          webIO.set_pubkey(innerData);
+          let jsonContent = {
+            "key": webIO.key,
+            "iv": webIO.iv
+          };
+          await webIO.send({ enc:1, type: 1, header: "t",  body: jsonContent });
           break;
         case 1:
           /*
@@ -391,12 +396,12 @@ confirmModal
         return;
       }
       bedNum--;
-      await webIO.send(form({ type: 4, stat: 1, header: "t", body: -1 }));
+      await webIO.send({ type: 4, stat: 1, header: "t", body: -1 });
       bedBtn.src = `./image.resize/bedRemain0${bedNum}.png`;
     }
 
     // content: id, number, name, sex, time, disease, treat object
-    await webIO.send(form({ type: 7, stat: 1, header: "t", body: contents }));
+    await webIO.send({ type: 7, stat: 1, header: "t", body: contents });
     deleteWaiter(information);
 
     for (let tmp of diseInp) {
@@ -414,7 +419,7 @@ diagBtn.addEventListener("click", async (e) => {
   diagBtn.src = diagPos
     ? "./image.resize/diagPos.png"
     : "./image.resize/diagImpos.png";
-  await webIO.send(form({ type: 5, stat: 1, header: "t", body: diagPos }));
+  await webIO.send({ type: 5, stat: 1, header: "t", body: diagPos });
 });
 
 bedBtn.addEventListener("click", async () => {
@@ -425,7 +430,7 @@ bedBtn.addEventListener("click", async () => {
       return;
     }
     bedNum++;
-    await webIO.send(form({ type: 4, stat: 1, header: "t", body: 1 }));
+    await webIO.send({ type: 4, stat: 1, header: "t", body: 1 });
     bedBtn.src = `./image.resize/bedRemain0${bedNum}.png`;
   }
 });
@@ -474,7 +479,7 @@ applyButton.addEventListener("click", async (e) => {
     }
   }
   if (flag) {
-    await webIO.send(form({ type: 8, stat: 1, header: "t", body: ret }));
+    await webIO.send({ type: 8, stat: 1, header: "t", body: ret });
   } else {
     return;
   }
@@ -511,7 +516,7 @@ download.addEventListener("click", async (e) => {
   if (
     confirm("이 시점까지의 기록들이 다운로드됩니다. 다운로드 하시겠습니까?")
   ) {
-    await webIO.send(form({ type: 10, stat: 1, header: "t" }));
+    await webIO.send({ type: 10, stat: 1, header: "t" });
   }
 });
 
