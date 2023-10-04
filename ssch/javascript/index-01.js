@@ -1,4 +1,4 @@
-import { form, copy, errorHandling, loading } from "./formCover.js";
+import { WsClient, copy, errorHandling, loading } from "./formCover.js";
 /**
  * pursue
  * 0 = connect request
@@ -27,7 +27,7 @@ const examineCurrentInterface = (inters) => {
   });
 })();
 
-const webIO = new WebSocket("ws://10.13.19.49:52125");
+const webIO = new WsClient(new WebSocket("ws://localhost:52125"));
 const interfaces = document.getElementsByClassName("interface");
 const applyBtns = Array.from(document.getElementsByClassName("applyBtn"));
 const modal = document.getElementById("symptomType");
@@ -35,18 +35,17 @@ const hourSelect = Array.from(document.getElementsByClassName("hour"));
 const diagPosImg = Array.from(document.getElementsByClassName("diagPos"));
 const bedNumImg = Array.from(document.getElementsByClassName("bedNum"));
 const about = document.getElementById("about");
-const windows = document.getElementById("windows");
-const mac = document.getElementById("mac");
-const android = document.getElementById("android");
-const ios = document.getElementById("ios");
 const logo = document.querySelector(".imgResize.center.navImg01");
-const locate = "./index-01.html";
+const names = ["chrome", "edge", "safari", "windows", "mac", "android", "ios"]
 let diagPos = false;
 let bedNum = 4;
 let current = examineCurrentInterface(interfaces);
 let symptom = [];
 let appointedTime = {};
 let other = false;
+let key = null;
+let iv = null;
+let pubkey = null;
 
 const verify = (data) => {
   let ret = {};
@@ -180,30 +179,34 @@ const verifyDiagPos = () => {
   });
 };
 
-webIO.onopen = async () => {
+webIO.client.onopen = async () => {
   console.log("WebSocket Opened");
-  await webIO.send(form({ type: 0, header: "s" }));
-  setInterval(async () => {await webIO.send(form({ type: "ping"}));}, 300000);
+  await webIO.send({ enc: 0, type: 0, header: "s" });
 };
 
-webIO.onclose = () => {
+webIO.client.onclose = () => {
   console.log("WebSocket Closed");
 };
 
-webIO.onmessage = async (data) => {
-  let message = JSON.parse(data.data);
-  console.log(message);
+webIO.client.onmessage = async (data) => {
+  let mes = JSON.parse(data.data);
+  let message = JSON.parse(webIO.type_decrypt(mes));
   let stat = message["stat"];
   let head = message["content"]["header"];
   let returnType = message["content"]["body"]["return"];
   let innerData = message["content"]["body"]["body"];
   if (stat != 1) {
-    errorHandling({ reload: true, locate: locate });
+    errorHandling({ reload: true });
   } else {
     if (head == 6) {
       switch (returnType) {
         case 0:
-          await webIO.send(form({ type: 1, header: "s" }));
+          webIO.set_pubkey(innerData);
+          let jsonContent = {
+            "key": webIO.key,
+            "iv": webIO.iv
+          };
+          await webIO.send({ enc: 1, type: 1, header: "s", body: jsonContent });
           break;
         case 1:
           data = copy(innerData);
@@ -218,14 +221,11 @@ webIO.onmessage = async (data) => {
           if (innerData == -1) {
             errorHandling({ message: "이미 신청된 시간입니다." });
           }
-	        alert("신청되었습니다.");
+	  alert("신청되었습니다.");
           loading(true);
-	        location.replace("./index-01.html");
           break;
-        case "pong":
-          return;
         default:
-          errorHandling({ reload: true, locate: locate });
+          errorHandling({ reload: true });
       }
     } else if (head == 2) {
       let t = innerData.split(":");
@@ -243,7 +243,7 @@ webIO.onmessage = async (data) => {
       diagPos = innerData;
       verifyDiagPos();
     } else {
-      errorHandling({ reload: true, locate: locate });
+      errorHandling({ reload: true });
     }
   }
 };
@@ -286,7 +286,7 @@ applyBtns.forEach((element) => {
       return false;
     }
 
-    await webIO.send(form({ type: 2, stat: 49, header: "s", body: verified }));
+    await webIO.send({ type: 2, stat: 49, header: "s", body: verified });
     return true;
   });
 });
@@ -321,24 +321,14 @@ about.addEventListener("click", (e) => {
   );
 });
 
-windows.addEventListener("click", () => {
-  location.href = "./html/windows.html";
-});
-
-mac.addEventListener("click", () => {
-  location.href = "./html/mac.html";
-});
-
-android.addEventListener("click", () => {
-  location.href = "./html/android.html";
-});
-
-ios.addEventListener("click", () => {
-  location.href = "./html/ios.html";
+names.forEach((name) => {
+  document.getElementById(name).addEventListener("click", () => {
+    location.href = `./html/${name}.html`;
+  });
 });
 
 logo.addEventListener("click", () => {
-  location.href = "./index-01.html";
+  location.href = "./";
 });
 
 window.addEventListener('beforeunload', async (event) => {

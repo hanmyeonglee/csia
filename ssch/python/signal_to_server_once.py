@@ -9,17 +9,13 @@ async def listen():
         js = json.dumps(
             {
                 "type": "ping",
-                "stat": 1,
-                "content": {
-                    "header": "reconnect",
-                    "body": []
-                }
+                "enc": "initialize"
             }
         )
         await ws.send(js)
         msg = await ws.recv()
         re = json.loads(msg)["content"]['body']['return']
         if re == "pong":
-            ws.close()
+            await ws.close()
 
 asyncio.get_event_loop().run_until_complete(listen())

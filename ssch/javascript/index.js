@@ -122,7 +122,6 @@ const makeOptions = () => {
   };
   
   hourSelect.forEach((element) => {
-    let minute = new Date().getMinutes();
     element.innerHTML = hourDefaultOption;
     for (let i = 8; i <= 16; i++) {
       //element.appendChild(optionForm(i, "시", (i >= hour) ? false : true));
@@ -130,8 +129,9 @@ const makeOptions = () => {
       if (i < hour) element.appendChild(optionForm(i, "시", true));
       else element.appendChild(optionForm(i, "시", false));
     }
-
+    
     element.addEventListener("focusout", (e) => {
+      let minute = new Date().getMinutes();
       current = examineCurrentInterface(interfaces);
       let hourVal = element[element.options.selectedIndex].value;
       if (hourVal == "default") {
@@ -140,9 +140,9 @@ const makeOptions = () => {
       let minuteSelect = current.querySelector(".minute");
       minuteSelect.innerHTML = minuteDefaultOption;
       for (let i = 0; i < 60; i++) {
-	if(i < 45 && i % 5 != 0 && hourVal != "08" && hourVal != "16"){
-	    continue;
-	}
+        if(i < 45 && i % 5 != 0 && hourVal != "08" && hourVal != "16") continue;
+        if(hourVal == "11" && i > 50) continue;
+        
         let flag = false;
         if (appointedTime[hourVal].includes(String(i).padStart(2, "0")) || (i < minute && Number(hourVal) == hour)){
           flag = true;

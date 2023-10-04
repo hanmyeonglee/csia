@@ -90,7 +90,7 @@ const makeTreatList = (flag = false, parent, suffix) => {
       tempItem.querySelector("input").classList.add("treat");
       tempItem
         .querySelector("label")
-        .setAttribute("for", `treat${String(k).padStart(2, "0")}${suffix}`);
+        .setAttribute("for", `treat${String(j).padStart(2, "0")}${suffix}`);
       tempItem.removeAttribute("hidden");
       if (d == "보건실휴식" && flag) {
         tempItem.querySelector("input").classList.add("bed");

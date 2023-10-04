@@ -242,13 +242,6 @@
 #about{
   margin-right: 1.11vw;
 }
-.mobileImgs{
-  display: grid;
-  place-content: center end;
-}
-.mobile.gridRow{
-  grid-gap: 8.5px;
-}
 @media all and (max-aspect-ratio: 1/1) {
   .main {
     width: 90%;
@@ -260,7 +253,7 @@
     display: none !important;
   }
   #navExternal > div {
-    font-size: 2.5vh;
+    font-size: 1.7vh;
   }
   #interfaceCover {
     grid-template-columns: none;
