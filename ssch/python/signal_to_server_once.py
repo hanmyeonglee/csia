@@ -14,8 +14,6 @@ async def listen():
         )
         await ws.send(js)
         msg = await ws.recv()
-        re = json.loads(msg)["content"]['body']['return']
-        if re == "pong":
-            await ws.close()
+        await ws.close()
 
 asyncio.get_event_loop().run_until_complete(listen())

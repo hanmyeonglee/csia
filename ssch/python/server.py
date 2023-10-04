@@ -42,8 +42,10 @@ def hash160(string):
 
 def initialize_db_connect():
     global mysql
-    if isinstance(mysql, pymysql.connections.Connection):
-        mysql.close()
+    tmp = int(datetime.now().strftime("%H"))
+    if tmp > 17 or tmp < 7:
+        if isinstance(mysql, pymysql.connections.Connection):
+            mysql.close()
         mysql = None
     else:
         mysql = pymysql.connect(user="ssch", passwd="rBXAm7WN", host="localhost",
@@ -173,7 +175,10 @@ async def service(websocket, path):
             elif message['type'] == 1:
                 message = json.loads(RSA_decrypt(message['enc']))
             elif message['type'] == 2:
-                client: WsClient = others[websocket]
+                if websocket == teacher.client:
+                    client = teacher
+                else:
+                    client = others[websocket]
                 message = json.loads(client.decrypt(message['enc']))
             elif message['type'] == "ping":
                 if message['enc'] == "initialize":
